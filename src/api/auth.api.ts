@@ -99,12 +99,18 @@ export const saveMercadoPagoRefreshToken = async (code: string) => {
     client_secret: process.env.REACT_APP_MP_CLIENT_SECRET,
     grant_type: 'authorization_code',
     code,
+    redirect_uri: process.env.REACT_APP_MP_REDIRECT_URL,
   });
 
   const { error } = await supabase
     .from('tutors')
     .update({ mp_refresh_token: mpData?.refresh_token })
     .eq('id', data.session?.user?.id);
+
+  localStorage.setItem('access_token', mpData?.access_token);
+  localStorage.setItem('expires_in', mpData?.expires_in);
+  localStorage.setItem('mp_refresh_token', mpData?.refresh_token);
+
   if (error) {
     throw new Error(error.message);
   }

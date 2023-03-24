@@ -24,6 +24,10 @@ export const MercadoPagoSuccess = () => {
       setTimeout(() => {
         mutate(code);
       }, 3000);
+    } else {
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
     }
   }, []);
 
