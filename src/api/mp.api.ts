@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const mpApi = axios.create({
   baseURL: 'https://api.mercadopago.com/',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
 });
 
 export const getMercadoPagoAuthorization = async () => {
