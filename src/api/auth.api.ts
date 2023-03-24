@@ -99,7 +99,6 @@ export const saveMercadoPagoRefreshToken = async (code: string) => {
     client_secret: process.env.REACT_APP_MP_CLIENT_SECRET,
     grant_type: 'authorization_code',
     code,
-    redirect_uri: window.location.origin + '/home',
   });
 
   const { error } = await supabase
