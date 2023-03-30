@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
@@ -9,6 +9,7 @@ import * as S from './LoginForm.styles';
 import logo from 'assets/logo.png';
 import logoDark from 'assets/logo-dark.png';
 import {
+  logout as logoutAction,
   login as loginAction,
   loginWithGoogle as loginWithGoogleAction,
   register as registerAction,
@@ -24,6 +25,16 @@ export const LoginForm = () => {
   const { t } = useTranslation();
   const theme = useAppSelector((state: any) => state.theme.theme);
   const img = theme === 'dark' ? logoDark : logo;
+
+  useEffect(() => {
+    if (isLogout()) {
+      logout();
+    }
+  }, []);
+
+  const isLogout = () => {
+    return window.location.pathname.includes('logout');
+  };
   const isRegister = () => {
     return window.location.pathname.includes('register');
   };
@@ -31,9 +42,16 @@ export const LoginForm = () => {
     return window.location.pathname.includes('password-recover');
   };
 
+  const { mutate: logout } = useMutation(logoutAction, {
+    onError: (error: any) => {
+      notificationController.error({
+        message: error.message,
+      });
+    },
+  });
   const { mutate: loginWithEmail, isLoading: loginLoading } = useMutation(loginAction, {
     onSuccess: (data: any) => {
-      navigate('/');
+      navigate('/home');
     },
     onError: (error: any) => {
       notificationController.error({
@@ -43,7 +61,7 @@ export const LoginForm = () => {
   });
   const { mutate: loginWithGoogle, isLoading: loginWithGoogleLoading } = useMutation(loginWithGoogleAction, {
     onSuccess: (data: any) => {
-      navigate('/');
+      navigate('/home');
     },
     onError: (error: any) => {
       notificationController.error({
@@ -57,7 +75,7 @@ export const LoginForm = () => {
         message: t('login.registerEmailSent'),
       });
       setTimeout(() => {
-        navigate('/user-config');
+        navigate('/welcome/user-config');
       }, 3000);
     },
     onError: (error: any) => {
@@ -119,7 +137,7 @@ export const LoginForm = () => {
               loginWithGoogle();
             }}
             type="primary"
-            htmlType="submit"
+            htmlType="button"
             loading={loginWithGoogleLoading}
             data-testId="login--loginBtn"
             hidden={isPasswordRecover()}

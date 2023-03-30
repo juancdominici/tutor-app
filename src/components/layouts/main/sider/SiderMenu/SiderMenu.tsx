@@ -78,7 +78,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       )}
       <Divider />
       <Menu.Item icon={<RollbackOutlined />}>
-        <Link to="/logout">{t('login.logout')}</Link>
+        <Link to="/auth/logout">{t('login.logout')}</Link>
       </Menu.Item>
     </S.Menu>
   );

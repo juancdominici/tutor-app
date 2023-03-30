@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import { ThemePicker } from '@app/components/header/components/settingsDropdown/settingsOverlay/ThemePicker/ThemePicker';
 import logo from 'assets/logo.png';
@@ -7,7 +7,7 @@ import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useTranslation } from 'react-i18next';
 import { Button, Checkbox, Row } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { checkUserExistance, newTutor, newUser } from '@app/api/auth.api';
+import { newTutor, newUser } from '@app/api/auth.api';
 import { useMutation } from '@tanstack/react-query';
 import { Loading } from '@app/components/common/Loading';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
@@ -19,30 +19,9 @@ export const UserConfig = () => {
   const navigate = useNavigate();
   const [termsAndConditions, setTermsAndConditions] = useState(false);
 
-  const userAlreadyExists = async () => {
-    // If the user already exists in the 'user_profiles' collection, redirect to the home page
-    // If the user already exists in the 'tutors' collection, redirect to the tutor config page
-    const userType = await checkUserExistance();
-    switch (userType) {
-      case 'user':
-        navigate('/home');
-        break;
-      case 'tutor':
-        navigate('/tutor-config');
-        break;
-      default:
-        navigate('/auth/login');
-        break;
-    }
-  };
-
-  useEffect(() => {
-    userAlreadyExists();
-  }, []);
-
   const { mutate: handleNewTutor, isLoading: isLoadingTutor } = useMutation(newTutor, {
     onSuccess: () => {
-      navigate('/tutor-config');
+      navigate('/welcome/tutor-config');
     },
   });
 

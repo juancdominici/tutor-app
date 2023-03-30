@@ -62,6 +62,7 @@ export const newTutor = async () => {
     throw new Error(error.message);
   }
 };
+
 export const newUser = async () => {
   const { data } = await supabase.auth.getSession();
   const { error } = await supabase.from('user_profiles').insert({
@@ -75,21 +76,24 @@ export const newUser = async () => {
 };
 
 export const checkUserExistance = async () => {
-  const { data } = await supabase.auth.getSession();
-  const userResult = await supabase
-    .from('user_profiles')
-    .select('*')
-    .eq('id', data.session?.user?.id)
-    .limit(1)
-    .single();
-  const tutorResult = await supabase.from('tutors').select('*').eq('id', data.session?.user?.id).limit(1).single();
-  if (userResult.data) {
-    return 'user';
+  try {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) return 'none';
+    const userResult = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('id', data.session?.user?.id)
+      .limit(1)
+      .single();
+    const tutorResult = await supabase.from('tutors').select('*').eq('id', data.session?.user?.id).limit(1).single();
+
+    if (userResult.data) return 'user';
+    if (tutorResult.data) return 'tutor';
+
+    return 'fresh';
+  } catch (error: any) {
+    throw new Error(error.message);
   }
-  if (tutorResult.data) {
-    return 'tutor';
-  }
-  return 'none';
 };
 
 export const saveMercadoPagoRefreshToken = async (code: string) => {
@@ -111,6 +115,13 @@ export const saveMercadoPagoRefreshToken = async (code: string) => {
   localStorage.setItem('expires_in', mpData?.expires_in);
   localStorage.setItem('mp_refresh_token', mpData?.refresh_token);
 
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const logout = async () => {
+  const { error } = await supabase.auth.signOut();
   if (error) {
     throw new Error(error.message);
   }

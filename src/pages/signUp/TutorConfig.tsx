@@ -1,7 +1,5 @@
-import { checkUserExistance } from '@app/api/auth.api';
 import { ThemePicker } from '@app/components/header/components/settingsDropdown/settingsOverlay/ThemePicker/ThemePicker';
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import { useTranslation } from 'react-i18next';
@@ -10,28 +8,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { getMercadoPagoAuthorization } from '@app/api/mp.api';
 
 export const TutorConfig = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
-  const userAlreadyExists = async () => {
-    // If the user already exists in the 'user_profiles' collection, redirect to the home page
-    // If the user already exists in the 'tutors' collection, redirect to the tutor config page
-    const userType = await checkUserExistance();
-    switch (userType) {
-      case 'user':
-        navigate('/user-config');
-        break;
-      case 'tutor':
-        break;
-      default:
-        navigate('/user-config');
-        break;
-    }
-  };
-
-  useEffect(() => {
-    userAlreadyExists();
-  }, []);
 
   return (
     <>

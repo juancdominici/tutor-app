@@ -1,13 +1,12 @@
 import { saveMercadoPagoRefreshToken } from '@app/api/auth.api';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useMutation } from '@tanstack/react-query';
-import { Col, Row, Typography } from 'antd';
+import { Col, Row } from 'antd';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 export const MercadoPagoSuccess = () => {
-  const { Title } = Typography;
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -17,7 +16,13 @@ export const MercadoPagoSuccess = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
 
-  const { mutate } = useMutation(saveMercadoPagoRefreshToken);
+  const { mutate } = useMutation(saveMercadoPagoRefreshToken, {
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate('/home');
+      }, 3000);
+    },
+  });
 
   useEffect(() => {
     if (code) {
@@ -26,7 +31,7 @@ export const MercadoPagoSuccess = () => {
       }, 3000);
     } else {
       setTimeout(() => {
-        navigate('/');
+        navigate('/home');
       }, 3000);
     }
   }, []);
