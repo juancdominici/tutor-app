@@ -5,7 +5,7 @@ export const getTutorAddressesFiltered = async () =>
   serviceTypeFilter: string[],
   reviewFilter: number[], */
   {
-    const { data, error } = await supabase.from('addresses').select('*, tutors(*)').eq('status', true);
+    const { data, error } = await supabase.from('addresses').select('*').neq('tutor_id', null);
 
     if (error) {
       throw new Error(error.message);

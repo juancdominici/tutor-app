@@ -19,7 +19,7 @@ export const MercadoPagoSuccess = () => {
   const { mutate } = useMutation(saveMercadoPagoRefreshToken, {
     onSuccess: () => {
       setTimeout(() => {
-        navigate('/home');
+        navigate('/home', { replace: true });
       }, 3000);
     },
   });
@@ -31,21 +31,15 @@ export const MercadoPagoSuccess = () => {
       }, 3000);
     } else {
       setTimeout(() => {
-        navigate('/home');
+        navigate('/home', { replace: true });
       }, 3000);
     }
   }, []);
 
   return (
-    <Row
-      align="middle"
-      justify="start"
-      style={{
-        width: '80vw',
-      }}
-    >
+    <Row align="middle" justify="center">
       <PageTitle>{t('notifications.mpAuthSuccess')}</PageTitle>
-      <Col>
+      <Col span={24}>
         <div
           style={{
             margin: '50px auto',

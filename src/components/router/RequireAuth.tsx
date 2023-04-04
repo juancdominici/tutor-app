@@ -2,45 +2,103 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { WithChildrenProps } from '@app/types/generalTypes';
 import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.api';
-import { useQuery } from '@tanstack/react-query';
-import { notificationController } from '@app/controllers/notificationController';
 import { Loading } from '../common/Loading';
+import { changeUserPassword as changeUserPasswordAction } from '@app/api/auth.api';
+import supabase from '@app/api/supabase';
+import { notificationController } from '@app/controllers/notificationController';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Button, Modal } from 'antd';
+import { useTranslation } from 'react-i18next';
+import FormItem from 'antd/es/form/FormItem';
+import { FormInputPassword, SocialButton } from '../layouts/AuthLayout/AuthLayout.styles';
+import { BaseForm } from '../common/forms/BaseForm/BaseForm';
 
 const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
-  const [childrenToRender, setChildrenToRender] = useState(<></>);
-
-  const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
-    onSuccess: (data: any) => {
-      switch (data) {
-        case 'user':
-          setChildrenToRender(<>{children}</>);
-          break;
-        case 'tutor':
-          setChildrenToRender(<>{children}</>);
-          break;
-        case 'fresh':
-          setChildrenToRender(<Navigate to="/welcome/user-config" replace />);
-          break;
-        default:
-          setChildrenToRender(<Navigate to="/auth/login" replace />);
-          break;
+  const { t } = useTranslation();
+  const [passwordRecoveryModal, togglePasswordRecoveryModal] = useState(false);
+  const [form] = BaseForm.useForm();
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event == 'PASSWORD_RECOVERY') {
+        togglePasswordRecoveryModal(true);
       }
-    },
-    onError: (error: any) => {
-      notificationController.error({
-        message: error.message,
-      });
-    },
-  });
+    });
+  }, []);
 
-  if (!checkUserExistance) {
-    return (
-      <>
-        <Loading />
-      </>
-    );
-  }
-  return childrenToRender;
+  const { mutate: changePassword, isLoading: isLoadingChangePassword } = useMutation(
+    ['changePassword'],
+    changeUserPasswordAction,
+    {
+      onSuccess: (data: any) => {
+        notificationController.success({
+          message: t('common.passwordChanged'),
+        });
+        togglePasswordRecoveryModal(false);
+      },
+      onError: (error: any) => {
+        notificationController.error({
+          message: error.message,
+        });
+      },
+    },
+  );
+
+  const { data: checkUserExistance, isLoading } = useQuery(['checkUserExistance'], checkUserExistanceAction);
+
+  const handleSubmit = (values: any) => {
+    changePassword(values.newPassword);
+  };
+
+  return isLoading || passwordRecoveryModal ? (
+    <>
+      <Loading />
+      <Modal
+        title={t('common.passwordRecovery')}
+        visible={passwordRecoveryModal}
+        okText={t('common.submit')}
+        cancelText={t('common.cancel')}
+        onCancel={() => togglePasswordRecoveryModal(false)}
+        onOk={() => {
+          form
+            .validateFields()
+            .then((values) => {
+              form.resetFields();
+              handleSubmit(values);
+            })
+            .catch((info) => {
+              console.log('Validate Failed:', info);
+            });
+        }}
+      >
+        <BaseForm form={form} layout="vertical" onFinish={handleSubmit} requiredMark="optional">
+          <FormItem
+            name="newPassword"
+            required
+            rules={[
+              { required: true, message: t('common.requiredField') },
+              { min: 6, message: t('login.passwordLength') },
+              { max: 20, message: t('login.passwordLength') },
+              {
+                validator: (rule, value) =>
+                  // password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,20}$/.test(value)
+                    ? Promise.resolve()
+                    : Promise.reject(t('login.passwordRequirements')),
+              },
+            ]}
+          >
+            <FormInputPassword placeholder={t('login.password')} />
+          </FormItem>
+        </BaseForm>
+      </Modal>
+    </>
+  ) : checkUserExistance === 'user' || checkUserExistance === 'tutor' ? (
+    <>{children}</>
+  ) : checkUserExistance === 'fresh' ? (
+    <Navigate to="/welcome/user-config" replace />
+  ) : (
+    <Navigate to="/auth/login" replace />
+  );
 };
 
 export default RequireAuth;

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { WithChildrenProps } from '@app/types/generalTypes';
 import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
 import { notificationController } from '@app/controllers/notificationController';
 import { Loading } from '../common/Loading';
 
-const RequireTutorRole: React.FC<WithChildrenProps> = ({ children }) => {
+const RequireFreshAccount: React.FC<WithChildrenProps> = ({ children }) => {
   const [childrenToRender, setChildrenToRender] = useState(<></>);
-
+  const location = useLocation();
   const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
     onSuccess: (data: any) => {
-      if (data === 'tutor') {
+      if (data === 'fresh' || location.pathname === '/welcome/mp-success') {
         setChildrenToRender(<>{children}</>);
         return;
       }
@@ -34,4 +34,4 @@ const RequireTutorRole: React.FC<WithChildrenProps> = ({ children }) => {
   return childrenToRender;
 };
 
-export default RequireTutorRole;
+export default RequireFreshAccount;

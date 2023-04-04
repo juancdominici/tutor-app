@@ -1,14 +1,17 @@
 import { getTutorAddressesFiltered } from '@app/api/adresses.api';
+import { changeUserPassword as changeUserPasswordAction } from '@app/api/auth.api';
+import supabase from '@app/api/supabase';
 import { Loading } from '@app/components/common/Loading';
 import Map from '@app/components/common/Map';
-import { useQuery } from '@tanstack/react-query';
+import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
+import { notificationController } from '@app/controllers/notificationController';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Button, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const HomePage = () => {
-  // get current location from the browser
-  // get the list of tutors from the backend
-  // pass the list of tutors to the map component
-  // pass the current location to the map component
+  const { t } = useTranslation();
   const [currentPosition, setCurrentPosition] = useState({});
 
   const savePosition = (position: any) => {
@@ -37,7 +40,18 @@ export const HomePage = () => {
 
   return (
     <>
-      <Map center={currentPosition} zoom={12} zoomControl={true} minZoom={10} maxZoom={15} addressList={addressList} />
+      <PageTitle>{t('common.home')}</PageTitle>
+
+      <Row style={{ height: '88vh', width: '100%' }}>
+        {/* <Map
+          center={currentPosition}
+          zoom={15}
+          zoomControl={true}
+          minZoom={10}
+          maxZoom={18}
+          addressList={addressList}
+        /> */}
+      </Row>
     </>
   );
 };

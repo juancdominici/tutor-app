@@ -1,9 +1,9 @@
 import React from 'react';
 import { Col, Row } from 'antd';
-import { NotificationsDropdown } from '../components/notificationsDropdown/NotificationsDropdown';
 import { SettingsDropdown } from '../components/settingsDropdown/SettingsDropdown';
 import { HeaderFullscreen } from '../components/HeaderFullscreen/HeaderFullscreen';
 import * as S from '../Header.styles';
+import { Filters } from '@app/components/layouts/main/filterSider/Filters';
 
 interface DesktopHeaderProps {
   isTwoColumnsLayout: boolean;
@@ -34,7 +34,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ isTwoColumnsLayout
           <Col>
             <Row gutter={[{ xxl: 10 }, { xxl: 10 }]}>
               <Col>
-                <NotificationsDropdown />
+                <Filters />
               </Col>
 
               <Col>

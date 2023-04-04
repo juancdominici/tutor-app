@@ -1,17 +1,17 @@
 import styled, { css } from 'styled-components';
 import { Button, Layout } from 'antd';
 import { Link } from 'react-router-dom';
-import { media } from '@app/styles/themes/constants';
-import { LAYOUT } from '@app/styles/themes/constants';
+import { media, LAYOUT } from '@app/styles/themes/constants';
 
 export const Sider = styled(Layout.Sider)`
   position: fixed;
   overflow: visible;
-  right: 0;
+  left: 0;
   z-index: 5;
   min-height: 100vh;
   max-height: 100vh;
 
+  background-color: var(--background-color);
   color: var(--text-secondary-color);
 `;
 
@@ -57,6 +57,8 @@ export const SiderContent = styled.div`
 export const SiderLogoLink = styled(Link)`
   display: flex;
   align-items: center;
+  overflow: hidden;
+  position: relative;
 `;
 
 export const SiderLogoDiv = styled.div`

@@ -51,15 +51,11 @@ export const DropdownCollapse = styled(Collapse)`
   }
 `;
 
-export const BurgerCol = styled(Col)`
-  z-index: 999;
-  display: flex;
-`;
-
 export const MobileBurger = styled(BurgerIcon)`
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: -0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 1rem;
+  margin-top: 0.75rem;
   color: var(--text-main-color);
 
   ${(props) =>

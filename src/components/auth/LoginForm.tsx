@@ -89,9 +89,6 @@ export const LoginForm = () => {
       notificationController.info({
         message: t('login.passwordRecoverEmailSent'),
       });
-      setTimeout(() => {
-        navigate('/auth/login');
-      }, 3000);
     },
     onError: (error: any) => {
       notificationController.error({
@@ -139,7 +136,6 @@ export const LoginForm = () => {
             type="primary"
             htmlType="button"
             loading={loginWithGoogleLoading}
-            data-testId="login--loginBtn"
             hidden={isPasswordRecover()}
           >
             {t('login.loginWithGoogle')}
@@ -148,7 +144,6 @@ export const LoginForm = () => {
         <Divider />
         <Auth.FormItem
           name="usuario"
-          data-testId="login--usuario"
           label={t('login.email')}
           rules={[
             { required: true, message: t('common.requiredField') },
@@ -163,8 +158,19 @@ export const LoginForm = () => {
         <Auth.FormItem
           label={t('login.password')}
           name="password"
-          data-testId="login--password"
-          rules={[{ required: !isPasswordRecover(), message: t('common.requiredField') }]}
+          rules={[
+            { min: !isPasswordRecover() ? 6 : 0, message: t('login.passwordLength') },
+            { max: !isPasswordRecover() ? 20 : 0, message: t('login.passwordLength') },
+            {
+              validator: (rule, value) =>
+                isPasswordRecover() ||
+                // password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,20}$/.test(value)
+                  ? Promise.resolve()
+                  : Promise.reject(t('login.passwordRequirements')),
+            },
+            { required: !isPasswordRecover(), message: t('common.requiredField') },
+          ]}
           hidden={isPasswordRecover()}
         >
           <Auth.FormInputPassword placeholder={t('login.password')} />
@@ -174,8 +180,7 @@ export const LoginForm = () => {
           <Auth.SocialButton
             type="primary"
             htmlType="submit"
-            loading={isRegister() ? registerIsLoading : isPasswordRecover() ? passwordRecoverIsLoading : loginLoading}
-            data-testId="login--loginBtn"
+            loading={registerIsLoading || passwordRecoverIsLoading || loginLoading}
           >
             {isRegister() ? t('login.register') : isPasswordRecover() ? t('login.passwordRecover') : t('login.login')}
           </Auth.SocialButton>

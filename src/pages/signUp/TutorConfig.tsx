@@ -49,7 +49,6 @@ export const TutorConfig = () => {
             }}
             type="primary"
             htmlType="submit"
-            data-testId="login--loginBtn"
           >
             {t('login.connectMercadoPago')}
           </Auth.SocialButton>

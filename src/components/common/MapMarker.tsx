@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const MapMarker = (props: any) => {
-  return <div>MapMarker</div>;
+export const MapMarker = ({ children }: any) => {
+  return <div>{children}</div>;
 };

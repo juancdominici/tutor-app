@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
-import Overlay from '../../../../common/Overlay';
+import Overlay from '../../../common/Overlay';
 import { useResponsive } from 'hooks/useResponsive';
-import * as S from './MainSider.styles';
-import { SiderLogo } from '../SiderLogo';
-import SiderMenu from '../SiderMenu/SiderMenu';
+import * as S from './FilterSider.styles';
+import { Filters } from './Filters';
+import { Button, Col, Row } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 interface MainSiderProps {
   isCollapsed: boolean;
   setCollapsed: (isCollapsed: boolean) => void;
 }
 
-const MainSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...props }) => {
+const FilterSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...props }) => {
   const toggleSider = () => setCollapsed(!isCollapsed);
   const { isDesktop } = useResponsive();
 
@@ -21,12 +22,11 @@ const MainSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...pro
         collapsed={isCollapsed}
         collapsedWidth={0}
         collapsible={true}
-        width={isDesktop ? '30%' : '80%'}
+        width={isDesktop ? '30%' : '100%'}
         {...props}
       >
-        <SiderLogo isSiderCollapsed={isCollapsed} toggleSider={toggleSider} />
         <S.SiderContent>
-          <SiderMenu setCollapsed={setCollapsed} />
+          <Filters toggleSider={toggleSider} />
         </S.SiderContent>
       </S.Sider>
       <Overlay onClick={toggleSider} show={!isCollapsed} />
@@ -34,4 +34,4 @@ const MainSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...pro
   );
 };
 
-export default MainSider;
+export default FilterSider;

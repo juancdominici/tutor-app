@@ -201,5 +201,51 @@ export default createGlobalStyle`
   @keyframes sway {
     0%, 100%{ transform: rotate(-8deg);}
     50%{ transform: rotate(6deg); }
-}
+  }
+
+  .middle-button {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background: var(--primary-color);
+    color: var(--white);
+    font-size: 1.2rem;
+    padding: 1rem;
+    border-width: 2px;
+    transform: scale(1.5) translateY(-10%);
+    z-index: 999;
+  }
+
+  
+.blob {
+    background: black;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    height: 2.4em;
+    width: 2.4em;
+    transform: scale(1);
+    animation: pulse-black 2s infinite;
+    margin: 0 0 -1.2em -1.2em;
+  }
+  .blob.green {
+    background: #008640cc;
+    box-shadow: 0 0 0 0 #008640cc;
+    animation: pulse-green 2s infinite;
+  }
+  
+  @keyframes pulse-green {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 #00864088;
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(51, 217, 178, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
+    }
+  }
 `;

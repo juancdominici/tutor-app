@@ -4,13 +4,14 @@ import { Link, useLocation } from 'react-router-dom';
 import * as S from './SiderMenu.styles';
 import {
   adminSidebarNavigation,
-  compradorSidebarNavigation,
-  vendedorSidebarNavigation,
+  tutorSidebarNavigation,
+  clientSidebarNavigation,
   SidebarNavigationItem,
 } from '../sidebarNavigation';
 import { Divider, Menu } from 'antd';
-import { RollbackOutlined } from '@ant-design/icons';
-import { readRole } from '@app/services/localStorage.service';
+import { MessageOutlined, RollbackOutlined, TagsOutlined } from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
+import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.api';
 
 interface SiderContentProps {
   setCollapsed: (isCollapsed: boolean) => void;
@@ -19,13 +20,26 @@ interface SiderContentProps {
 const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
   const { t } = useTranslation();
   const location = useLocation();
+  const [sidebarNavigation, setSidebarNavigation] = React.useState<SidebarNavigationItem[]>([]);
 
-  const sidebarNavigation =
-    readRole() === 'COMPRADOR'
-      ? compradorSidebarNavigation
-      : readRole() === 'VENDEDOR'
-      ? vendedorSidebarNavigation
-      : adminSidebarNavigation;
+  const { isLoading } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
+    onSuccess: (data: any) => {
+      switch (data) {
+        case 'user':
+          setSidebarNavigation(clientSidebarNavigation);
+          break;
+        case 'tutor':
+          setSidebarNavigation(tutorSidebarNavigation);
+          break;
+        case 'admin':
+          setSidebarNavigation(adminSidebarNavigation);
+          break;
+        default:
+          setSidebarNavigation([]);
+          break;
+      }
+    },
+  });
 
   const sidebarNavFlat = sidebarNavigation.reduce(
     (result: SidebarNavigationItem[], current) =>
@@ -40,6 +54,10 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     children?.some(({ url }) => url === location.pathname),
   );
   const defaultOpenKeys = openedSubmenu ? [openedSubmenu.key] : [];
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <S.Menu
@@ -63,19 +81,19 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
               </Menu.Item>
             ))}
           </Menu.SubMenu>
-        ) : nav.title == 'common.productos' ? (
-          <>
-            <Divider key="divider" />
-            <Menu.Item key={nav.key} title="" icon={nav.icon}>
-              <Link to={nav.url || ''}>{t(nav.title)}</Link>
-            </Menu.Item>
-          </>
         ) : (
           <Menu.Item key={nav.key} title="" icon={nav.icon}>
             <Link to={nav.url || ''}>{t(nav.title)}</Link>
           </Menu.Item>
         ),
       )}
+      <Divider />
+      <Menu.Item icon={<TagsOutlined />}>
+        <Link to="/aboutUs">{t('common.aboutUs')}</Link>
+      </Menu.Item>
+      <Menu.Item icon={<MessageOutlined />}>
+        <Link to="/contact">{t('common.contact')}</Link>
+      </Menu.Item>
       <Divider />
       <Menu.Item icon={<RollbackOutlined />}>
         <Link to="/auth/logout">{t('login.logout')}</Link>

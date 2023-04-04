@@ -96,7 +96,7 @@ export const UserConfig = () => {
             />
             <span>
               Acepto los{' '}
-              <Link to="/terms-and-conditions" target="_blank">
+              <Link to="/i/eula" target="_blank">
                 terminos y condiciones
               </Link>
             </span>
