@@ -45,7 +45,7 @@ export const adminSidebarNavigation: SidebarNavigationItem[] = [
 export const tutorSidebarNavigation: SidebarNavigationItem[] = [
   {
     title: 'common.addresses',
-    key: 'addresses',
+    key: 'addresses-menu',
     icon: <EnvironmentOutlined />,
     children: [
       {
@@ -94,7 +94,7 @@ export const tutorSidebarNavigation: SidebarNavigationItem[] = [
 export const clientSidebarNavigation: SidebarNavigationItem[] = [
   {
     title: 'common.addresses',
-    key: 'addresses',
+    key: 'addresses-menu',
     icon: <EnvironmentOutlined />,
     children: [
       {

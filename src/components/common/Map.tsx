@@ -1,6 +1,5 @@
 import React from 'react';
-import GoogleMap from 'google-map-react';
-import { MapMarker } from './MapMarker';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 
 interface MapPropsI {
@@ -13,11 +12,13 @@ interface MapPropsI {
   addressList?: Array<any> | null;
 }
 const Map = ({ center, zoom, zoomControl, minZoom, maxZoom, addressList }: MapPropsI) => {
-  const urlKey: any = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
   const theme = useAppSelector((state) => state.theme.theme);
 
   const setOptions = () => {
     return {
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullscreenControl: false,
       zoomControl: zoomControl,
       minZoom: minZoom,
       maxZoom: maxZoom,
@@ -108,24 +109,23 @@ const Map = ({ center, zoom, zoomControl, minZoom, maxZoom, addressList }: MapPr
   };
 
   return (
-    <div style={{ height: '100%', width: '100%' }}>
-      <GoogleMap
-        center={center}
-        defaultZoom={zoom}
-        options={setOptions()}
-        yesIWantToUseGoogleMapApiInternals
-        bootstrapURLKeys={{ key: urlKey }}
-      >
-        <MapMarker lat={center.lat} lng={center.lng}>
-          <div className="blob green"></div>
-        </MapMarker>
-        {addressList?.map((address: any) => (
-          <MapMarker key={address.id} lat={address.lat} lng={address.lng}>
-            <img src="/images/map-marker.svg" alt="map-marker" />
-          </MapMarker>
-        ))}
-      </GoogleMap>
-    </div>
+    <>
+      {center && (
+        <GoogleMap
+          center={center}
+          zoom={zoom}
+          options={setOptions()}
+          mapContainerStyle={{ width: '100%', height: '100%' }}
+        >
+          <Marker position={{ lat: center.lat, lng: center.lng }} />
+          {addressList?.map((address: any) => (
+            <Marker key={address.id} position={{ lat: address.lat, lng: address.lng }}>
+              <img src="/images/map-marker.svg" alt="map-marker" />
+            </Marker>
+          ))}
+        </GoogleMap>
+      )}
+    </>
   );
 };
 

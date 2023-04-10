@@ -73,6 +73,7 @@ export const AppRouter: React.FC = () => {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/addresses/new" element={<AddressForm />} />
+          <Route path="/addresses/edit/:id" element={<AddressForm />} />
           <Route path="/addresses" element={<AddressList />} />
           <Route path="/appointments" element={<AppointmentList />} />
         </Route>

@@ -1,5 +1,16 @@
 {
   "common": {
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "searchAddress": "Buscar dirección",
+    "addressAdded": "Dirección agregada con éxito!",
+    "addressUpdated": "Dirección actualizada con éxito!",
+    "addressDeleted": "Dirección eliminada con éxito!",
+    "notValidPhone": "El teléfono ingresado no es válido.",
     "passwordRecovery": "Recuperar contraseña",
     "submit": "Enviar",
     "cancel": "Cancelar",
@@ -8,7 +19,7 @@
     "notValidEmail": "El email no es válido.",
     "aboutUs": "Nosotros",
     "actions": "Acciones",
-    "addAddress": "Agregar dirección",
+    "addAddress": "Cargando nueva dirección",
     "addresses": "Direcciones",
     "addService": "Agregar servicio",
     "appointments": "Turnos",
@@ -25,6 +36,7 @@
     "clientes": "Clientes",
     "contact": "Contacto",
     "dashboard": "Dashboard",
+    "editAddress": "Editando dirección",
     "list": "Listado",
     "min": "Min",
     "max": "Máx",
@@ -32,6 +44,9 @@
     "requests": "Solicitudes",
     "services": "Servicios",
     "users": "Usuarios"
+  },
+  "error": {
+    "somethingHappened": "Algo salió mal, por favor intentalo nuevamente."
   },
   "error404": {
     "comeBack": "Volver al inicio",

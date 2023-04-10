@@ -5,10 +5,12 @@ import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.ap
 import { useQuery } from '@tanstack/react-query';
 import { notificationController } from '@app/controllers/notificationController';
 import { Loading } from '../common/Loading';
+import { useTranslation } from 'react-i18next';
 
 const RequireFreshAccount: React.FC<WithChildrenProps> = ({ children }) => {
   const [childrenToRender, setChildrenToRender] = useState(<></>);
   const location = useLocation();
+  const { t } = useTranslation();
   const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
     onSuccess: (data: any) => {
       if (data === 'fresh' || location.pathname === '/welcome/mp-success') {
@@ -17,9 +19,9 @@ const RequireFreshAccount: React.FC<WithChildrenProps> = ({ children }) => {
       }
       setChildrenToRender(<Navigate to="/home" replace />);
     },
-    onError: (error: any) => {
+    onError: () => {
       notificationController.error({
-        message: error.message,
+        message: t('error.somethingHappened'),
       });
     },
   });

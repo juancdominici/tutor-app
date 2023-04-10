@@ -1,7 +1,13 @@
 import React from 'react';
 import { notification } from 'antd';
 import styled from 'styled-components';
-import { CheckCircleFilled, ExclamationCircleFilled, InfoCircleFilled, StopFilled } from '@ant-design/icons';
+import {
+  CheckCircleFilled,
+  ExclamationCircleFilled,
+  InfoCircleFilled,
+  StopFilled,
+  WarningFilled,
+} from '@ant-design/icons';
 import { ArgsProps } from 'antd/lib/notification';
 
 interface IconWrapperProps {
@@ -52,7 +58,7 @@ const openWarningNotification = (config: NotificationProps): void => {
     ...config,
     icon: (
       <IconWrapper $isOnlyTitle={!config.description}>
-        <ExclamationCircleFilled className="warning-icon" />
+        <WarningFilled className="warning-icon" />
       </IconWrapper>
     ),
     message: <div className={`title ${!config.description && `title-only`}`}>{config.message}</div>,

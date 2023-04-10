@@ -43,9 +43,9 @@ export const LoginForm = () => {
   };
 
   const { mutate: logout } = useMutation(logoutAction, {
-    onError: (error: any) => {
+    onError: () => {
       notificationController.error({
-        message: error.message,
+        message: t('error.somethingHappened'),
       });
     },
   });
@@ -53,9 +53,9 @@ export const LoginForm = () => {
     onSuccess: (data: any) => {
       navigate('/home');
     },
-    onError: (error: any) => {
+    onError: () => {
       notificationController.error({
-        message: error.message,
+        message: t('error.somethingHappened'),
       });
     },
   });
@@ -63,9 +63,9 @@ export const LoginForm = () => {
     onSuccess: (data: any) => {
       navigate('/home');
     },
-    onError: (error: any) => {
+    onError: () => {
       notificationController.error({
-        message: error.message,
+        message: t('error.somethingHappened'),
       });
     },
   });
@@ -78,9 +78,9 @@ export const LoginForm = () => {
         navigate('/welcome/user-config');
       }, 3000);
     },
-    onError: (error: any) => {
+    onError: () => {
       notificationController.error({
-        message: error.message,
+        message: t('error.somethingHappened'),
       });
     },
   });
@@ -90,9 +90,9 @@ export const LoginForm = () => {
         message: t('login.passwordRecoverEmailSent'),
       });
     },
-    onError: (error: any) => {
+    onError: () => {
       notificationController.error({
-        message: error.message,
+        message: t('error.somethingHappened'),
       });
     },
   });

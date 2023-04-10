@@ -105,6 +105,7 @@ export default createGlobalStyle`
     .ant-notification-notice-close-x {
       display: flex;
       font-size: 0.9375rem;
+      color: var(--text-light-color);
     }
 
     .notification-without-description {
@@ -117,7 +118,6 @@ export default createGlobalStyle`
     }
     
     .title {
-      font-size: ${FONT_SIZE.xxl};
       height: 3rem;
       margin-left: 1.5rem;
       display: flex;
@@ -126,9 +126,8 @@ export default createGlobalStyle`
 
       &.title-only {
         color: var(--text-main-color);
-        font-size: ${FONT_SIZE.md};
+        font-size: ${FONT_SIZE.xs};
         height: 2rem;
-        line-height: 2rem;
         margin-left: 0.75rem;
         font-weight: ${FONT_WEIGHT.semibold};
       }
@@ -141,37 +140,25 @@ export default createGlobalStyle`
       line-height: 1.375rem;
     }
   
-    &.ant-notification-notice-success {
-      border: 1px solid var(--success-color);
-      background: var(--notification-success-color);
-      
+    &.ant-notification-notice-success {      
       .title {
         color: var(--success-color);
       }
     }
   
-    &.ant-notification-notice-info {
-      border: 1px solid var(--primary-color);
-      background: var(--notification-primary-color);
-  
+    &.ant-notification-notice-info {  
       .title {
-        color: var(--primary-color);
+        color: var(--secondary-color);
       }
     }
   
-    &.ant-notification-notice-warning {
-      border: 1px solid var(--warning-color);
-      background: var(--notification-warning-color);
-  
+    &.ant-notification-notice-warning {  
       .title {
         color: var(--warning-color);
       }
     }
   
-    &.ant-notification-notice-error {
-      border: 1px solid var(--error-color);
-      background: var(--notification-error-color);
-  
+    &.ant-notification-notice-error {  
       .title {
         color: var(--error-color);
       }
@@ -182,7 +169,7 @@ export default createGlobalStyle`
     }
   
     .info-icon {
-      color: var(--primary-color);
+      color: var(--secondary-color);
     }
   
     .warning-icon {

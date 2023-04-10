@@ -35,9 +35,9 @@ const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
         });
         togglePasswordRecoveryModal(false);
       },
-      onError: (error: any) => {
+      onError: () => {
         notificationController.error({
-          message: error.message,
+          message: t('error.somethingHappened'),
         });
       },
     },

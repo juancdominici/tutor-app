@@ -5,10 +5,11 @@ import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.ap
 import { useQuery } from '@tanstack/react-query';
 import { notificationController } from '@app/controllers/notificationController';
 import { Loading } from '../common/Loading';
+import { useTranslation } from 'react-i18next';
 
 const RequireTutorRole: React.FC<WithChildrenProps> = ({ children }) => {
   const [childrenToRender, setChildrenToRender] = useState(<></>);
-
+  const { t } = useTranslation();
   const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
     onSuccess: (data: any) => {
       if (data === 'tutor') {
@@ -17,9 +18,9 @@ const RequireTutorRole: React.FC<WithChildrenProps> = ({ children }) => {
       }
       setChildrenToRender(<Navigate to="/home" replace />);
     },
-    onError: (error: any) => {
+    onError: () => {
       notificationController.error({
-        message: error.message,
+        message: t('error.somethingHappened'),
       });
     },
   });
