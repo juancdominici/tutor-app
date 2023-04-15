@@ -1,5 +1,6 @@
 {
   "common": {
+    "searchInThisArea": "Buscar en esta zona",
     "name": "Nombre",
     "phone": "Teléfono",
     "address": "Dirección",

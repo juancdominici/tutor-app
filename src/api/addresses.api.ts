@@ -1,18 +1,24 @@
 import { checkUserExistance } from './auth.api';
 import supabase from './supabase';
 
-export const getTutorAddressesFiltered = async () =>
-  /* priceFilter: number[],
-  serviceTypeFilter: string[],
-  reviewFilter: number[], */
-  {
-    const { data, error } = await supabase.from('addresses').select('*').neq('tutor_id', null);
+export const getTutorAddressesFiltered = async (payload: any) => {
+  console.log(payload);
+  const { data, error } = await supabase.rpc('get_filtered_tutor_addresses_in_view', {
+    min_lat: payload.minCoords.lat,
+    min_long: payload.minCoords.lng,
+    max_lat: payload.maxCoords.lat,
+    max_long: payload.maxCoords.lng,
+    price_filter_min: payload.priceFilter[0] || null,
+    price_filter_max: payload.priceFilter[1] || null,
+    service_type: payload.serviceTypeFilter?.value || null,
+    review_filter: payload.reviewFilter || null,
+  });
 
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data;
-  };
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
 
 export const getUserAddresses = async () => {
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
