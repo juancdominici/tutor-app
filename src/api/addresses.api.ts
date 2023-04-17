@@ -2,7 +2,6 @@ import { checkUserExistance } from './auth.api';
 import supabase from './supabase';
 
 export const getTutorAddressesFiltered = async (payload: any) => {
-  console.log(payload);
   const { data, error } = await supabase.rpc('get_filtered_tutor_addresses_in_view', {
     min_lat: payload.minCoords.lat,
     min_long: payload.minCoords.lng,
@@ -82,6 +81,15 @@ export const getAddress = async (id: any) => {
 
 export const deleteAddress = async (id: any) => {
   const { data, error } = await supabase.from('addresses').delete().eq('id', id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+export const getTutorAddresses = async (tutorId: any) => {
+  const { data, error } = await supabase.from('addresses').select('*').eq('tutor_id', tutorId).eq('status', true);
 
   if (error) {
     throw new Error(error.message);

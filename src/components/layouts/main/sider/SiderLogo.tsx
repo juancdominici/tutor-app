@@ -14,14 +14,10 @@ interface SiderLogoProps {
 export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSider }) => {
   const theme = useAppSelector((state) => state.theme.theme);
 
-  const [img, setImg] = useState(() => (theme === 'dark' ? logoDark : logo));
   const [username, setUsername] = useState('Tutor');
 
   const { isLoading } = useQuery(['user'], getUserData, {
     onSuccess: (data) => {
-      if (!!data?.userMetadata?.session?.user.user_metadata.avatar_url) {
-        setImg(data?.userMetadata?.session?.user.user_metadata.avatar_url);
-      }
       if (!!data?.userMetadata?.session?.user.user_metadata.full_name) {
         setUsername(data?.userMetadata?.session?.user.user_metadata.full_name);
       }
@@ -41,21 +37,17 @@ export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSi
         <S.SiderLogoDiv>
           <S.SiderLogoLink to="/" style={{ pointerEvents: 'none' }}>
             <img
-              src={img}
-              alt="Tutor"
-              width={48}
-              height={48}
+              src={`https://source.boringavatars.com/beam/120/${username?.split(' ')[0]}%20${
+                username?.split(' ')[1]
+              }?colors=3ECF8E,1A1E22,008640,F8FBFF`}
+              alt="user-avatar"
               referrerPolicy="no-referrer"
               style={{
                 borderRadius: '50%',
-                border: '1px solid #fff',
                 padding: '2px',
-                backgroundColor: '#fff',
-                boxShadow: '0 0 0 1px #fff',
-                pointerEvents: 'none',
-                width: '4em',
-                height: '4em',
-                margin: '10px',
+                boxShadow: '0 0 0 1px #f3f3f333',
+                width: '3em',
+                height: '3em',
               }}
             />
             <S.BrandSpan>{username}</S.BrandSpan>

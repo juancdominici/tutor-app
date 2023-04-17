@@ -76,6 +76,6 @@ export const SiderLogoDiv = styled.div`
 export const BrandSpan = styled.span`
   margin: 0 1rem;
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--white);
 `;

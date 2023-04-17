@@ -219,6 +219,11 @@ export default createGlobalStyle`
     animation: pulse-green 2s infinite;
   }
   
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+    }
+
   @keyframes pulse-green {
     0% {
       transform: scale(0.95);

@@ -26,13 +26,7 @@ export const MercadoPagoSuccess = () => {
 
   useEffect(() => {
     if (code) {
-      setTimeout(() => {
-        mutate(code);
-      }, 3000);
-    } else {
-      setTimeout(() => {
-        navigate('/home', { replace: true });
-      }, 3000);
+      mutate(code);
     }
   }, []);
 

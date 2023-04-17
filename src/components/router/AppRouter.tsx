@@ -19,6 +19,7 @@ import { RequestList } from '@app/pages/appointments/RequestList';
 import { AppointmentList } from '@app/pages/appointments/AppointmentList';
 import RequireTutorRole from './RequireTutorRole';
 import RequireFreshAccount from './RequireFreshAccount';
+import { ProfilePage } from '@app/pages/profile/ProfilePage';
 
 const RequireAuthPage = React.lazy(() => import('@app/components/router/RequireAuth'));
 const RequireAuth = withLoading(RequireAuthPage);
@@ -76,6 +77,7 @@ export const AppRouter: React.FC = () => {
           <Route path="/addresses/edit/:id" element={<AddressForm />} />
           <Route path="/addresses" element={<AddressList />} />
           <Route path="/appointments" element={<AppointmentList />} />
+          <Route path="/profile/:id" element={<ProfilePage />} />
         </Route>
         {/* Region: tutor */}
         {/* REQUIRES ROLE AUTHENTICATION */}

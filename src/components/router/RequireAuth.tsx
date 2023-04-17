@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { WithChildrenProps } from '@app/types/generalTypes';
-import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.api';
 import { Loading } from '../common/Loading';
-import { changeUserPassword as changeUserPasswordAction } from '@app/api/auth.api';
+import {
+  checkUserExistance as checkUserExistanceAction,
+  changeUserPassword as changeUserPasswordAction,
+  checkMPTokenValidity as checkMPTokenValidityAction,
+} from '@app/api/auth.api';
 import supabase from '@app/api/supabase';
 import { notificationController } from '@app/controllers/notificationController';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 import { useTranslation } from 'react-i18next';
 import FormItem from 'antd/es/form/FormItem';
-import { FormInputPassword, SocialButton } from '../layouts/AuthLayout/AuthLayout.styles';
+import { FormInputPassword } from '../layouts/AuthLayout/AuthLayout.styles';
 import { BaseForm } from '../common/forms/BaseForm/BaseForm';
 
 const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
@@ -25,31 +28,31 @@ const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
     });
   }, []);
 
-  const { mutate: changePassword, isLoading: isLoadingChangePassword } = useMutation(
-    ['changePassword'],
-    changeUserPasswordAction,
-    {
-      onSuccess: (data: any) => {
-        notificationController.success({
-          message: t('common.passwordChanged'),
-        });
-        togglePasswordRecoveryModal(false);
-      },
-      onError: () => {
-        notificationController.error({
-          message: t('error.somethingHappened'),
-        });
-      },
+  const { mutate: changePassword } = useMutation(['changePassword'], changeUserPasswordAction, {
+    onSuccess: (data: any) => {
+      notificationController.success({
+        message: t('common.passwordChanged'),
+      });
+      togglePasswordRecoveryModal(false);
     },
-  );
+    onError: () => {
+      notificationController.error({
+        message: t('error.somethingHappened'),
+      });
+    },
+  });
 
   const { data: checkUserExistance, isLoading } = useQuery(['checkUserExistance'], checkUserExistanceAction);
+  const { data: checkMPToken, isLoading: isLoadingCheckMPToken } = useQuery(
+    ['checkMPTokenValidity'],
+    checkMPTokenValidityAction,
+  );
 
   const handleSubmit = (values: any) => {
     changePassword(values.newPassword);
   };
 
-  return isLoading || passwordRecoveryModal ? (
+  return isLoading || isLoadingCheckMPToken || passwordRecoveryModal ? (
     <>
       <Loading />
       <Modal
@@ -92,6 +95,8 @@ const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
         </BaseForm>
       </Modal>
     </>
+  ) : !checkMPToken ? (
+    <Navigate to="/welcome/tutor-config" replace />
   ) : checkUserExistance === 'user' || checkUserExistance === 'tutor' ? (
     <>{children}</>
   ) : checkUserExistance === 'fresh' ? (

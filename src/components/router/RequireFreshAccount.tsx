@@ -13,7 +13,11 @@ const RequireFreshAccount: React.FC<WithChildrenProps> = ({ children }) => {
   const { t } = useTranslation();
   const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
     onSuccess: (data: any) => {
-      if (data === 'fresh' || location.pathname === '/welcome/mp-success') {
+      if (
+        data === 'fresh' ||
+        location.pathname === '/welcome/tutor-config' ||
+        location.pathname === '/welcome/mp-success'
+      ) {
         setChildrenToRender(<>{children}</>);
         return;
       }

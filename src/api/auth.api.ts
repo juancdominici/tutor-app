@@ -59,10 +59,11 @@ export const changeUserPassword = async (payload: any) => {
   return { data };
 };
 
-export const newTutor = async () => {
+export const newTutor = async (payload: any) => {
   const { data } = await supabase.auth.getSession();
   const { error } = await supabase.from('tutors').insert({
     id: data.session?.user?.id,
+    ...payload,
     notifications: false,
     status: true,
   });
@@ -71,10 +72,11 @@ export const newTutor = async () => {
   }
 };
 
-export const newUser = async () => {
+export const newUser = async (payload: any) => {
   const { data } = await supabase.auth.getSession();
   const { error } = await supabase.from('user_profiles').insert({
     id: data.session?.user?.id,
+    ...payload,
     notifications: false,
     status: true,
   });
@@ -102,6 +104,29 @@ export const checkUserExistance = async () => {
     if (tutorResult.data && tutorResult.data[0]) return 'tutor';
 
     return 'fresh';
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const checkMPTokenValidity = async () => {
+  try {
+    const { data } = await supabase.auth.getSession();
+    const { data: tutorData } = await supabase.from('tutors').select('*').eq('id', data.session?.user?.id).limit(1);
+    if (tutorData && tutorData[0]) {
+      return !!tutorData[0].mp_refresh_token;
+    }
+    return false;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const getTutorProfileData = async (userId: any): Promise<any> => {
+  try {
+    const { data: tutorProfileData } = await supabase.rpc('get_tutor_profile_data', { user_id: userId });
+
+    return tutorProfileData[0] ?? null;
   } catch (error: any) {
     throw new Error(error.message);
   }

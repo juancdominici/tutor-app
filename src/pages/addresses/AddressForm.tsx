@@ -160,7 +160,7 @@ export const AddressForm = () => {
 
   return (
     <>
-      <PageTitle>{id ? t('common.editAddress') : t('common.addAddress')}</PageTitle>
+      <PageTitle>{id ? t('common.editingAddress') : t('common.addingAddress')}</PageTitle>
       <Row align="middle" justify="space-between">
         <Button type="text" size="large" onClick={goBack}>
           <ArrowLeftOutlined />
@@ -173,7 +173,7 @@ export const AddressForm = () => {
             color: 'var(--primary-color)',
           }}
         >
-          {id ? t('common.editAddress') : t('common.addAddress')}
+          {id ? t('common.editingAddress') : t('common.addingAddress')}
         </h1>
       </Row>
       <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>

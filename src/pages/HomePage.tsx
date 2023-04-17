@@ -1,15 +1,16 @@
-import Icon from '@ant-design/icons/lib/components/Icon';
 import { getTutorAddressesFiltered as getTutorAddressesFilteredAction } from '@app/api/addresses.api';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useAppSelector } from '@app/hooks/reduxHooks';
-import useDebounce from '@app/hooks/useDebounce';
 import { setMinCoords, setMaxCoords } from '@app/store/slices/filtersSlice';
-import { GoogleMap, Marker, OverlayView } from '@react-google-maps/api';
+import { GoogleMap, OverlayView } from '@react-google-maps/api';
 import { useMutation } from '@tanstack/react-query';
-import { Col, Row } from 'antd';
+import { Col, Popover, Rate, Row } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import logo from 'assets/logo.png';
+import logoDark from 'assets/logo-dark.png';
+import { useNavigate } from 'react-router-dom';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -21,7 +22,8 @@ export const HomePage = () => {
   const theme = useAppSelector((state) => state.theme.theme);
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
-
+  const [img, setImg] = useState(() => (theme === 'dark' ? logoDark : logo));
+  const navigate = useNavigate();
   const setOptions = () => {
     return {
       mapTypeControl: false,
@@ -180,6 +182,10 @@ export const HomePage = () => {
     }
   }, [currentPosition, priceFilter, serviceTypeFilter, reviewFilter]);
 
+  const openUserProfile = (id: string) => {
+    navigate(`/profile/${id}`);
+  };
+
   return (
     <>
       <PageTitle>{t('common.home')}</PageTitle>
@@ -205,23 +211,106 @@ export const HomePage = () => {
               </OverlayView>
               {addressList?.map((address: any) => (
                 <OverlayView
-                  key={address.id}
+                  key={address.address_id}
                   position={{ lat: address.latitude, lng: address.longitude }}
                   mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                 >
-                  <img
-                    src={require('../assets/images/marker.png').default}
-                    alt="map-marker"
-                    style={{
-                      width: '30px',
-                      height: '30px',
-                      cursor: 'pointer',
-                      position: 'absolute',
-                      bottom: '0',
-                      left: '0',
-                      transform: 'translateX(-50%)',
-                    }}
-                  />
+                  <Popover
+                    content={
+                      <div onClick={() => openUserProfile(address.tutor_id)}>
+                        <Row align="middle" justify="space-around">
+                          <Col span={8}>
+                            <img
+                              src={img}
+                              alt="Tutor"
+                              width={48}
+                              height={48}
+                              referrerPolicy="no-referrer"
+                              style={{
+                                borderRadius: '50%',
+                                border: '1px solid #fff',
+                                padding: '2px',
+                                backgroundColor: '#fff',
+                                boxShadow: '0 0 0 1px #fff',
+                                pointerEvents: 'none',
+                                width: '3em',
+                                height: '3em',
+                              }}
+                            />
+                          </Col>
+                          <Col span={16}>
+                            <div>
+                              <span
+                                style={{
+                                  fontSize: '0.7em',
+                                }}
+                              >
+                                {address.tutor_name}
+                              </span>
+                            </div>
+                            <Rate
+                              style={{
+                                fontSize: '1.2em',
+                                display: 'flex',
+                                margin: '0 0.5em 0 0',
+                              }}
+                              value={address.avg_score}
+                              disabled
+                            />
+                            <div>
+                              <span
+                                style={{
+                                  fontSize: '0.7em',
+                                }}
+                              >
+                                {address.review_count === 1
+                                  ? t('common.review', {
+                                      count: address.review_count,
+                                    })
+                                  : t('common.reviews', {
+                                      count: address.review_count,
+                                    })}
+                              </span>
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row align="middle" justify="space-around">
+                          <img
+                            src={require('../assets/images/marker.png').default}
+                            alt="map-marker"
+                            style={{
+                              width: '20px',
+                              height: '20px',
+                              marginRight: '10px',
+                              cursor: 'pointer',
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: '0.7em',
+                            }}
+                          >
+                            {address.street} {address.number} - {address.province}
+                          </span>
+                        </Row>
+                      </div>
+                    }
+                    trigger="click"
+                  >
+                    <img
+                      src={require('../assets/images/marker.png').default}
+                      alt="map-marker"
+                      style={{
+                        width: '30px',
+                        height: '30px',
+                        cursor: 'pointer',
+                        position: 'absolute',
+                        bottom: '0',
+                        left: '0',
+                        transform: 'translateX(-50%)',
+                      }}
+                    />
+                  </Popover>
                 </OverlayView>
               ))}
             </GoogleMap>
