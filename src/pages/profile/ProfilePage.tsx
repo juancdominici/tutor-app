@@ -8,12 +8,14 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { Button, Col, Rate, Row, Select, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export const ProfilePage = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { state }: any = useLocation();
+  const [address, setAddress] = useState(state?.address?.address_id);
 
   const [slide, setSlide] = useState('1');
 
@@ -103,6 +105,7 @@ export const ProfilePage = () => {
                   margin: '0 0.5em 0 0',
                 }}
                 value={tutorProfileData?.avg_score}
+                allowHalf
                 disabled
               />
               <div>
@@ -130,33 +133,32 @@ export const ProfilePage = () => {
             </Col>
             <Col span={24} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Select
-                style={{ width: '90%', margin: '1em 0' }}
+                style={{ width: '90%', margin: '1em 0', fontSize: '0.8em' }}
                 size="small"
+                value={address}
                 options={tutorAddressesQuery?.data?.map((address) => ({
                   value: address.id,
                   label: `${address.street} ${address.number}, ${address.province} - ${address.country}, ${address.postcode}`,
                 }))}
-                onChange={(value) => console.log(value)}
+                onChange={(value) => setAddress(value)}
               />
             </Col>
           </>
         ) : (
           <Col span={14}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <p style={{ fontSize: '0.8em', lineHeight: '0.9em' }}>{tutorProfileData?.bio}</p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <p style={{ fontSize: '0.8em', lineHeight: '0.9em' }}>{tutorProfileData?.description}</p>
+            </div>
             <Button
-              style={{ position: 'absolute', right: 0, bottom: 0, transform: 'translateY(-55%)' }}
+              style={{ position: 'absolute', right: 0, bottom: 0, transform: 'translateY(-15%)' }}
               type="link"
               onClick={() => setSlide('1')}
             >
               <DoubleLeftOutlined />
             </Button>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <p style={{ fontSize: '0.8em', lineHeight: '0.9em', fontWeight: 'bold' }}>{t('common.bio')}:</p>
-              <p style={{ fontSize: '0.8em', lineHeight: '0.9em' }}>{tutorProfileData?.bio}</p>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <p style={{ fontSize: '0.8em', lineHeight: '0.9em', fontWeight: 'bold' }}>{t('common.description')}:</p>
-              <p style={{ fontSize: '0.8em', lineHeight: '0.9em' }}>{tutorProfileData?.description}</p>
-            </div>
           </Col>
         )}
         <Col span={24}>
@@ -164,7 +166,7 @@ export const ProfilePage = () => {
             <Tabs.TabPane tab={t('common.reviewsTitle')} key="1">
               <div></div>
             </Tabs.TabPane>
-            <Tabs.TabPane tab={t('common.reviewsTitle')} key="2">
+            <Tabs.TabPane tab={t('common.questions')} key="2">
               <div></div>
             </Tabs.TabPane>
             <Tabs.TabPane tab={t('common.services')} key="3">

@@ -182,8 +182,12 @@ export const HomePage = () => {
     }
   }, [currentPosition, priceFilter, serviceTypeFilter, reviewFilter]);
 
-  const openUserProfile = (id: string) => {
-    navigate(`/profile/${id}`);
+  const openUserProfile = (address: any) => {
+    navigate(`/profile/${address.tutor_id}`, {
+      state: {
+        address,
+      },
+    });
   };
 
   return (
@@ -217,7 +221,7 @@ export const HomePage = () => {
                 >
                   <Popover
                     content={
-                      <div onClick={() => openUserProfile(address.tutor_id)}>
+                      <div onClick={() => openUserProfile(address)}>
                         <Row align="middle" justify="space-around">
                           <Col span={8}>
                             <img
