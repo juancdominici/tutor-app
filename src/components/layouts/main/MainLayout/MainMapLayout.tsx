@@ -31,15 +31,10 @@ const MainMapLayout: React.FC = () => {
             <Outlet />
           </div>
         </MainMapContent>
-        <div
-          style={{
-            height: '12vh',
-          }}
-        >
-          <MainHeader>
-            <Header toggleFilterSider={toggleFilterSider} toggleSider={toggleSider} isSiderOpened={false} />
-          </MainHeader>
-        </div>
+
+        <MainHeader>
+          <Header toggleFilterSider={toggleFilterSider} toggleSider={toggleSider} isSiderOpened={false} />
+        </MainHeader>
       </S.LayoutMain>
     </S.LayoutMaster>
   );

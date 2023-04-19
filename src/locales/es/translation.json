@@ -1,5 +1,8 @@
 {
   "common": {
+    "auto": "Automático",
+    "readMore": "Leer más",
+    "perUnit": "p/u",
     "searchInThisArea": "Buscar en esta zona",
     "name": "Nombre",
     "bio": "Bio",
@@ -57,7 +60,8 @@
     "review": "{{count}} reseña",
     "reviews": "{{count}} reseñas",
     "services": "Servicios",
-    "users": "Usuarios"
+    "users": "Usuarios",
+    "book": "Solicitar"
   },
   "error": {
     "somethingHappened": "Algo salió mal, por favor intentalo nuevamente."

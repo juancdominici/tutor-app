@@ -5,7 +5,7 @@ import { getTutorQuestions, getTutorReviews, getTutorServices } from '@app/api/p
 import { Loading } from '@app/components/common/Loading';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { Button, Col, Rate, Row, Select, Tabs } from 'antd';
+import { Button, Card, Col, Rate, Row, Tabs, Typography } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -15,8 +15,8 @@ export const ProfilePage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { state }: any = useLocation();
-  const [address, setAddress] = useState(state?.address?.address_id);
-
+  const { Paragraph } = Typography;
+  const [service, setService] = useState<any>(null);
   const [slide, setSlide] = useState('1');
 
   const { data: tutorProfileData, isLoading } = useQuery(['userData', id], () => getTutorProfileData(id), {
@@ -132,7 +132,7 @@ export const ProfilePage = () => {
               </Button>
             </Col>
             <Col span={24} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Select
+              {/* <Select
                 style={{ width: '90%', margin: '1em 0', fontSize: '0.8em' }}
                 size="small"
                 value={address}
@@ -141,7 +141,27 @@ export const ProfilePage = () => {
                   label: `${address.street} ${address.number}, ${address.province} - ${address.country}, ${address.postcode}`,
                 }))}
                 onChange={(value) => setAddress(value)}
-              />
+              /> */}
+              <Row align="middle" justify="space-around" style={{ margin: '1em 0' }}>
+                <img
+                  src={require('../../assets/images/marker.png').default}
+                  alt="map-marker"
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    marginRight: '10px',
+                    cursor: 'pointer',
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: '0.8em',
+                    textAlign: 'center',
+                  }}
+                >
+                  {state.address.street} {state.address.number} - {state.address.province}
+                </span>
+              </Row>
             </Col>
           </>
         ) : (
@@ -161,6 +181,8 @@ export const ProfilePage = () => {
             </Button>
           </Col>
         )}
+      </Row>
+      <Row align="middle" justify="space-around">
         <Col span={24}>
           <Tabs defaultActiveKey="1" centered>
             <Tabs.TabPane tab={t('common.reviewsTitle')} key="1">
@@ -170,7 +192,92 @@ export const ProfilePage = () => {
               <div></div>
             </Tabs.TabPane>
             <Tabs.TabPane tab={t('common.services')} key="3">
-              <div></div>
+              {tutorServicesQuery?.data?.map((service: any) => (
+                <Card key={service.id} style={{ margin: '1em' }}>
+                  <Row align="middle" justify="space-between">
+                    <Col span={24}>
+                      <span>{service.name}</span>
+                    </Col>
+                    <Col span={24}>
+                      <span
+                        style={{
+                          fontSize: '0.8em',
+                          color: 'var(--primary-color)',
+                        }}
+                      >
+                        {t(`common.${service.type}`)}
+                      </span>
+                    </Col>
+                    <Col span={12}>
+                      <Rate
+                        style={{
+                          fontSize: '1.2em',
+                          display: 'flex',
+                          margin: '0 0.5em 0.5em 0',
+                        }}
+                        value={service?.avg_score}
+                        allowHalf
+                        disabled
+                      />
+                    </Col>
+                    <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
+                      <span
+                        style={{
+                          fontSize: '0.8em',
+                          marginRight: '0.5em',
+                        }}
+                      >
+                        {service?.review_count === 1
+                          ? t('common.review', {
+                              count: service?.review_count,
+                            })
+                          : t('common.reviews', {
+                              count: service?.review_count,
+                            })}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row align="middle" justify="start">
+                    <Col span={24}>
+                      <Paragraph
+                        ellipsis={{
+                          rows: 4,
+                          expandable: true,
+                          symbol: t('common.readMore'),
+                        }}
+                        style={{
+                          fontSize: '0.8em',
+                        }}
+                      >
+                        {service?.description}
+                      </Paragraph>
+                    </Col>
+                  </Row>
+                  <Row align="middle" justify="space-between">
+                    <Col span={12}>
+                      <span
+                        style={{
+                          fontSize: '1.2em',
+                        }}
+                      >
+                        ${service?.price} {service.is_unit_price ? t('common.perUnit') : ''}
+                      </span>
+                    </Col>
+                    <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
+                      <Button
+                        type="link"
+                        onClick={() => setService(service)}
+                        style={{
+                          borderRadius: '10px',
+                          backgroundColor: 'rgba(var(--primary-rgb-color), 0.1)',
+                        }}
+                      >
+                        {t('common.book')}
+                      </Button>
+                    </Col>
+                  </Row>
+                </Card>
+              ))}
             </Tabs.TabPane>
           </Tabs>
         </Col>
