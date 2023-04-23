@@ -31,7 +31,6 @@ export const UserConfig = () => {
   const [fields, setFields] = useState<FieldData[]>([
     { name: 'name', value: '' },
     { name: 'bio', value: '' },
-    { name: 'description', value: '' },
     { name: 'birthday', value: Dates.getDate(1576789200000) },
   ]);
 
@@ -80,8 +79,7 @@ export const UserConfig = () => {
     createNewTutor({
       name: fields[0].value,
       bio: fields[1].value,
-      description: fields[2].value,
-      birthdate: fields[3].value,
+      birthdate: fields[2].value,
       joindate: new Date().toISOString(),
     });
   };
@@ -90,8 +88,7 @@ export const UserConfig = () => {
     createNewUser({
       name: fields[0].value,
       bio: fields[1].value,
-      description: fields[2].value,
-      birthdate: fields[3].value,
+      birthdate: fields[2].value,
       joindate: new Date().toISOString(),
     });
   };
@@ -111,16 +108,6 @@ export const UserConfig = () => {
       <BaseForm.Item
         name="bio"
         label={t('prompts.bio')}
-        rules={[{ required: true, message: t('common.requiredField') }]}
-        style={{
-          width: '100%',
-        }}
-      >
-        <TextArea size="large" style={{ fontSize: '1em', padding: '0.5em 1em', height: '10em' }} />
-      </BaseForm.Item>
-      <BaseForm.Item
-        name="description"
-        label={t('prompts.description')}
         rules={[{ required: true, message: t('common.requiredField') }]}
         style={{
           width: '100%',

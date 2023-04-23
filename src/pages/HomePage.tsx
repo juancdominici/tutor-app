@@ -1,16 +1,16 @@
 import { getTutorAddressesFiltered as getTutorAddressesFilteredAction } from '@app/api/addresses.api';
+import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.api';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { setMinCoords, setMaxCoords } from '@app/store/slices/filtersSlice';
 import { GoogleMap, OverlayView } from '@react-google-maps/api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Col, Popover, Rate, Row } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import logo from 'assets/logo.png';
-import logoDark from 'assets/logo-dark.png';
 import { useNavigate } from 'react-router-dom';
+import { DashboardPage } from './DashboardPage';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -22,7 +22,6 @@ export const HomePage = () => {
   const theme = useAppSelector((state) => state.theme.theme);
   const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
-  const [img, setImg] = useState(() => (theme === 'dark' ? logoDark : logo));
   const navigate = useNavigate();
   const setOptions = () => {
     return {
@@ -190,13 +189,15 @@ export const HomePage = () => {
     });
   };
 
+  const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction);
+
   return (
     <>
       <PageTitle>{t('common.home')}</PageTitle>
 
       <Row style={{ height: '88vh', width: '100%' }}>
         <Col style={{ height: '100%', width: '100%' }}>
-          {currentPosition && (
+          {currentPosition && checkUserExistance === 'user' && (
             <GoogleMap
               center={currentPosition}
               zoom={15}
@@ -225,17 +226,15 @@ export const HomePage = () => {
                         <Row align="middle" justify="space-around">
                           <Col span={8}>
                             <img
-                              src={img}
-                              alt="Tutor"
-                              width={48}
-                              height={48}
+                              src={`https://source.boringavatars.com/beam/120/${address.tutor_name?.split(' ')[0]}%20${
+                                address.tutor_name?.split(' ')[1]
+                              }?colors=3ECF8E,1A1E22,008640,F8FBFF`}
+                              alt="user-avatar"
                               referrerPolicy="no-referrer"
                               style={{
                                 borderRadius: '50%',
-                                border: '1px solid #fff',
                                 padding: '2px',
-                                backgroundColor: '#fff',
-                                boxShadow: '0 0 0 1px #fff',
+                                boxShadow: '0 0 0 1px #f3f3f333',
                                 pointerEvents: 'none',
                                 width: '3em',
                                 height: '3em',
@@ -319,6 +318,7 @@ export const HomePage = () => {
               ))}
             </GoogleMap>
           )}
+          {checkUserExistance === 'tutor' && <DashboardPage />}
         </Col>
       </Row>
     </>

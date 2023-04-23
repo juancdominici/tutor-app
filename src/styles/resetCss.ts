@@ -7,9 +7,9 @@ export const resetCss = css`
     padding: 0;
   }
 
-  *:focus {
+  /* *:focus {
     border: 1px dashed var(--secondary-color) !important;
-  }
+  } */
   ::-webkit-scrollbar {
     width: 1rem;
   }

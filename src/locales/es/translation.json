@@ -4,6 +4,13 @@
     "readMore": "Leer más",
     "perUnit": "p/u",
     "searchInThisArea": "Buscar en esta zona",
+    "answer": "Responder",
+    "report": "Reportar",
+    "tutorAnswered": "Tutor respondió:",
+    "noAnswerYet": "Sin respuesta aún.",
+    "answerQuestion": "Responder pregunta",
+    "questionAnswered": "Pregunta respondida!",
+    "questionReported": "Pregunta reportada!\nGracias por ayudarnos a mejorar.",
     "name": "Nombre",
     "bio": "Bio",
     "description": "Descripción",
@@ -117,7 +124,8 @@
     "name": "¿Cómo te llamas?",
     "bio": "Contanos un poco sobre vos",
     "description": "Contanos un poco sobre tu servicio",
-    "birthday": "¿Cuándo es tu cumpleaños?"
+    "birthday": "¿Tu fecha de nacimiento?",
+    "askQuestion": "¿Qué necesitás saber?"
   },
   "table": {
     "filterTitle": "Filtrar menú",

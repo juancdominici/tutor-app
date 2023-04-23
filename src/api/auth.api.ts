@@ -6,6 +6,11 @@ export interface LoginRequest {
   password: string;
 }
 
+export const getSessionData = async () => {
+  const { data } = await supabase.auth.getSession();
+  return data;
+};
+
 export const login = async (loginPayload: LoginRequest) => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: loginPayload.usuario,

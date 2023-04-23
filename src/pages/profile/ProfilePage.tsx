@@ -1,11 +1,31 @@
-import { ArrowLeftOutlined, DoubleLeftOutlined, DoubleRightOutlined, ShareAltOutlined } from '@ant-design/icons';
+import {
+  ArrowLeftOutlined,
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
+  FormOutlined,
+  InfoCircleOutlined,
+  MoreOutlined,
+  SendOutlined,
+  ShareAltOutlined,
+} from '@ant-design/icons';
 import { getTutorAddresses } from '@app/api/addresses.api';
-import { getTutorProfileData } from '@app/api/auth.api';
-import { getTutorQuestions, getTutorReviews, getTutorServices } from '@app/api/profiles.api';
+import { checkUserExistance as checkUserExistanceAction, getSessionData, getTutorProfileData } from '@app/api/auth.api';
+import {
+  addTutorQuestion as addTutorQuestionAction,
+  answerQuestion as answerQuestionAction,
+  reportQuestion as reportQuestionAction,
+  getTutorQuestions,
+  getTutorReviews,
+  getTutorServices,
+} from '@app/api/profiles.api';
 import { Loading } from '@app/components/common/Loading';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { Button, Card, Col, Rate, Row, Tabs, Typography } from 'antd';
+import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
+import { TextArea } from '@app/components/common/inputs/Input/Input';
+import { notificationController } from '@app/controllers/notificationController';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Card, Col, Dropdown, Input, Menu, Modal, Rate, Row, Tabs, Typography } from 'antd';
+import FormItem from 'antd/es/form/FormItem';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -18,6 +38,11 @@ export const ProfilePage = () => {
   const { Paragraph } = Typography;
   const [service, setService] = useState<any>(null);
   const [slide, setSlide] = useState('1');
+  const [newQuestion, setNewQuestion] = useState('');
+  const [answerQuestionModal, toggleAnswerQuestionModal] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState<any>(null);
+  const queryClient = useQueryClient();
+  const [answerQuestionForm] = BaseForm.useForm();
 
   const { data: tutorProfileData, isLoading } = useQuery(['userData', id], () => getTutorProfileData(id), {
     enabled: !!id,
@@ -28,38 +53,135 @@ export const ProfilePage = () => {
     },
   });
 
-  const [tutorAddressesQuery, tutorReviewsQuery, tutorQuestionsQuery, tutorServicesQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ['tutorAddresses', id],
-        queryFn: () => getTutorAddresses(id),
-        enabled: !!id,
-      },
-      {
-        queryKey: ['tutorReviews', id],
-        queryFn: () => getTutorReviews(id),
-        enabled: !!id,
-      },
-      {
-        queryKey: ['tutorQuestions', id],
-        queryFn: () => getTutorQuestions(id),
-        enabled: !!id,
-      },
-      {
-        queryKey: ['tutorServices', id],
-        queryFn: () => getTutorServices(id),
-        enabled: !!id,
-      },
-    ],
+  const { data: sessionData, isLoading: isLoadingSessionData } = useQuery(['sessionData'], getSessionData);
+
+  const [userExistanceQuery, tutorAddressesQuery, tutorReviewsQuery, tutorQuestionsQuery, tutorServicesQuery] =
+    useQueries({
+      queries: [
+        {
+          queryKey: ['checkUserExistance'],
+          queryFn: checkUserExistanceAction,
+        },
+        {
+          queryKey: ['tutorAddresses', id],
+          queryFn: () => getTutorAddresses(id),
+          enabled: !!id,
+        },
+        {
+          queryKey: ['tutorReviews', id],
+          queryFn: () => getTutorReviews(id),
+          enabled: !!id,
+        },
+        {
+          queryKey: ['tutorQuestions', id],
+          queryFn: () => getTutorQuestions(id),
+          enabled: !!id,
+        },
+        {
+          queryKey: ['tutorServices', id],
+          queryFn: () => getTutorServices(id),
+          enabled: !!id,
+        },
+      ],
+    });
+
+  const { mutate: addTutorQuestion, isLoading: isAddingTutorQuestion } = useMutation(addTutorQuestionAction, {
+    onSuccess: () => {
+      setNewQuestion('');
+      queryClient.invalidateQueries(['tutorQuestions', id]);
+    },
   });
+
+  const { mutate: answerQuestion, isLoading: isAnsweringQuestion } = useMutation(answerQuestionAction, {
+    onSuccess: () => {
+      toggleAnswerQuestionModal(false);
+      answerQuestionForm.resetFields();
+      setSelectedQuestion(null);
+      notificationController.success({
+        message: t('common.questionAnswered'),
+      });
+      queryClient.invalidateQueries(['tutorQuestions', id]);
+    },
+  });
+
+  const { mutate: reportQuestion } = useMutation(reportQuestionAction, {
+    onSuccess: () => {
+      notificationController.success({
+        message: t('common.questionReported'),
+      });
+      queryClient.invalidateQueries(['tutorQuestions', id]);
+    },
+  });
+
+  const handleNewQuestion = () => {
+    addTutorQuestion({
+      tutor_id: id,
+      question: newQuestion,
+    });
+  };
+
+  const handleSubmitAnswer = (values: any) => {
+    answerQuestion({
+      id: selectedQuestion,
+      a: values.answer,
+    });
+  };
+
+  const handleReportQuestion = (question: any) => {
+    reportQuestion({
+      id: question.id,
+      report_count: question.report_count + 1,
+    });
+  };
 
   const goBack = () => {
     navigate('/home');
   };
 
-  if (isLoading) {
+  const share = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `Tutor - ${tutorProfileData?.name}`,
+          text: `Mira el perfil de ${tutorProfileData?.name} en Tutor!`,
+          url: window.location.href,
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else {
+      console.log('Share not supported on this browser, do it the old way.');
+    }
+  };
+
+  if (isLoading || isLoadingSessionData) {
     return <Loading />;
   }
+
+  const menu = (question: any) => (
+    <Menu>
+      {userExistanceQuery?.data === 'tutor' && question.tutor_id === sessionData?.session?.user.id && !question.a && (
+        <Menu.Item
+          icon={<FormOutlined />}
+          style={{ fontSize: '0.8em' }}
+          onClick={() => {
+            setSelectedQuestion(question.id);
+            toggleAnswerQuestionModal(true);
+          }}
+        >
+          {t('common.answer')}
+        </Menu.Item>
+      )}
+
+      <Menu.Item
+        danger
+        icon={<InfoCircleOutlined />}
+        style={{ fontSize: '0.8em' }}
+        onClick={() => handleReportQuestion(question)}
+      >
+        {t('common.report')}
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <>
@@ -69,7 +191,7 @@ export const ProfilePage = () => {
           <ArrowLeftOutlined style={{ transform: 'scale(1.2)' }} />
         </Button>
 
-        <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
+        <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }} onClick={share}>
           <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
         </Button>
       </Row>
@@ -132,45 +254,34 @@ export const ProfilePage = () => {
               </Button>
             </Col>
             <Col span={24} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              {/* <Select
-                style={{ width: '90%', margin: '1em 0', fontSize: '0.8em' }}
-                size="small"
-                value={address}
-                options={tutorAddressesQuery?.data?.map((address) => ({
-                  value: address.id,
-                  label: `${address.street} ${address.number}, ${address.province} - ${address.country}, ${address.postcode}`,
-                }))}
-                onChange={(value) => setAddress(value)}
-              /> */}
-              <Row align="middle" justify="space-around" style={{ margin: '1em 0' }}>
-                <img
-                  src={require('../../assets/images/marker.png').default}
-                  alt="map-marker"
-                  style={{
-                    width: '20px',
-                    height: '20px',
-                    marginRight: '10px',
-                    cursor: 'pointer',
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: '0.8em',
-                    textAlign: 'center',
-                  }}
-                >
-                  {state.address.street} {state.address.number} - {state.address.province}
-                </span>
-              </Row>
+              {state?.address && (
+                <Row align="middle" justify="space-around" style={{ margin: '1em 0' }}>
+                  <img
+                    src={require('../../assets/images/marker.png').default}
+                    alt="map-marker"
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      marginRight: '10px',
+                      cursor: 'pointer',
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: '0.8em',
+                      textAlign: 'center',
+                    }}
+                  >
+                    {state.address.street} {state.address.number} - {state.address.province}
+                  </span>
+                </Row>
+              )}
             </Col>
           </>
         ) : (
           <Col span={14}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <p style={{ fontSize: '0.8em', lineHeight: '0.9em' }}>{tutorProfileData?.bio}</p>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <p style={{ fontSize: '0.8em', lineHeight: '0.9em' }}>{tutorProfileData?.description}</p>
             </div>
             <Button
               style={{ position: 'absolute', right: 0, bottom: 0, transform: 'translateY(-15%)' }}
@@ -189,7 +300,147 @@ export const ProfilePage = () => {
               <div></div>
             </Tabs.TabPane>
             <Tabs.TabPane tab={t('common.questions')} key="2">
-              <div></div>
+              {tutorQuestionsQuery?.data?.map((question: any) => (
+                <Card key={question.id} style={{ margin: '1em', marginBottom: '5em' }}>
+                  <Row justify="space-between">
+                    <Col span={6}>
+                      <img
+                        src={`https://source.boringavatars.com/beam/120/${
+                          question.user_profiles.name?.split(' ')[0]
+                        }%20${question.user_profiles.name?.split(' ')[1]}?colors=3ECF8E,1A1E22,008640,F8FBFF`}
+                        alt="user-avatar"
+                        referrerPolicy="no-referrer"
+                        style={{
+                          borderRadius: '50%',
+                          padding: '2px',
+                          boxShadow: '0 0 0 1px #f3f3f333',
+                          pointerEvents: 'none',
+                          width: '3em',
+                          height: '3em',
+                          marginTop: '1em',
+                        }}
+                      />
+                    </Col>
+                    <Col span={18}>
+                      <Row justify="space-between">
+                        <Col
+                          span={24}
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: '0.8em',
+                              color: 'var(--primary-color)',
+                            }}
+                          >
+                            {question.user_profiles.name}
+                          </span>
+                          <Dropdown overlay={menu(question)} placement="bottomRight" arrow>
+                            <Button type="text" icon={<MoreOutlined />} />
+                          </Dropdown>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={24}>
+                          <span
+                            style={{
+                              fontSize: '0.8em',
+                            }}
+                          >
+                            {question.q}
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+
+                    <Col
+                      span={24}
+                      style={{
+                        marginTop: '0.5em',
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: '0.8em',
+                          color: 'var(--primary-color)',
+                        }}
+                      >
+                        {question?.a ? t('common.tutorAnswered') : t('common.noAnswerYet')}
+                      </span>
+                      <Paragraph
+                        ellipsis={{
+                          rows: 4,
+                          expandable: true,
+                          symbol: t('common.readMore'),
+                        }}
+                        style={{
+                          fontSize: '0.8em',
+                        }}
+                      >
+                        {question?.a}
+                      </Paragraph>
+                    </Col>
+                  </Row>
+                </Card>
+              ))}
+              {userExistanceQuery?.data === 'user' && (
+                <Input.Group
+                  compact
+                  style={{
+                    position: 'fixed',
+                    bottom: 100,
+                    left: '50%',
+                    transform: 'translate(-50%, 0)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Input
+                    style={{ width: '75%', maxWidth: '300px' }}
+                    placeholder={t('prompts.askQuestion')}
+                    value={newQuestion}
+                    onChange={(e: any) => setNewQuestion(e.target.value)}
+                  />
+                  <Button
+                    icon={isAddingTutorQuestion ? <Loading /> : <SendOutlined />}
+                    onClick={() => handleNewQuestion()}
+                    disabled={isAddingTutorQuestion}
+                  />
+                </Input.Group>
+              )}
+              <Modal
+                title={t('common.answerQuestion')}
+                visible={answerQuestionModal}
+                okText={t('common.submit')}
+                cancelText={t('common.cancel')}
+                onCancel={() => toggleAnswerQuestionModal(false)}
+                onOk={() => {
+                  answerQuestionForm
+                    .validateFields()
+                    .then((values) => {
+                      handleSubmitAnswer(values);
+                    })
+                    .catch((info) => {
+                      console.log('Validate Failed:', info);
+                    });
+                }}
+                okButtonProps={{ loading: isAnsweringQuestion }}
+              >
+                <BaseForm
+                  form={answerQuestionForm}
+                  layout="vertical"
+                  onFinish={handleSubmitAnswer}
+                  requiredMark="optional"
+                >
+                  <FormItem name="answer" required rules={[{ required: true, message: t('common.requiredField') }]}>
+                    <TextArea size="large" style={{ fontSize: '1em', padding: '0.5em 1em', height: '10em' }} />
+                  </FormItem>
+                </BaseForm>
+              </Modal>
             </Tabs.TabPane>
             <Tabs.TabPane tab={t('common.services')} key="3">
               {tutorServicesQuery?.data?.map((service: any) => (

@@ -12,11 +12,9 @@ interface SiderLogoProps {
   toggleSider: () => void;
 }
 export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSider }) => {
-  const theme = useAppSelector((state) => state.theme.theme);
-
   const [username, setUsername] = useState('Tutor');
 
-  const { isLoading } = useQuery(['user'], getUserData, {
+  const { data: userData, isLoading } = useQuery(['user'], getUserData, {
     onSuccess: (data) => {
       if (!!data?.userMetadata?.session?.user.user_metadata.full_name) {
         setUsername(data?.userMetadata?.session?.user.user_metadata.full_name);
@@ -35,7 +33,7 @@ export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSi
         </>
       ) : (
         <S.SiderLogoDiv>
-          <S.SiderLogoLink to="/" style={{ pointerEvents: 'none' }}>
+          <S.SiderLogoLink to={`/profile/${userData?.userData?.id}`}>
             <img
               src={`https://source.boringavatars.com/beam/120/${username?.split(' ')[0]}%20${
                 username?.split(' ')[1]
