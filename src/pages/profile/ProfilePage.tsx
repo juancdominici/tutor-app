@@ -493,7 +493,7 @@ export const ProfilePage = () => {
                           color: 'var(--primary-color)',
                         }}
                       >
-                        {t(`common.${service.type}`)}
+                        {t(`constants.service_types.${service.type}`)} - {t(`constants.location.${service.location}`)}
                       </span>
                     </Col>
                     <Col span={12}>
