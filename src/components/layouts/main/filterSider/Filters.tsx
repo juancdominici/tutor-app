@@ -84,7 +84,7 @@ export const Filters = ({ toggleSider }: any) => {
           onChange={(value) => dispatch(setServiceTypeFilter(value))}
           options={[
             { value: '', label: t('common.serviceType'), disabled: true },
-            ...SERVICE_TYPE.map((type) => ({ value: type, label: t(`common.${type}`) })),
+            ...SERVICE_TYPE.map((type) => ({ value: type, label: t(`constants.service_types.${type}`) })),
           ]}
         />
       </Col>

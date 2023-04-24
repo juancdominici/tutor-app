@@ -23,6 +23,7 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { TextArea } from '@app/components/common/inputs/Input/Input';
 import { notificationController } from '@app/controllers/notificationController';
+import { useLanguage } from '@app/hooks/useLanguage';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button, Card, Col, Dropdown, Input, Menu, Modal, Rate, Row, Tabs, Typography } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
@@ -31,6 +32,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export const ProfilePage = () => {
+  const { language } = useLanguage();
+  const formatter = new Intl.RelativeTimeFormat(language);
   const { id } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -45,15 +48,18 @@ export const ProfilePage = () => {
   const [answerQuestionForm] = BaseForm.useForm();
 
   const { data: tutorProfileData, isLoading } = useQuery(['userData', id], () => getTutorProfileData(id), {
-    enabled: !!id,
     onSuccess: (data) => {
       if (!data) {
         navigate('/404');
       }
     },
+    enabled: !!id,
+    refetchOnWindowFocus: false,
   });
 
-  const { data: sessionData, isLoading: isLoadingSessionData } = useQuery(['sessionData'], getSessionData);
+  const { data: sessionData, isLoading: isLoadingSessionData } = useQuery(['sessionData'], getSessionData, {
+    refetchOnWindowFocus: false,
+  });
 
   const [userExistanceQuery, tutorAddressesQuery, tutorReviewsQuery, tutorQuestionsQuery, tutorServicesQuery] =
     useQueries({
@@ -61,26 +67,31 @@ export const ProfilePage = () => {
         {
           queryKey: ['checkUserExistance'],
           queryFn: checkUserExistanceAction,
+          refetchOnWindowFocus: false,
         },
         {
           queryKey: ['tutorAddresses', id],
           queryFn: () => getTutorAddresses(id),
           enabled: !!id,
+          refetchOnWindowFocus: false,
         },
         {
           queryKey: ['tutorReviews', id],
           queryFn: () => getTutorReviews(id),
           enabled: !!id,
+          refetchOnWindowFocus: false,
         },
         {
           queryKey: ['tutorQuestions', id],
           queryFn: () => getTutorQuestions(id),
           enabled: !!id,
+          refetchOnWindowFocus: false,
         },
         {
           queryKey: ['tutorServices', id],
           queryFn: () => getTutorServices(id),
           enabled: !!id,
+          refetchOnWindowFocus: false,
         },
       ],
     });
@@ -185,7 +196,7 @@ export const ProfilePage = () => {
 
   return (
     <>
-      <PageTitle>{t('common.addresses')}</PageTitle>
+      <PageTitle>{tutorProfileData?.name}</PageTitle>
       <Row align="middle" justify="space-between">
         <Button type="text" shape="circle" size="large" onClick={goBack}>
           <ArrowLeftOutlined style={{ transform: 'scale(1.2)' }} />
@@ -254,7 +265,7 @@ export const ProfilePage = () => {
               </Button>
             </Col>
             <Col span={24} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              {state?.address && (
+              {/* {state?.address && (
                 <Row align="middle" justify="space-around" style={{ margin: '1em 0' }}>
                   <img
                     src={require('../../assets/images/marker.png').default}
@@ -272,10 +283,10 @@ export const ProfilePage = () => {
                       textAlign: 'center',
                     }}
                   >
-                    {state.address.street} {state.address.number} - {state.address.province}
+                    {state.address.street} {state.address.number} {t('common.aproxDistance')} - {state.address.province}
                   </span>
                 </Row>
-              )}
+              )} */}
             </Col>
           </>
         ) : (
@@ -317,7 +328,7 @@ export const ProfilePage = () => {
                           pointerEvents: 'none',
                           width: '3em',
                           height: '3em',
-                          marginTop: '1em',
+                          marginTop: '0.5em',
                         }}
                       />
                     </Col>
@@ -340,19 +351,45 @@ export const ProfilePage = () => {
                             {question.user_profiles.name}
                           </span>
                           <Dropdown overlay={menu(question)} placement="bottomRight" arrow>
-                            <Button type="text" icon={<MoreOutlined />} />
+                            <Button
+                              style={{
+                                position: 'absolute',
+                                right: -10,
+                                top: -10,
+                              }}
+                              type="text"
+                              icon={<MoreOutlined />}
+                            />
                           </Dropdown>
                         </Col>
-                      </Row>
-                      <Row>
                         <Col span={24}>
                           <span
                             style={{
                               fontSize: '0.8em',
+                              color: 'var(--secondary-color)',
                             }}
                           >
-                            {question.q}
+                            {formatter.format(
+                              Math.round((new Date(question.date).getTime() - Date.now()) / (1000 * 3600 * 24)),
+                              'days',
+                            )}
                           </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={24}>
+                          <Paragraph
+                            ellipsis={{
+                              rows: 3,
+                              expandable: true,
+                              symbol: t('common.readMore'),
+                            }}
+                            style={{
+                              fontSize: '0.8em',
+                            }}
+                          >
+                            {question?.q}
+                          </Paragraph>
                         </Col>
                       </Row>
                     </Col>

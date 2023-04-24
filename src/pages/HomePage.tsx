@@ -189,7 +189,9 @@ export const HomePage = () => {
     });
   };
 
-  const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction);
+  const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <>
@@ -277,7 +279,7 @@ export const HomePage = () => {
                             </div>
                           </Col>
                         </Row>
-                        <Row align="middle" justify="space-around">
+                        {/* <Row align="middle" justify="space-around">
                           <img
                             src={require('../assets/images/marker.png').default}
                             alt="map-marker"
@@ -295,7 +297,7 @@ export const HomePage = () => {
                           >
                             {address.street} {address.number} - {address.province}
                           </span>
-                        </Row>
+                        </Row> */}
                       </div>
                     }
                     trigger="click"

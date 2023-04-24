@@ -4,6 +4,8 @@
     "readMore": "Leer más",
     "perUnit": "p/u",
     "searchInThisArea": "Buscar en esta zona",
+    "aproxDistance": "aprox.",
+    "location": "Ubicación",
     "answer": "Responder",
     "report": "Reportar",
     "tutorAnswered": "Tutor respondió:",
@@ -11,6 +13,15 @@
     "answerQuestion": "Responder pregunta",
     "questionAnswered": "Pregunta respondida!",
     "questionReported": "Pregunta reportada!\nGracias por ayudarnos a mejorar.",
+    "filterByType": "Filtrar por tipo",
+    "service": "Servicio",
+    "serviceType": "Tipo de servicio",
+    "serviceAdded": "Servicio agregado con éxito!",
+    "serviceUpdated": "Servicio actualizado conéxito!",
+    "serviceDeleted": "Servicio eliminado con éxito!",
+    "editingService": "Editando servicio",
+    "addingService": "Cargando nuevo servicio",
+    "searchService": "Buscar servicio",
     "name": "Nombre",
     "bio": "Bio",
     "description": "Descripción",
@@ -48,12 +59,6 @@
     "care": "Cuidado",
     "home": "Inicio",
     "eula": "Términos y condiciones",
-    "counsel": "Consejeria",
-    "special_care": "Cuidado especial",
-    "routine_care": "Cuidado rutinario",
-    "nursery": "Guarderia",
-    "serviceType": "Tipo de servicio",
-    "design": "Diseño",
     "clientError": "Error",
     "clientes": "Clientes",
     "contact": "Contacto",
@@ -69,6 +74,28 @@
     "services": "Servicios",
     "users": "Usuarios",
     "book": "Solicitar"
+  },
+  "constants": {
+    "location": {
+      "user": "A domicilio",
+      "tutor": "Domicilio del tutor",
+      "online": "Online"
+    },
+    "service_types": {
+      "care": "Cuidado general",
+      "counsel": "Consejería",
+      "special_care": "Cuidado especial",
+      "routine_care": "Cuidado rutinario",
+      "nursery": "Guardería",
+      "design": "Diseño",
+      "other": "Otro"
+    },
+    "appointment_status": {
+      "pending_approval": "Pendiente de aprobación",
+      "rejected": "Rechazado",
+      "in_progress": "En progreso",
+      "complete": "Completado"
+    }
   },
   "error": {
     "somethingHappened": "Algo salió mal, por favor intentalo nuevamente."
@@ -125,7 +152,8 @@
     "bio": "Contanos un poco sobre vos",
     "description": "Contanos un poco sobre tu servicio",
     "birthday": "¿Tu fecha de nacimiento?",
-    "askQuestion": "¿Qué necesitás saber?"
+    "askQuestion": "¿Qué necesitás saber?",
+    "isUnitPrice": "¿Admite precio por unidad?"
   },
   "table": {
     "filterTitle": "Filtrar menú",

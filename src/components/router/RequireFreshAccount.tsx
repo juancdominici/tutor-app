@@ -28,6 +28,7 @@ const RequireFreshAccount: React.FC<WithChildrenProps> = ({ children }) => {
         message: t('error.somethingHappened'),
       });
     },
+    refetchOnWindowFocus: false,
   });
 
   if (!checkUserExistance) {

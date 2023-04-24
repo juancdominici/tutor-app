@@ -39,6 +39,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
           break;
       }
     },
+    refetchOnWindowFocus: false,
   });
 
   const sidebarNavFlat = sidebarNavigation.reduce(

@@ -83,6 +83,7 @@ export const AppRouter: React.FC = () => {
         {/* REQUIRES ROLE AUTHENTICATION */}
         <Route path="/tutor" element={protectedTutorAuth}>
           <Route path="services/new" element={<ServiceForm />} />
+          <Route path="services/edit/:id" element={<ServiceForm />} />
           <Route path="services" element={<ServiceList />} />
           <Route path="requests" element={<RequestList />} />
         </Route>

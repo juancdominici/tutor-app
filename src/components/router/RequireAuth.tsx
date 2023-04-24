@@ -42,10 +42,15 @@ const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
     },
   });
 
-  const { data: checkUserExistance, isLoading } = useQuery(['checkUserExistance'], checkUserExistanceAction);
+  const { data: checkUserExistance, isLoading } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
+    refetchOnWindowFocus: false,
+  });
   const { data: checkMPToken, isLoading: isLoadingCheckMPToken } = useQuery(
     ['checkMPTokenValidity'],
     checkMPTokenValidityAction,
+    {
+      refetchOnWindowFocus: false,
+    },
   );
 
   const handleSubmit = (values: any) => {

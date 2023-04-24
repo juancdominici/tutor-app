@@ -4,7 +4,7 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { PlacesAutocomplete } from '@app/components/common/PlacesAutocomplete';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { notificationController } from '@app/controllers/notificationController';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button, Form, Input, Row } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import React, { useEffect, useState } from 'react';
@@ -23,6 +23,7 @@ export const AddressForm = () => {
   const { id } = useParams();
   const [currentPosition, setCurrentPosition] = useState<any>();
   const [mapCenter, setMapCenter] = useState<any>();
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
   const savePosition = (position: any) => {
@@ -74,6 +75,7 @@ export const AddressForm = () => {
   const { mutate: postAddress, isLoading: postAddressLoading } = useMutation(postAddressAction, {
     onSuccess: () => {
       notificationController.success({ message: t('common.addressAdded') });
+      queryClient.invalidateQueries(['addresses']);
       navigate(-1);
     },
     onError: () => {
@@ -85,6 +87,7 @@ export const AddressForm = () => {
   const { mutate: putAddress, isLoading: putAddressLoading } = useMutation(putAddressAction, {
     onSuccess: () => {
       notificationController.success({ message: t('common.addressUpdated') });
+      queryClient.invalidateQueries(['addresses']);
       navigate(-1);
     },
     onError: () => {
