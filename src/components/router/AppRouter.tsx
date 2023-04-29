@@ -20,6 +20,8 @@ import { AppointmentList } from '@app/pages/appointments/AppointmentList';
 import RequireTutorRole from './RequireTutorRole';
 import RequireFreshAccount from './RequireFreshAccount';
 import { ProfilePage } from '@app/pages/profile/ProfilePage';
+import { RequestForm } from '@app/pages/appointments/RequestForm';
+import { RequestSuccess } from '@app/pages/appointments/RequestSuccess';
 
 const RequireAuthPage = React.lazy(() => import('@app/components/router/RequireAuth'));
 const RequireAuth = withLoading(RequireAuthPage);
@@ -78,6 +80,8 @@ export const AppRouter: React.FC = () => {
           <Route path="/addresses" element={<AddressList />} />
           <Route path="/appointments" element={<AppointmentList />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
+          <Route path="/request/:serviceId" element={<RequestForm />} />
+          <Route path="/request/success" element={<RequestSuccess />} />
         </Route>
         {/* Region: tutor */}
         {/* REQUIRES ROLE AUTHENTICATION */}
@@ -88,8 +92,8 @@ export const AppRouter: React.FC = () => {
           <Route path="requests" element={<RequestList />} />
         </Route>
         {/* Region: etc */}
-        <Route path="/i" element={protectedAuth}>
-          <Route path="eula" element={<EULA />} />
+        <Route path="/i" element={<AuthLayoutFallback />}>
+          <Route path="/i/eula" element={<EULA />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

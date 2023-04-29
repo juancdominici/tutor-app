@@ -10,8 +10,9 @@ interface MapPropsI {
   maxZoom?: number;
   style?: React.CSSProperties;
   addressList?: Array<any> | null;
+  draggable?: boolean;
 }
-const Map = ({ center, zoom, zoomControl, minZoom, maxZoom, addressList }: MapPropsI) => {
+const Map = ({ center, zoom, zoomControl, minZoom, maxZoom, addressList, draggable }: MapPropsI) => {
   const theme = useAppSelector((state) => state.theme.theme);
 
   const setOptions = () => {
@@ -22,6 +23,7 @@ const Map = ({ center, zoom, zoomControl, minZoom, maxZoom, addressList }: MapPr
       zoomControl: zoomControl,
       minZoom: minZoom,
       maxZoom: maxZoom,
+      draggable,
       styles:
         theme === 'dark'
           ? [

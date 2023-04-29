@@ -36,6 +36,36 @@ export const getUserAddresses = async () => {
   return data;
 };
 
+export const getTutorAddresses = async (tutorId: any) => {
+  const { data, error } = await supabase.from('addresses').select('*').eq('tutor_id', tutorId).eq('status', true);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+export const getUserAddressesWithCoordinates = async () => {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  const { data, error } = await supabase.rpc('get_user_addresses_with_coordinates', {
+    user_id: sessionData?.session?.user?.id,
+  });
+
+  if (error || sessionError) {
+    throw new Error(sessionError?.message);
+  }
+  return data;
+};
+
+export const getTutorAddressesWithCoordinates = async (tutorId: any) => {
+  const { data, error } = await supabase.rpc('get_tutor_addresses_with_coordinates', { ttr_id: tutorId });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
 export const postAddress = async (address: any) => {
   const userType = await checkUserExistance();
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -81,15 +111,6 @@ export const getAddress = async (id: any) => {
 
 export const deleteAddress = async (id: any) => {
   const { data, error } = await supabase.from('addresses').delete().eq('id', id);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
-};
-
-export const getTutorAddresses = async (tutorId: any) => {
-  const { data, error } = await supabase.from('addresses').select('*').eq('tutor_id', tutorId).eq('status', true);
 
   if (error) {
     throw new Error(error.message);

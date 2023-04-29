@@ -222,7 +222,15 @@ export default createGlobalStyle`
   ::-webkit-scrollbar {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
-    }
+  }
+
+  .ant-picker-panel-container {
+    width: 90vw;
+  } 
+
+  .ant-picker-panel, .ant-picker-date-panel, .ant-picker-body, .ant-picker-content {
+    width: 100% !important;
+  } 
 
   @keyframes pulse-green {
     0% {

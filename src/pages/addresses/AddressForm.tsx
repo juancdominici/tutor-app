@@ -16,6 +16,7 @@ import {
   putAddress as putAddressAction,
 } from '@app/api/addresses.api';
 import { Loading } from '@app/components/common/Loading';
+import { checkUserExistance } from '@app/api/auth.api';
 
 export const AddressForm = () => {
   const { t } = useTranslation();
@@ -44,6 +45,8 @@ export const AddressForm = () => {
     });
   }, []);
 
+  const { data: userType } = useQuery(['userType'], checkUserExistance);
+
   const { data: addressData, isFetching: addressLoading } = useQuery(
     ['address', id],
     async () => getAddressAction(id),
@@ -59,6 +62,8 @@ export const AddressForm = () => {
         name: addressData[0]?.name,
         phone: addressData[0]?.phone,
       });
+      setCurrentPosition({ lat: addressData[0]?.lat, lng: addressData[0]?.lng });
+
       setMapCenter({
         lat: addressData[0]?.lat,
         lng: addressData[0]?.lng,
@@ -184,6 +189,13 @@ export const AddressForm = () => {
           <FormItem
             style={{ margin: '0.5em 1em', width: '100%' }}
             name="name"
+            extra={
+              userType === 'tutor' && (
+                <p style={{ color: 'var(--subtext-color)', fontSize: '0.8em', margin: '0.5em' }}>
+                  {t('common.addressNameExtra')}
+                </p>
+              )
+            }
             rules={[{ required: true, message: t('common.requiredField') }]}
           >
             <Input placeholder={t('common.name')} />
@@ -206,7 +218,7 @@ export const AddressForm = () => {
           />
         </Row>
         <Row align="middle" style={{ height: '30vh', width: '100%' }}>
-          <Map center={mapCenter} zoom={15} />
+          <Map center={mapCenter} zoom={15} draggable={false} />
         </Row>
         <Row align="middle" justify="center">
           <Button

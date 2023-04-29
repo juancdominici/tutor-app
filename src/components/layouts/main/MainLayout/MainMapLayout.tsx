@@ -4,7 +4,7 @@ import MainSider from '../sider/MainSider/MainSider';
 import MainMapContent from '../MainMapContent/MainMapContent';
 import { MainHeader } from '../MainHeader/MainHeader';
 import * as S from './MainLayout.styles';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useResponsive } from '@app/hooks/useResponsive';
 import FilterSider from '../filterSider/FilterSider';
 
@@ -13,9 +13,21 @@ const MainMapLayout: React.FC = () => {
   const [siderCollapsed, setSiderCollapsed] = useState(true);
   const [filterSiderCollapsed, setFilterSiderCollapsed] = useState(true);
   const { isDesktop } = useResponsive();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleSider = () => setSiderCollapsed(!siderCollapsed);
-  const toggleFilterSider = () => setFilterSiderCollapsed(!siderCollapsed);
+  const toggleFilterSider = () => {
+    // if not on map page, navigate home
+    if (location.pathname !== '/home') {
+      navigate('/home');
+      setTimeout(() => {
+        setFilterSiderCollapsed(!siderCollapsed);
+      }, 1000);
+    } else {
+      setFilterSiderCollapsed(!siderCollapsed);
+    }
+  };
 
   useEffect(() => {
     setIsTwoColumnsLayout(isDesktop);

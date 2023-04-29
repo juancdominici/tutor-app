@@ -22,6 +22,7 @@ import { Loading } from '@app/components/common/Loading';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { TextArea } from '@app/components/common/inputs/Input/Input';
+import { LOCATION_TYPE } from '@app/constants/constants';
 import { notificationController } from '@app/controllers/notificationController';
 import { useLanguage } from '@app/hooks/useLanguage';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -39,7 +40,6 @@ export const ProfilePage = () => {
   const navigate = useNavigate();
   const { state }: any = useLocation();
   const { Paragraph } = Typography;
-  const [service, setService] = useState<any>(null);
   const [slide, setSlide] = useState('1');
   const [newQuestion, setNewQuestion] = useState('');
   const [answerQuestionModal, toggleAnswerQuestionModal] = useState(false);
@@ -142,6 +142,15 @@ export const ProfilePage = () => {
     reportQuestion({
       id: question.id,
       report_count: question.report_count + 1,
+    });
+  };
+
+  const handleNewRequest = (service: any) => {
+    navigate(`/request/${service.id}`, {
+      state: {
+        service,
+        ...(service.location === LOCATION_TYPE[1] && { address: state?.address, tutorId: id }),
+      },
     });
   };
 
@@ -554,7 +563,7 @@ export const ProfilePage = () => {
                     <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
                       <Button
                         type="link"
-                        onClick={() => setService(service)}
+                        onClick={() => handleNewRequest(service)}
                         style={{
                           borderRadius: '10px',
                           backgroundColor: 'rgba(var(--primary-rgb-color), 0.1)',
