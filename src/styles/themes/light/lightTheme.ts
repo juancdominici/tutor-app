@@ -51,7 +51,7 @@ export const lightColorsTheme: ITheme = {
   plain: BASE_COLORS.white,
   textPlain: BASE_COLORS.black,
   primary: '#008640',
-  primary1: '#f5f5f5',
+  primary1: '#7568f666',
   primaryGradient: 'linear-gradient(211.49deg, #008640 15.89%, #008640 48.97%)',
   light: '#C5D3E0',
   secondary: '#0085FF',

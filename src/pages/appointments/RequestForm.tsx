@@ -48,6 +48,7 @@ export const RequestForm = () => {
 
   const { mutate: postRequest, isLoading: postRequestLoading } = useMutation(postRequestAction, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['appointments']);
       queryClient.invalidateQueries(['requests']);
       navigate('/request/success', {
         state: {
@@ -100,7 +101,7 @@ export const RequestForm = () => {
         address_id: values.address.value === 'online' ? null : values.address.value,
         details: requestDetails,
         tutor_service_id: state?.service?.id,
-        status: APPOINTMENT_STATUS[0],
+        status: APPOINTMENT_STATUS.PENDING_APPROVAL,
       };
 
       postRequest(request);

@@ -8,6 +8,18 @@
     "location": "Ubicación",
     "answer": "Responder",
     "report": "Reportar",
+    "searchAppointment": "Buscar turno",
+    "filterByStatus": "Filtrar por estado",
+    "creationDate": "Fecha de creación",
+    "datetime": "Fecha y hora",
+    "showDetails": "Mostrar detalles",
+    "appointmentDetails": "Detalles del turno",
+    "cancelAppointment": "Cancelar turno",
+    "completeAppointment": "Marcar como completado",
+    "rejectRequest": "Rechazar solicitud",
+    "acceptRequest": "Aceptar solicitud",
+    "reviewAppointment": "Escribir una reseña",
+    "requestPayment": "Solicitar pago",
     "tutorAnswered": "Tutor respondió:",
     "noAnswerYet": "Sin respuesta aún.",
     "answerQuestion": "Responder pregunta",
@@ -26,6 +38,9 @@
     "newRequestFooter": "Te recordamos que el turno está sujeto a la disponibilidad del tutor.",
     "requestDetails": "Detalles de la solicitud",
     "addressNameExtra": "Tené en cuenta que este es el nombre que verán tus clientes.",
+    "cancelWithFee": "Es necesario pagar tarifa de cancelación.",
+    "reportAppointment": "Reportar turno",
+    "payAppointment": "Pagar turno",
     "addingRequest": "Cargando nueva solicitud para {{name}}",
     "filterByType": "Filtrar por tipo",
     "service": "Servicio",
@@ -105,10 +120,12 @@
       "other": "Otro"
     },
     "appointment_status": {
-      "pending_approval": "Pendiente de aprobación",
+      "pending_approval": "Pendiente",
       "rejected": "Rechazado",
       "in_progress": "En progreso",
-      "complete": "Completado"
+      "pending_payment": "Pendiente de pago",
+      "complete": "Completado",
+      "reported": "Reportado"
     }
   },
   "error": {
@@ -166,7 +183,7 @@
     "scheduledServiceSubCaption": "Te recordamos que el turno está sujeto a la disponibilidad del tutor."
   },
   "prompts": {
-    "requestDetail": "Monstera Adonsonii...",
+    "requestDetail": "¿Qué necesitás?",
     "requestAdditionalDetails": "¿Querés agregar algo más?",
     "requestQuantity": "¿Cuántos?",
     "requestDate": "¿Qué día necesitas el servicio?",

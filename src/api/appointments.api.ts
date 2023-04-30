@@ -1,3 +1,4 @@
+import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import supabase from './supabase';
 
 export const postRequest = async (payload: any) => {
@@ -48,4 +49,125 @@ export const postRequest = async (payload: any) => {
   }
 
   return { data, detailsResponse };
+};
+
+export const getUserAppointments = async () => {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    throw new Error(sessionError.message);
+  }
+
+  const { data, error } = await supabase
+    .from('appointments')
+    .select(
+      `
+        *,
+        tutor_services (
+            *,
+            tutors ( * )
+        ),
+        addresses (
+            street,
+            number,
+            province,
+            country,
+            postcode
+        ),
+        appointment_details ( * )
+        `,
+    )
+    .eq('user_profile_id', sessionData?.session?.user?.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getTutorAppointments = async () => {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    throw new Error(sessionError.message);
+  }
+
+  const { data, error } = await supabase
+    .from('appointments')
+    .select(
+      `
+        *,
+        tutor_services (
+            *,
+            tutors ( * )
+        ),
+        addresses (
+            street,
+            number,
+            province,
+            country,
+            postcode
+        ),
+        appointment_details ( * )
+        `,
+    )
+    .neq('status', APPOINTMENT_STATUS.PENDING_APPROVAL)
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getTutorRequests = async () => {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    throw new Error(sessionError.message);
+  }
+
+  const { data, error } = await supabase
+    .from('appointments')
+    .select(
+      `
+        *,
+        tutor_services (
+            *,
+            tutors ( * )
+        ),
+        addresses (
+            street,
+            number,
+            province,
+            country,
+            postcode
+        ),
+        appointment_details ( * )
+        `,
+    )
+    .eq('status', APPOINTMENT_STATUS.PENDING_APPROVAL)
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const changeAppointmentStatus = async (payload: any) => {
+  const { data, error } = await supabase
+    .from('appointments')
+    .update({ status: payload.status })
+    .eq('id', payload.id)
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };
