@@ -41,11 +41,7 @@ export const RequestList: React.FC = () => {
 
   const filteredAppointments = () => {
     if (search) {
-      return appointments?.filter(
-        (appointment: any) =>
-          t(`constants.location.${appointment.location}`).toLowerCase().includes(search.toLowerCase()) ||
-          appointment.name.toLowerCase().includes(search.toLowerCase()),
-      );
+      return appointments?.filter((appointment: any) => appointment.name.toLowerCase().includes(search.toLowerCase()));
     }
     return appointments;
   };
@@ -122,10 +118,10 @@ export const RequestList: React.FC = () => {
             header={
               <p style={{ fontSize: '0.8em', margin: 5 }}>
                 <strong>{t('common.name')}: </strong>
-                {appointment.tutor_services.name}
+                {appointment?.tutor_services.name}
               </p>
             }
-            key={appointment.id}
+            key={appointment?.id}
           >
             <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
               <strong>{t('common.creationDate')}: </strong>
