@@ -63,7 +63,7 @@ export const getUserAppointments = async () => {
     .select(
       `
         *,
-        tutor_services (
+        tutor_services!inner (
             *,
             tutors ( 
                 id, 
@@ -107,7 +107,7 @@ export const getTutorAppointments = async () => {
     .select(
       `
         *,
-        tutor_services (
+        tutor_services!inner (
             *,
             tutors (
                 id, 
@@ -203,7 +203,7 @@ export const getAppointmentById = async (id: any) => {
     .select(
       `
             *,
-            tutor_services (
+            tutor_services!inner (
                 *,
                 tutors ( 
                     id, 
