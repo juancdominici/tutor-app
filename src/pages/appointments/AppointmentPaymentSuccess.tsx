@@ -49,7 +49,7 @@ export const AppointmentPaymentSuccess = () => {
 
   return (
     <Row align="middle" justify="center">
-      <PageTitle>{(t('notifications.payedAppointment'), { service: appointment?.tutor_services.name })}</PageTitle>
+      <PageTitle>{t('notifications.payedAppointmentEmpty')}</PageTitle>
       <Col span={24}>
         <div
           style={{

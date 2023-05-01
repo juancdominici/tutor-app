@@ -182,6 +182,7 @@
     "scheduledServiceCaption": "Podrás ver el estado de tu solicitud en la ",
     "scheduledServiceRedirect": "sección de turnos.",
     "scheduledServiceSubCaption": "Te recordamos que el turno está sujeto a la disponibilidad del tutor.",
+    "payedAppointmentEmpty": "¡Pagaste con éxito!",
     "payedAppointment": "¡Pagaste {{ service }} con éxito!",
     "payedAppointmentCaption": "¡Esperamos que tu mundo se haya vuelto un poco más verde!",
     "payedAppointmentSubCaption": "Si no fue así",
