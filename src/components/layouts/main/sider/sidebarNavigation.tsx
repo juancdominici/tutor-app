@@ -4,12 +4,7 @@ import {
   DashboardOutlined,
   EnvironmentOutlined,
   FieldTimeOutlined,
-  HomeOutlined,
-  MessageOutlined,
   ScheduleOutlined,
-  ShopOutlined,
-  ShoppingCartOutlined,
-  TagsOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 

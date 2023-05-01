@@ -23,6 +23,8 @@ import { ProfilePage } from '@app/pages/profile/ProfilePage';
 import { RequestForm } from '@app/pages/appointments/RequestForm';
 import { RequestSuccess } from '@app/pages/appointments/RequestSuccess';
 import { AppointmentPaymentSuccess } from '@app/pages/appointments/AppointmentPaymentSuccess';
+import { AboutUsPage } from '@app/pages/AboutUsPage';
+import { ContactPage } from '@app/pages/ContactPage';
 
 const RequireAuthPage = React.lazy(() => import('@app/components/router/RequireAuth'));
 const RequireAuth = withLoading(RequireAuthPage);
@@ -34,18 +36,13 @@ const AuthLayoutFallback = withLoading(AuthLayout);
 export const AppRouter: React.FC = () => {
   const protectedAuth = (
     <RequireAuth>
-      <AuthLayoutFallback />
+      <MainMapLayout />
     </RequireAuth>
   );
   const protectedFreshAccount = (
     <RequireFreshAccount>
       <AuthLayoutFallback />
     </RequireFreshAccount>
-  );
-  const protectedMapAuth = (
-    <RequireAuth>
-      <MainMapLayout />
-    </RequireAuth>
   );
   const protectedTutorAuth = (
     <RequireTutorRole>
@@ -73,9 +70,11 @@ export const AppRouter: React.FC = () => {
         </Route>
         {/* Region: root */}
         {/* REQUIRES BASIC AUTHENTICATION */}
-        <Route element={protectedMapAuth}>
+        <Route element={protectedAuth}>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/aboutUs" element={<AboutUsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/addresses/new" element={<AddressForm />} />
           <Route path="/addresses/edit/:id" element={<AddressForm />} />
           <Route path="/addresses" element={<AddressList />} />

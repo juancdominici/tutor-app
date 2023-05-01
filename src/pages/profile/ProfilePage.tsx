@@ -26,7 +26,7 @@ import { LOCATION_TYPE } from '@app/constants/constants';
 import { notificationController } from '@app/controllers/notificationController';
 import { useLanguage } from '@app/hooks/useLanguage';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button, Card, Col, Dropdown, Input, Menu, Modal, Rate, Row, Tabs, Typography } from 'antd';
+import { Button, Card, Col, Dropdown, Input, Menu, Modal, Rate, Row, Spin, Tabs, Typography } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -452,7 +452,7 @@ export const ProfilePage = () => {
                     onChange={(e: any) => setNewQuestion(e.target.value)}
                   />
                   <Button
-                    icon={isAddingTutorQuestion ? <Loading /> : <SendOutlined />}
+                    icon={isAddingTutorQuestion ? <Spin /> : <SendOutlined />}
                     onClick={() => handleNewQuestion()}
                     disabled={isAddingTutorQuestion}
                   />

@@ -15,11 +15,6 @@ export const AppointmentPaymentSuccess = () => {
   const { id, successUuid } = useParams();
   const queryClient = useQueryClient();
 
-  const { data: appointment, isLoading } = useQuery([], () => getAppointmentById(id), {
-    enabled: !!id && !!successUuid,
-    refetchOnWindowFocus: false,
-  });
-
   const { mutate: changeAppointmentStatus, isLoading: isLoadingChangeAppointmentStatus } = useMutation(
     changeAppointmentStatusAction,
     {
@@ -27,6 +22,9 @@ export const AppointmentPaymentSuccess = () => {
         queryClient.invalidateQueries(['user_appointments']);
         queryClient.invalidateQueries(['tutor_appointments']);
         localStorage.removeItem('successUuid');
+        setTimeout(() => {
+          navigate('/appointments');
+        }, 5000);
       },
       onError: () => {
         navigate('/appointments');
@@ -45,7 +43,7 @@ export const AppointmentPaymentSuccess = () => {
     }
   }, [successUuid, id]);
 
-  if (isLoading || isLoadingChangeAppointmentStatus) return <Loading />;
+  if (isLoadingChangeAppointmentStatus) return <Loading />;
 
   return (
     <Row align="middle" justify="center">
@@ -72,7 +70,7 @@ export const AppointmentPaymentSuccess = () => {
               textAlign: 'center',
             }}
           >
-            {(t('notifications.payedAppointment'), { service: appointment?.tutor_services.name })}
+            {t('notifications.payedAppointmentEmpty')}
           </p>
           <p
             style={{
