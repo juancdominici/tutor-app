@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowLeftOutlined, CheckOutlined, CloseOutlined, CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
-import { Button, Collapse, Input, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
+import { ArrowLeftOutlined, CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { Button, Collapse, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getUserAppointments as getUserAppointmentsAction,
   getTutorAppointments as getTutorAppointmentsAction,
   changeAppointmentStatus as changeAppointmentStatusAction,
 } from '../../api/appointments.api';
+import { createPreference as createPreferenceAction } from '../../api/mp.api';
 import { Loading } from '@app/components/common/Loading';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
@@ -14,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 import { LOCATION_TYPE, APPOINTMENT_STATUS } from '@app/constants/constants';
 import { checkUserExistance } from '@app/api/auth.api';
 import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
+
 const { Panel } = Collapse;
 const { Paragraph } = Typography;
 
@@ -54,6 +57,11 @@ export const AppointmentList: React.FC = () => {
       },
     },
   );
+  const { mutate: createPreference, isLoading: isLoadingCreatePreference } = useMutation(createPreferenceAction, {
+    onSuccess: (data) => {
+      window.location.replace(data.init_point);
+    },
+  });
 
   const filteredAppointments = () => {
     return appointments;
@@ -65,12 +73,57 @@ export const AppointmentList: React.FC = () => {
   };
   // TODO: cancel with fee */
   const handleCancelWithFee = (appointment: any) => {
-    console.log(appointment);
     changeAppointmentStatus({ id: appointment.id, status: APPOINTMENT_STATUS.REJECTED });
   };
-  //TODO: PENDING PAYMENT
+
   const handlePayment = (appointment: any) => {
-    console.log(appointment);
+    const { price, is_unit_price } = appointment.tutor_services;
+    const total = calcAppointmentPrice(appointment);
+    const successUuid = uuidv4();
+    localStorage.setItem('successUuid', successUuid);
+
+    const preference = {
+      items: is_unit_price
+        ? appointment.appointment_details.map((detail: any) => {
+            return {
+              title: detail.detail,
+              quantity: detail.quantity,
+              currency_id: 'ARS',
+              unit_price: appointment.tutor_services.price,
+              description: detail.additional_details,
+            };
+          })
+        : [
+            {
+              title: appointment.tutor_services.name,
+              quantity: 1,
+              currency_id: 'ARS',
+              unit_price: price,
+            },
+          ],
+      marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      back_urls: {
+        success: `https://tutor-app-ps.netlify.app/appointments/${appointment.id}/success/${successUuid}`,
+        failure: `https://tutor-app-ps.netlify.app/appointments`,
+      },
+      payment_methods: {
+        excluded_payment_methods: [
+          {
+            id: 'amex',
+          },
+        ],
+        excluded_payment_types: [
+          {
+            id: 'atm',
+          },
+        ],
+      },
+      payer: {
+        name: appointment.user_profiles.name,
+      },
+    };
+
+    createPreference({ tutor_id: appointment.tutor_services.tutors.id, preference });
   };
 
   const genTutorExtra = (appointment: any) => {
@@ -208,7 +261,7 @@ export const AppointmentList: React.FC = () => {
       case APPOINTMENT_STATUS.PENDING_PAYMENT:
         return (
           <Space wrap>
-            {isLoadingChangeAppointmentStatus ? (
+            {isLoadingCreatePreference ? (
               <Button size="small" type="text" shape="circle" icon={<Spin />} />
             ) : (
               <>

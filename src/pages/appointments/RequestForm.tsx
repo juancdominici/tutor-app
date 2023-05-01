@@ -177,10 +177,8 @@ export const RequestForm = () => {
 
   useEffect(() => {
     if (addressSelected) {
-      console.log(addressSelected);
       if (state.service.location === LOCATION_TYPE[0]) {
         const userAddress = userAddresses?.find((a: any) => a.id === addressSelected?.value);
-        console.log(userAddress);
         setMapCenter({
           lat: userAddress?.latitude,
           lng: userAddress?.longitude,
@@ -188,7 +186,6 @@ export const RequestForm = () => {
       }
       if (state.service.location === LOCATION_TYPE[1]) {
         const tutorAddress = tutorAddresses?.find((a: any) => a.id === addressSelected?.value);
-        console.log(tutorAddress);
         setMapCenter({
           lat: tutorAddress?.latitude,
           lng: tutorAddress?.longitude,

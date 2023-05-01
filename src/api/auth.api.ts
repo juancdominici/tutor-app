@@ -119,7 +119,7 @@ export const checkMPTokenValidity = async () => {
     const { data } = await supabase.auth.getSession();
     const { data: tutorData } = await supabase.from('tutors').select('*').eq('id', data.session?.user?.id).limit(1);
     if (tutorData && tutorData[0]) {
-      return !!tutorData[0].mp_refresh_token;
+      return !!tutorData[0].mp_refresh_token && !!tutorData[0].mp_code;
     }
     return false;
   } catch (error: any) {
@@ -133,30 +133,6 @@ export const getTutorProfileData = async (userId: any): Promise<any> => {
 
     return tutorProfileData[0] ?? null;
   } catch (error: any) {
-    throw new Error(error.message);
-  }
-};
-
-export const saveMercadoPagoRefreshToken = async (code: string) => {
-  const { data } = await supabase.auth.getSession();
-  const { data: mpData } = await mpApi.post('oauth/token', {
-    client_id: process.env.REACT_APP_MP_CLIENT_ID,
-    client_secret: process.env.REACT_APP_MP_CLIENT_SECRET,
-    grant_type: 'authorization_code',
-    code,
-    redirect_uri: process.env.REACT_APP_MP_REDIRECT_URL,
-  });
-
-  const { error } = await supabase
-    .from('tutors')
-    .update({ mp_refresh_token: mpData?.refresh_token })
-    .eq('id', data.session?.user?.id);
-
-  localStorage.setItem('access_token', mpData?.access_token);
-  localStorage.setItem('expires_in', mpData?.expires_in);
-  localStorage.setItem('mp_refresh_token', mpData?.refresh_token);
-
-  if (error) {
     throw new Error(error.message);
   }
 };

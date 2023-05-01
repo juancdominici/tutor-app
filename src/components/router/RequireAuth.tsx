@@ -100,14 +100,14 @@ const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
         </BaseForm>
       </Modal>
     </>
+  ) : checkUserExistance === 'tutor' && !checkMPToken ? (
+    <Navigate to="/welcome/tutor-config" replace />
   ) : checkUserExistance === 'user' || checkUserExistance === 'tutor' ? (
     <>{children}</>
   ) : checkUserExistance === 'fresh' ? (
     <Navigate to="/welcome/user-config" replace />
   ) : checkUserExistance === 'none' ? (
     <Navigate to="/auth/login" replace />
-  ) : !checkMPToken ? (
-    <Navigate to="/welcome/tutor-config" replace />
   ) : (
     <Navigate to="/auth/login" replace />
   );

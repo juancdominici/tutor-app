@@ -21,9 +21,10 @@ const queryClient = new QueryClient();
 const App: React.FC = () => {
   const { language } = useLanguage();
   const theme = useAppSelector((state) => state.theme.theme);
+  const librariesArr: any = ['places'];
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
-    libraries: ['places'],
+    libraries: librariesArr,
   });
 
   usePWA();

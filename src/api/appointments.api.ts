@@ -65,7 +65,15 @@ export const getUserAppointments = async () => {
         *,
         tutor_services (
             *,
-            tutors ( * )
+            tutors ( 
+                id, 
+                name, 
+                bio, 
+                description, 
+                joindate, 
+                notifications, 
+                status
+            )
         ),
         addresses (
             street,
@@ -74,7 +82,8 @@ export const getUserAppointments = async () => {
             country,
             postcode
         ),
-        appointment_details ( * )
+        appointment_details ( * ),
+        user_profiles ( * )
         `,
     )
     .eq('user_profile_id', sessionData?.session?.user?.id);
@@ -100,7 +109,15 @@ export const getTutorAppointments = async () => {
         *,
         tutor_services (
             *,
-            tutors ( * )
+            tutors (
+                id, 
+                name, 
+                bio, 
+                description, 
+                joindate, 
+                notifications, 
+                status
+            )
         ),
         addresses (
             street,
@@ -136,7 +153,15 @@ export const getTutorRequests = async () => {
         *,
         tutor_services (
             *,
-            tutors ( * )
+            tutors ( 
+                id, 
+                name, 
+                bio, 
+                description, 
+                joindate, 
+                notifications, 
+                status
+            )
         ),
         addresses (
             street,
@@ -164,6 +189,44 @@ export const changeAppointmentStatus = async (payload: any) => {
     .update({ status: payload.status })
     .eq('id', payload.id)
     .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getAppointmentById = async (id: any) => {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select(
+      `
+            *,
+            tutor_services (
+                *,
+                tutors ( 
+                    id, 
+                    name, 
+                    bio, 
+                    description, 
+                    joindate, 
+                    notifications, 
+                    status
+                )
+            ),
+            addresses (
+                street,
+                number,
+                province,
+                country,
+                postcode
+            ),
+            appointment_details ( * )
+            `,
+    )
+    .eq('id', id)
+    .single();
 
   if (error) {
     throw new Error(error.message);

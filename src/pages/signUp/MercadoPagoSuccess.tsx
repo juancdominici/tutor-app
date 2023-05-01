@@ -1,4 +1,4 @@
-import { saveMercadoPagoRefreshToken } from '@app/api/auth.api';
+import { saveMercadoPagoRefreshToken } from '@app/api/mp.api';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useMutation } from '@tanstack/react-query';
 import { Col, Row } from 'antd';
