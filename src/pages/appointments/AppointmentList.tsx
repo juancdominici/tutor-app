@@ -106,6 +106,7 @@ export const AppointmentList: React.FC = () => {
         success: `https://tutor-app-ps.netlify.app/appointments/${appointment.id}/success/${successUuid}`,
         failure: `https://tutor-app-ps.netlify.app/appointments`,
       },
+      auto_return: 'approved',
       payment_methods: {
         excluded_payment_methods: [
           {

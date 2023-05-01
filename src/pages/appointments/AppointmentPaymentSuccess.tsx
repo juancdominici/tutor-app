@@ -15,8 +15,8 @@ export const AppointmentPaymentSuccess = () => {
   const { id, successUuid } = useParams();
   const queryClient = useQueryClient();
 
-  const { data: appointment } = useQuery([], () => getAppointmentById(id), {
-    enabled: !!id,
+  const { data: appointment, isLoading } = useQuery([], () => getAppointmentById(id), {
+    enabled: !!id && !!successUuid,
     refetchOnWindowFocus: false,
   });
 
@@ -35,14 +35,17 @@ export const AppointmentPaymentSuccess = () => {
   );
 
   useEffect(() => {
-    if (successUuid) {
+    if (successUuid && id) {
+      console.log('successUuid', successUuid);
+      console.log('localStorage.getItem(successUuid)', localStorage.getItem('successUuid'));
+      console.log('id', id);
       if (localStorage.getItem('successUuid') === successUuid) {
         changeAppointmentStatus({ id, status: APPOINTMENT_STATUS.COMPLETE });
       }
     }
-  }, [successUuid]);
+  }, [successUuid, id]);
 
-  if (isLoadingChangeAppointmentStatus) return <Loading />;
+  if (isLoading || isLoadingChangeAppointmentStatus) return <Loading />;
 
   return (
     <Row align="middle" justify="center">
