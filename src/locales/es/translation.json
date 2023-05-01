@@ -3,6 +3,7 @@
     "auto": "Automático",
     "readMore": "Leer más",
     "perUnit": "c/u",
+    "offeredBy": "Ofrecido por {{ tutor }}",
     "searchInThisArea": "Buscar en esta zona",
     "aproxDistance": "aprox.",
     "location": "Ubicación",

@@ -575,10 +575,20 @@ export const AppointmentList: React.FC = () => {
                     border: 'none',
                   }}
                   header={
-                    <p style={{ fontSize: '0.8em', margin: 5 }}>
-                      <strong>{t('common.name')}: </strong>
-                      {appointment.tutor_services.name}
-                    </p>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <p style={{ fontSize: '0.8em', margin: 5 }}>
+                        <strong>{t('common.name')}: </strong>
+                        {appointment.tutor_services.name}
+                      </p>
+                      <small style={{ fontSize: '0.7em', color: 'var(--disabled-color)', padding: '0.5em' }}>
+                        {t('common.offeredBy', { tutor: appointment.tutor_services.tutors.name })}
+                      </small>
+                    </div>
                   }
                   key={appointment.id}
                   extra={
