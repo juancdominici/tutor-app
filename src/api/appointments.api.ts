@@ -151,7 +151,7 @@ export const getTutorRequests = async () => {
     .select(
       `
         *,
-        tutor_services (
+        tutor_services!inner (
             *,
             tutors ( 
                 id, 
