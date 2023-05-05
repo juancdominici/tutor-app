@@ -103,7 +103,12 @@
     "reviews": "{{count}} reseñas",
     "services": "Servicios",
     "users": "Usuarios",
-    "book": "Solicitar"
+    "book": "Solicitar",
+    "reviewAdded": "¡Reseña agregada con éxito!",
+    "reviewReported": "¡Reseña reportada!\nGracias por ayudarnos a mejorar.",
+    "addReview": "Agregar reseña",
+    "reviewBy": "{{name}}",
+    "reviewedService": "sobre {{name}}"
   },
   "constants": {
     "location": {
@@ -189,6 +194,8 @@
     "payedAppointmentRedirect": "contactanos"
   },
   "prompts": {
+    "review": "¿Qué te pareció el servicio?",
+    "reviewService": "¿Qué servicio recibiste?",
     "requestDetail": "¿Qué necesitás?",
     "requestAdditionalDetails": "¿Querés agregar algo más?",
     "requestQuantity": "¿Cuántos?",

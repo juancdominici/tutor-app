@@ -69,7 +69,7 @@ export const AppointmentList: React.FC = () => {
 
   // TODO: review appointment
   const handleReview = (appointment: any) => {
-    console.log(appointment);
+    navigate(`/profile/${appointment.tutor_services.tutors.id}/`);
   };
   // TODO: cancel with fee */
   const handleCancelWithFee = (appointment: any) => {

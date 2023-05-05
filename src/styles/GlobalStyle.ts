@@ -232,6 +232,10 @@ export default createGlobalStyle`
     width: 100% !important;
   } 
 
+  .ant-select-item {
+    font-size: ${FONT_SIZE.xxs};
+  }
+
   @keyframes pulse-green {
     0% {
       transform: scale(0.95);

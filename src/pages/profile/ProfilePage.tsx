@@ -2,21 +2,26 @@ import {
   ArrowLeftOutlined,
   DoubleLeftOutlined,
   DoubleRightOutlined,
+  EditOutlined,
   FormOutlined,
   InfoCircleOutlined,
   MoreOutlined,
+  PlusOutlined,
   SendOutlined,
   ShareAltOutlined,
 } from '@ant-design/icons';
 import { getTutorAddresses } from '@app/api/addresses.api';
 import { checkUserExistance as checkUserExistanceAction, getSessionData, getTutorProfileData } from '@app/api/auth.api';
 import {
+  addReview as addReviewAction,
   addTutorQuestion as addTutorQuestionAction,
   answerQuestion as answerQuestionAction,
   reportQuestion as reportQuestionAction,
+  reportReview as reportReviewAction,
   getTutorQuestions,
   getTutorReviews,
   getTutorServices,
+  getUnreviewedServices,
 } from '@app/api/profiles.api';
 import { Loading } from '@app/components/common/Loading';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
@@ -26,7 +31,7 @@ import { LOCATION_TYPE } from '@app/constants/constants';
 import { notificationController } from '@app/controllers/notificationController';
 import { useLanguage } from '@app/hooks/useLanguage';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button, Card, Col, Dropdown, Input, Menu, Modal, Rate, Row, Spin, Tabs, Typography } from 'antd';
+import { Button, Card, Col, Dropdown, Input, Menu, Modal, Rate, Row, Select, Spin, Tabs, Typography } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,9 +48,11 @@ export const ProfilePage = () => {
   const [slide, setSlide] = useState('1');
   const [newQuestion, setNewQuestion] = useState('');
   const [answerQuestionModal, toggleAnswerQuestionModal] = useState(false);
+  const [addReviewModal, toggleAddReviewModal] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<any>(null);
-  const queryClient = useQueryClient();
   const [answerQuestionForm] = BaseForm.useForm();
+  const [addReviewForm] = BaseForm.useForm();
+  const queryClient = useQueryClient();
 
   const { data: tutorProfileData, isLoading } = useQuery(['userData', id], () => getTutorProfileData(id), {
     onSuccess: (data) => {
@@ -56,6 +63,14 @@ export const ProfilePage = () => {
     enabled: !!id,
     refetchOnWindowFocus: false,
   });
+
+  const { data: unreviewedServices, isLoading: isLoadingUnreviewedServices } = useQuery(
+    ['unreviewedServices', id],
+    () => getUnreviewedServices(id),
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const { data: sessionData, isLoading: isLoadingSessionData } = useQuery(['sessionData'], getSessionData, {
     refetchOnWindowFocus: false,
@@ -115,12 +130,32 @@ export const ProfilePage = () => {
     },
   });
 
+  const { mutate: addReview, isLoading: isAddingReview } = useMutation(addReviewAction, {
+    onSuccess: () => {
+      toggleAddReviewModal(false);
+      addReviewForm.resetFields();
+      notificationController.success({
+        message: t('common.reviewAdded'),
+      });
+      queryClient.invalidateQueries(['userData', id]);
+      queryClient.invalidateQueries(['tutorReviews', id]);
+    },
+  });
+
   const { mutate: reportQuestion } = useMutation(reportQuestionAction, {
     onSuccess: () => {
       notificationController.success({
         message: t('common.questionReported'),
       });
       queryClient.invalidateQueries(['tutorQuestions', id]);
+    },
+  });
+  const { mutate: reportReview } = useMutation(reportReviewAction, {
+    onSuccess: () => {
+      notificationController.success({
+        message: t('common.reviewReported'),
+      });
+      queryClient.invalidateQueries(['tutorReviews', id]);
     },
   });
 
@@ -138,10 +173,28 @@ export const ProfilePage = () => {
     });
   };
 
+  const handleSubmitReview = (values: any) => {
+    addReview({
+      tutor_service_id: values.service_id,
+      text: values.review,
+      date: new Date().toISOString(),
+      score: values.score,
+      report_count: 0,
+      status: true,
+    });
+  };
+
   const handleReportQuestion = (question: any) => {
     reportQuestion({
       id: question.id,
       report_count: question.report_count + 1,
+    });
+  };
+
+  const handleReportReview = (review: any) => {
+    reportReview({
+      id: review.id,
+      report_count: review.report_count + 1,
     });
   };
 
@@ -173,9 +226,38 @@ export const ProfilePage = () => {
     }
   };
 
-  if (isLoading || isLoadingSessionData) {
+  if (isLoading || isLoadingSessionData || isLoadingUnreviewedServices) {
     return <Loading />;
   }
+
+  const reviewMenu = (review: any) => (
+    <Menu>
+      {/* {userExistanceQuery?.data === 'user' && review.user_profile_id === sessionData?.session?.user.id && (
+        <Menu.Item
+          icon={<EditOutlined />}
+          style={{ fontSize: '0.8em' }}
+          onClick={() => {
+            addReviewForm.setFieldsValue({
+              service_id: review.tutor_service_id,
+              score: review.score,
+              review: review.text,
+            });
+            toggleAddReviewModal(true);
+          }}
+        >
+          {t('common.edit')}
+        </Menu.Item>
+      )} */}
+      <Menu.Item
+        danger
+        icon={<InfoCircleOutlined />}
+        style={{ fontSize: '0.8em' }}
+        onClick={() => handleReportReview(review)}
+      >
+        {t('common.report')}
+      </Menu.Item>
+    </Menu>
+  );
 
   const menu = (question: any) => (
     <Menu>
@@ -317,11 +399,194 @@ export const ProfilePage = () => {
         <Col span={24}>
           <Tabs defaultActiveKey="1" centered>
             <Tabs.TabPane tab={t('common.reviewsTitle')} key="1">
-              <div></div>
+              {tutorReviewsQuery?.data?.map((review: any, i: any) => (
+                <Card
+                  key={review.id}
+                  style={{ margin: '1em', marginBottom: i + 1 === tutorReviewsQuery?.data?.length ? '5em' : '' }}
+                >
+                  <Row justify="end">
+                    <Dropdown overlay={reviewMenu(review)} placement="bottomRight" arrow>
+                      <Button
+                        style={{
+                          position: 'absolute',
+                          right: 0,
+                          top: 0,
+                          zIndex: 1,
+                        }}
+                        type="text"
+                        icon={<MoreOutlined />}
+                      />
+                    </Dropdown>
+                  </Row>
+                  <Row justify="space-between">
+                    <Col span={6}>
+                      <img
+                        src={`https://source.boringavatars.com/beam/120/${review.user_profiles.name?.split(' ')[0]}%20${
+                          review.user_profiles.name?.split(' ')[1]
+                        }?colors=3ECF8E,1A1E22,008640,F8FBFF`}
+                        alt="user-avatar"
+                        referrerPolicy="no-referrer"
+                        style={{
+                          borderRadius: '50%',
+                          padding: '2px',
+                          boxShadow: '0 0 0 1px #f3f3f333',
+                          pointerEvents: 'none',
+                          width: '3em',
+                          height: '3em',
+                          marginTop: '0.5em',
+                        }}
+                      />
+                    </Col>
+                    <Col span={18}>
+                      <Row justify="space-between">
+                        <Col
+                          span={24}
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginTop: '0.5em',
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: '0.8em',
+                              color: 'var(--primary-color)',
+                            }}
+                          >
+                            {t('common.reviewBy', { name: review.user_profiles.name })}
+                          </span>
+                        </Col>
+                        <Col span={24}>
+                          <span
+                            style={{
+                              fontSize: '0.8em',
+                              color: 'var(--secondary-color)',
+                            }}
+                          >
+                            {t('common.reviewedService', { name: review.tutor_services.name })}
+                          </span>
+                        </Col>
+                        <Col span={24}>
+                          <span
+                            style={{
+                              fontSize: '0.8em',
+                              color: 'var(--disabled-color)',
+                            }}
+                          >
+                            {formatter.format(
+                              Math.round((new Date(review.date).getTime() - Date.now()) / (1000 * 3600 * 24)),
+                              'days',
+                            )}
+                          </span>
+                        </Col>
+                        <Col span={24}>
+                          <Rate
+                            style={{
+                              fontSize: '1.2em',
+                              display: 'flex',
+                              margin: '0 0.5em 0 0',
+                            }}
+                            value={review.score}
+                            disabled
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={24}>
+                          <Paragraph
+                            ellipsis={{
+                              rows: 3,
+                              expandable: true,
+                              symbol: t('common.readMore'),
+                            }}
+                            style={{
+                              fontSize: '0.8em',
+                            }}
+                          >
+                            {review?.text}
+                          </Paragraph>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Card>
+              ))}
+
+              <Modal
+                title={t('common.addReview')}
+                visible={addReviewModal}
+                okText={t('common.submit')}
+                cancelText={t('common.cancel')}
+                onCancel={() => toggleAddReviewModal(false)}
+                onOk={() => {
+                  addReviewForm
+                    .validateFields()
+                    .then((values) => {
+                      handleSubmitReview(values);
+                    })
+                    .catch((info) => {
+                      console.log('Validate Failed:', info);
+                    });
+                }}
+                okButtonProps={{ loading: isAddingReview }}
+              >
+                <BaseForm form={addReviewForm} layout="vertical" onFinish={handleSubmitReview} requiredMark="optional">
+                  <FormItem name="service_id" required rules={[{ required: true, message: t('common.requiredField') }]}>
+                    <Select
+                      placeholder={t('prompts.reviewService')}
+                      style={{ fontSize: '0.8em', width: '100%', lineBreak: 'anywhere' }}
+                      options={unreviewedServices?.map((service: any) => ({
+                        label: `${service.tutor_services.name} | ${service.tutor_services.name} | ${formatter.format(
+                          Math.round((new Date(service.date).getTime() - Date.now()) / (1000 * 3600 * 24)),
+                          'days',
+                        )}`,
+                        value: service.tutor_services.id,
+                      }))}
+                    />
+                  </FormItem>
+                  <FormItem name="score" required rules={[{ required: true, message: t('common.requiredField') }]}>
+                    <Rate
+                      style={{
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        fontSize: '2em',
+                      }}
+                      allowHalf
+                    />
+                  </FormItem>
+                  <FormItem name="review" required rules={[{ required: true, message: t('common.requiredField') }]}>
+                    <TextArea
+                      style={{ fontSize: '0.8em', padding: '0.5em 1em', height: '10em' }}
+                      placeholder={t('prompts.review')}
+                    />
+                  </FormItem>
+                </BaseForm>
+              </Modal>
+              {unreviewedServices && (
+                <Button
+                  type="primary"
+                  shape="circle"
+                  size="large"
+                  style={{
+                    position: 'fixed',
+                    bottom: '5em',
+                    right: '1em',
+                  }}
+                  onClick={() => toggleAddReviewModal(true)}
+                >
+                  <PlusOutlined style={{ transform: 'scale(1.2)' }} />
+                </Button>
+              )}
             </Tabs.TabPane>
             <Tabs.TabPane tab={t('common.questions')} key="2">
-              {tutorQuestionsQuery?.data?.map((question: any) => (
-                <Card key={question.id} style={{ margin: '1em', marginBottom: '5em' }}>
+              {tutorQuestionsQuery?.data?.map((question: any, i: any) => (
+                <Card
+                  key={question.id}
+                  style={{ margin: '1em', marginBottom: i + 1 === tutorQuestionsQuery?.data?.length ? '5em' : '' }}
+                >
                   <Row justify="space-between">
                     <Col span={6}>
                       <img
