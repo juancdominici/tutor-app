@@ -1,5 +1,25 @@
-import { checkUserExistance } from './auth.api';
+import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import supabase from './supabase';
+
+export const getServiceUseStatus = async (service: any) => {
+  const { data, error } = await supabase
+    .from('tutor_services')
+    .select('*, appointments!inner(*)')
+    .eq('service_id', service.id)
+    .neq('appointments.status', APPOINTMENT_STATUS.PENDING_APPROVAL)
+    .neq('appointments.status', APPOINTMENT_STATUS.COMPLETE)
+    .neq('appointments.status', APPOINTMENT_STATUS.REJECTED)
+    .eq('status', true);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  // If user users have appointments with this service, return true
+  if (data && data?.length > 0) {
+    throw new Error('El servicio ya está en uso.');
+  }
+};
 
 export const getUserServices = async () => {
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -19,7 +39,7 @@ export const getUserServices = async () => {
 };
 
 export const postService = async (service: any) => {
-  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  const { data: sessionData } = await supabase.auth.getSession();
   const { error } = await supabase
     .from('tutor_services')
     .insert({ ...service, tutor_id: sessionData?.session?.user?.id })
@@ -31,6 +51,8 @@ export const postService = async (service: any) => {
 };
 
 export const putService = async (service: any) => {
+  await getServiceUseStatus(service);
+
   const { error } = await supabase
     .from('tutor_services')
     .update({ ...service })
@@ -51,8 +73,10 @@ export const getService = async (id: any) => {
   return data;
 };
 
-export const deleteService = async (id: any) => {
-  const { data, error } = await supabase.from('tutor_services').delete().eq('id', id);
+export const deleteService = async (service: any) => {
+  await getServiceUseStatus(service);
+
+  const { data, error } = await supabase.from('tutor_services').delete().eq('id', service.id);
 
   if (error) {
     throw new Error(error.message);

@@ -58,7 +58,7 @@ export const ServiceList: React.FC = () => {
       <Menu.Item onClick={() => navigate(`/tutor/services/edit/${service.id}`)} icon={<EditOutlined />}>
         {t('common.edit')}
       </Menu.Item>
-      <Menu.Item onClick={() => deleteService(service.id)} danger icon={<DeleteOutlined />}>
+      <Menu.Item onClick={() => deleteService(service)} danger icon={<DeleteOutlined />}>
         {t('common.delete')}
       </Menu.Item>
     </Menu>

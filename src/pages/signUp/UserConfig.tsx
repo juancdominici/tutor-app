@@ -118,7 +118,17 @@ export const UserConfig = () => {
       <BaseForm.Item
         name="birthday"
         label={t('prompts.birthday')}
-        rules={[{ required: true, message: t('common.requiredField') }]}
+        rules={[
+          { required: true, message: t('common.requiredField') },
+          {
+            validator: (_, value) => {
+              if (value && value.isBefore(Dates.getDate(1576789200000))) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error(t('common.birthdayError')));
+            },
+          },
+        ]}
         style={{
           width: '100%',
         }}

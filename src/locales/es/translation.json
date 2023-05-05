@@ -108,7 +108,8 @@
     "reviewReported": "¡Reseña reportada!\nGracias por ayudarnos a mejorar.",
     "addReview": "Agregar reseña",
     "reviewBy": "{{name}}",
-    "reviewedService": "sobre {{name}}"
+    "reviewedService": "sobre {{name}}",
+    "birthdayError": "Debes ser mayor de 18 años para usar la plataforma."
   },
   "constants": {
     "location": {
