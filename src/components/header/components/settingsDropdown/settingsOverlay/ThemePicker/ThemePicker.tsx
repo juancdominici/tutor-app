@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
 import { setTheme } from '@app/store/slices/themeSlice';
 import { setNightMode } from '@app/store/slices/nightModeSlice';
 
-export const ThemePicker: React.FC = () => {
+export const ThemePicker = ({ withText = false }: any) => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
 
@@ -16,6 +16,7 @@ export const ThemePicker: React.FC = () => {
 
   return (
     <MoonSunSwitch
+      withText={withText}
       isMoonActive={theme === 'dark'}
       onClickMoon={() => handleClickButton('dark')}
       onClickSun={() => handleClickButton('light')}

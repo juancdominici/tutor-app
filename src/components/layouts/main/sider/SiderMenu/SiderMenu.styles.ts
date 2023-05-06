@@ -10,6 +10,10 @@ export const Menu = styled(AntMenu)`
     width: 100%;
     display: block;
   }
+  p {
+    width: 100%;
+    display: block;
+  }
 
   .ant-menu-item,
   .ant-menu-submenu {

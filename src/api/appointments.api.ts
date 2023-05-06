@@ -18,6 +18,7 @@ export const postRequest = async (payload: any) => {
       address_id: payload.address_id,
       tutor_service_id: payload.tutor_service_id,
       user_profile_id: sessionData?.session?.user?.id,
+      last_modified: new Date(),
     })
     .select()
     .single();
@@ -186,7 +187,7 @@ export const getTutorRequests = async () => {
 export const changeAppointmentStatus = async (payload: any) => {
   const { data, error } = await supabase
     .from('appointments')
-    .update({ status: payload.status })
+    .update({ status: payload.status, last_modified: new Date() })
     .eq('id', payload.id)
     .select();
 

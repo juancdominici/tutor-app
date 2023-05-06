@@ -20,34 +20,13 @@ const customIcons: Record<number, React.ReactNode> = {
   5: <SmileOutlined />,
 };
 
-export const Filters = ({ toggleSider }: any) => {
+export const Filters = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { priceFilter, serviceTypeFilter, reviewFilter } = useAppSelector((state) => state.filters);
 
   return (
     <Row justify="center">
-      <Col span={18}>
-        <Button
-          icon={
-            <DoubleLeftOutlined
-              onClick={toggleSider}
-              style={{
-                fontSize: '1.5em',
-              }}
-            />
-          }
-          style={{
-            position: 'absolute',
-            top: '5px',
-            right: '-20px',
-            zIndex: 999,
-          }}
-          size="large"
-          shape="circle"
-          type="text"
-        />
-      </Col>
       <Col span={18} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p style={{ color: 'var(--text-light-color)', margin: '1em', marginTop: '3em', fontSize: '0.9em' }}>
           {t('filter.price')}

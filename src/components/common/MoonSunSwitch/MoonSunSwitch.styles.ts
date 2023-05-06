@@ -10,6 +10,7 @@ export const Btn = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.875rem;
 
   &.ant-btn-icon-only.ant-btn-sm {
     height: 1.875rem;

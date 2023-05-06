@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { Col, Collapse, Menu } from 'antd';
 import { BurgerIcon } from '@app/components/common/Burger/BurgerIcon';
 import { BORDER_RADIUS, LAYOUT, media } from '@app/styles/themes/constants';
+import { BellOutlined } from '@ant-design/icons';
 
 export const DropdownMenu = styled(Menu)`
   line-height: 1.5715;
@@ -63,6 +64,15 @@ export const MobileBurger = styled(BurgerIcon)`
     css`
       color: var(--text-secondary-color);
     `};
+`;
+
+export const MobileBell = styled(BellOutlined)`
+  width: 1.5rem;
+  fontsize: 1.5rem;
+  margin-right: 1rem;
+  margin-top: 0.75rem;
+  color: var(--text-main-color);
+  font-size: 1.5rem;
 `;
 
 export const SearchColumn = styled(Col)`

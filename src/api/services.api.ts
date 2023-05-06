@@ -76,7 +76,7 @@ export const getService = async (id: any) => {
 export const deleteService = async (service: any) => {
   await getServiceUseStatus(service);
 
-  const { data, error } = await supabase.from('tutor_services').delete().eq('id', service.id);
+  const { data, error } = await supabase.from('tutor_services').update({ status: false }).eq('id', service.id);
 
   if (error) {
     throw new Error(error.message);

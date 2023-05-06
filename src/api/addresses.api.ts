@@ -110,7 +110,7 @@ export const getAddress = async (id: any) => {
 };
 
 export const deleteAddress = async (id: any) => {
-  const { data, error } = await supabase.from('addresses').delete().eq('id', id);
+  const { data, error } = await supabase.from('addresses').update({ status: false }).eq('id', id);
 
   if (error) {
     throw new Error(error.message);

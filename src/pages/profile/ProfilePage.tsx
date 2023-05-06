@@ -471,7 +471,7 @@ export const ProfilePage = () => {
                           <span
                             style={{
                               fontSize: '0.8em',
-                              color: 'var(--disabled-color)',
+                              color: 'var(--text-plain-color)',
                             }}
                           >
                             {formatter.format(

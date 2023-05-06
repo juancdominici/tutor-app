@@ -248,7 +248,7 @@ export const AppointmentList: React.FC = () => {
                 </Button>
                 <small
                   style={{
-                    color: 'var(--disabled-color)',
+                    color: 'var(--text-plain-color)',
                     fontSize: '0.8em',
                     padding: '1em 0.5em',
                   }}
@@ -333,7 +333,7 @@ export const AppointmentList: React.FC = () => {
       case APPOINTMENT_STATUS.REJECTED:
         return {
           color: 'var(--text-secondary-color)',
-          backgroundColor: 'var(--disabled-color)',
+          backgroundColor: 'var(--text-plain-color)',
         };
       case APPOINTMENT_STATUS.IN_PROGRESS:
         return {
@@ -586,7 +586,7 @@ export const AppointmentList: React.FC = () => {
                         <strong>{t('common.name')}: </strong>
                         {appointment.tutor_services.name}
                       </p>
-                      <small style={{ fontSize: '0.7em', color: 'var(--disabled-color)', padding: '0.5em' }}>
+                      <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
                         {t('common.offeredBy', { tutor: appointment.tutor_services.tutors.name })}
                       </small>
                     </div>

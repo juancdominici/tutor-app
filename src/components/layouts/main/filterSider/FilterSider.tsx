@@ -1,10 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Overlay from '../../../common/Overlay';
 import { useResponsive } from 'hooks/useResponsive';
 import * as S from './FilterSider.styles';
 import { Filters } from './Filters';
-import { Button, Col, Row } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
 
 interface MainSiderProps {
   isCollapsed: boolean;
@@ -26,7 +24,7 @@ const FilterSider: React.FC<MainSiderProps> = ({ isCollapsed, setCollapsed, ...p
         {...props}
       >
         <S.SiderContent>
-          <Filters toggleSider={toggleSider} />
+          <Filters />
         </S.SiderContent>
       </S.Sider>
       <Overlay onClick={toggleSider} show={!isCollapsed} />

@@ -25,6 +25,7 @@ import { RequestSuccess } from '@app/pages/appointments/RequestSuccess';
 import { AppointmentPaymentSuccess } from '@app/pages/appointments/AppointmentPaymentSuccess';
 import { AboutUsPage } from '@app/pages/AboutUsPage';
 import { ContactPage } from '@app/pages/ContactPage';
+import { SettingsPage } from '@app/pages/SettingsPage';
 
 const RequireAuthPage = React.lazy(() => import('@app/components/router/RequireAuth'));
 const RequireAuth = withLoading(RequireAuthPage);
@@ -75,6 +76,7 @@ export const AppRouter: React.FC = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/aboutUs" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/addresses/new" element={<AddressForm />} />
           <Route path="/addresses/edit/:id" element={<AddressForm />} />
           <Route path="/addresses" element={<AddressList />} />

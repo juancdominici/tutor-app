@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from '../../../header/Header';
 import MainSider from '../sider/MainSider/MainSider';
 import MainContent from '../MainContent/MainContent';
-import { MainHeader } from '../MainHeader/MainHeader';
 import * as S from './MainLayout.styles';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useResponsive } from '@app/hooks/useResponsive';
-import FilterSider from '../filterSider/FilterSider';
 
 const MainLayout: React.FC = () => {
   const [isTwoColumnsLayout, setIsTwoColumnsLayout] = useState(true);
   const [siderCollapsed, setSiderCollapsed] = useState(true);
-  const [filterSiderCollapsed, setFilterSiderCollapsed] = useState(true);
   const { isDesktop } = useResponsive();
   const location = useLocation();
-
-  const toggleSider = () => setSiderCollapsed(!siderCollapsed);
-  const toggleFilterSider = () => setFilterSiderCollapsed(!siderCollapsed);
 
   useEffect(() => {
     setIsTwoColumnsLayout(['/'].includes(location.pathname) && isDesktop);
@@ -25,7 +18,6 @@ const MainLayout: React.FC = () => {
   return (
     <S.LayoutMaster>
       <MainSider isCollapsed={siderCollapsed} setCollapsed={setSiderCollapsed} />
-      <FilterSider isCollapsed={filterSiderCollapsed} setCollapsed={setFilterSiderCollapsed} />
       <S.LayoutMain>
         <div
           style={{

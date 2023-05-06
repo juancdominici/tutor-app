@@ -202,6 +202,18 @@ export default createGlobalStyle`
     z-index: 999;
   }
 
+  .filter-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border-radius: 50%;
+    color: var(--white);
+    border: 0px;
+    background: var(--primary-color);
+    font-size: 1.5rem;
+    border-width: 2px;
+    z-index: 999;
+  }
   
 .blob {
     background: black;

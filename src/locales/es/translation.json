@@ -109,7 +109,12 @@
     "addReview": "Agregar reseña",
     "reviewBy": "{{name}}",
     "reviewedService": "sobre {{name}}",
-    "birthdayError": "Debes ser mayor de 18 años para usar la plataforma."
+    "birthdayError": "Debes ser mayor de 18 años para usar la plataforma.",
+    "settings": "Configuración",
+    "pwa": "Instalar app",
+    "notifications": "Notificaciones",
+    "darkTheme": "Modo oscuro",
+    "lightTheme": "Modo claro"
   },
   "constants": {
     "location": {
@@ -181,6 +186,13 @@
     "registerEmailSent": "Se envió un email a tu casilla para confirmar tu cuenta."
   },
   "notifications": {
+    "appointments": {
+      "pending_approval": "¡Tenés un nuevo turno pendiente de aprobación!",
+      "rejected": "Rechazaron tu turno, podés solicitar otro turno buscando un nuevo tutor.",
+      "pending_payment": "¡Tenés un nuevo turno pendiente de pago!\nPodés pagarlo desde la sección de turnos.",
+      "complete": "¡Completaste un turno!\nPronto podrás verlo reflejado en tu cuenta de Mercado Pago.",
+      "reported": "Reportaron tu turno, nos pondremos en contacto con vos."
+    },
     "mpAuthSuccess": "¡Mercado Pago conectado con éxito!",
     "mpAuthSuccessCaption": "Ahora podés recibir pagos de tus clientes.",
     "mpAuthSuccessSubCaption": "Te redireccionaremos a la página de inicio en 3 segundos.",

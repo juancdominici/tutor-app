@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SettingOutlined } from '@ant-design/icons';
 import { Dropdown } from '@app/components/common/Dropdown/Dropdown';
-import { Button } from '@app/components/common/buttons/Button/Button';
-import { HeaderActionWrapper } from '@app/components/header/Header.styles';
-import { SettingsOverlay } from './settingsOverlay/SettingsOverlay/SettingsOverlay';
+import { Menu } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export const SettingsDropdown: React.FC = () => {
-  const [isOpened, setOpened] = useState(false);
+  const { t } = useTranslation();
 
   return (
-    <Dropdown overlay={<SettingsOverlay />} trigger={['click']} onVisibleChange={setOpened}>
-      <HeaderActionWrapper>
-        <Button type={isOpened ? 'ghost' : 'text'} icon={<SettingOutlined />} />
-      </HeaderActionWrapper>
-    </Dropdown>
+    <Menu.Item key={'settings'} title="" icon={<SettingOutlined />}>
+      <Dropdown overlay={<></>} trigger={['click']}>
+        <Link to={'#'}>{t('common.settings')}</Link>
+      </Dropdown>
+    </Menu.Item>
   );
 };

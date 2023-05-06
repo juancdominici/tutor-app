@@ -1,23 +1,25 @@
 import React from 'react';
 import { Col, Row } from 'antd';
-import { SettingsDropdown } from '../components/settingsDropdown/SettingsDropdown';
 import * as S from '../Header.styles';
-import { SearchOutlined } from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 interface MobileHeaderProps {
-  toggleFilterSider: () => void;
+  toggleNotificationSider: () => void;
   toggleSider: () => void;
   isSiderOpened: boolean;
 }
 
-export const MobileHeader: React.FC<MobileHeaderProps> = ({ toggleFilterSider, toggleSider, isSiderOpened }) => {
+export const MobileHeader: React.FC<MobileHeaderProps> = ({ toggleNotificationSider, toggleSider, isSiderOpened }) => {
+  const navigate = useNavigate();
+
   return (
     <Row align="top" justify="space-around">
       <Col>
-        <SettingsDropdown />
+        <S.MobileBell onClick={toggleNotificationSider} />
       </Col>
       <Col>
-        <SearchOutlined onClick={toggleFilterSider} className="middle-button" />
+        <HomeOutlined onClick={() => navigate('/home')} className="middle-button" />
       </Col>
       <Col>
         <S.MobileBurger onClick={toggleSider} isCross={isSiderOpened} />

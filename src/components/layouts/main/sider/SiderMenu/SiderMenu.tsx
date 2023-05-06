@@ -9,7 +9,7 @@ import {
   SidebarNavigationItem,
 } from '../sidebarNavigation';
 import { Divider, Menu } from 'antd';
-import { MessageOutlined, RollbackOutlined, TagsOutlined } from '@ant-design/icons';
+import { MessageOutlined, RollbackOutlined, SettingOutlined, TagsOutlined } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
 import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.api';
 
@@ -60,12 +60,16 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     return null;
   }
 
+  const handleClick = (e: any) => {
+    setCollapsed(true);
+  };
+
   return (
     <S.Menu
       mode="inline"
       defaultSelectedKeys={defaultSelectedKeys}
       defaultOpenKeys={defaultOpenKeys}
-      onClick={() => setCollapsed(true)}
+      onClick={(e) => handleClick(e)}
     >
       {sidebarNavigation.map((nav) =>
         nav.children && nav.children.length > 0 ? (
@@ -94,6 +98,9 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       </Menu.Item>
       <Menu.Item key={'contact'} title="" icon={<MessageOutlined />}>
         <Link to="/contact">{t('common.contact')}</Link>
+      </Menu.Item>
+      <Menu.Item key={'settings'} title="" icon={<SettingOutlined />}>
+        <Link to={'/settings'}>{t('common.settings')}</Link>
       </Menu.Item>
       <Divider />
       <Menu.Item key={'logout'} title="" icon={<RollbackOutlined />}>
