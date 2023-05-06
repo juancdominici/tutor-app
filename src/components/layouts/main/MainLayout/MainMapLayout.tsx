@@ -48,7 +48,7 @@ const MainMapLayout: React.FC = () => {
         </MainMapContent>
         <Button
           className="filter-icon"
-          style={{ display: showFilterButton && !notificationDrawerOpen ? 'block' : 'none' }}
+          style={{ display: showFilterButton && !notificationDrawerOpen && siderCollapsed ? 'block' : 'none' }}
           onClick={() => setFilterSiderCollapsed(!filterSiderCollapsed)}
           icon={filterSiderCollapsed ? <SearchOutlined /> : <CloseOutlined />}
         />

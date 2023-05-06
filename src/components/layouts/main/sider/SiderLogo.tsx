@@ -4,7 +4,7 @@ import logo from 'assets/logo.png';
 import logoDark from 'assets/logo-dark.png';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
-import { getUserData } from '@app/api/auth.api';
+import { checkUserExistance, getUserData } from '@app/api/auth.api';
 import { Loading } from '@app/components/common/Loading';
 
 interface SiderLogoProps {
@@ -13,6 +13,7 @@ interface SiderLogoProps {
 }
 export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSider }) => {
   const [username, setUsername] = useState('Tutor');
+  const { data: userType } = useQuery(['userType'], checkUserExistance);
 
   const { data: userData, isFetching } = useQuery(['user'], getUserData, {
     onSuccess: (data) => {
@@ -34,7 +35,7 @@ export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSi
         </>
       ) : (
         <S.SiderLogoDiv>
-          <S.SiderLogoLink to={`/profile/${userData?.userData?.id}`}>
+          <S.SiderLogoLink to={userType === 'tutor' ? `/profile/${userData?.userData?.id}` : '#'}>
             <img
               src={`https://source.boringavatars.com/beam/120/${username?.split(' ')[0]}%20${
                 username?.split(' ')[1]
