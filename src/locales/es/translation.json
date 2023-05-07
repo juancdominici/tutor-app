@@ -114,7 +114,8 @@
     "pwa": "Instalar app",
     "notifications": "Notificaciones",
     "darkTheme": "Modo oscuro",
-    "lightTheme": "Modo claro"
+    "lightTheme": "Modo claro",
+    "faq": "Preguntas frecuentes"
   },
   "constants": {
     "location": {
@@ -146,6 +147,41 @@
   "error404": {
     "comeBack": "Volver al inicio",
     "notFound": "Página no encontrada"
+  },
+  "faq": {
+    "noAnswer": "¿No encontraste la respuesta a tu pregunta?",
+    "contactUs": "Podes contactarnos ",
+    "here": "acá",
+    "questions": {
+      "faq-01": "¿Cuánto cobra Tutor de comisión?",
+      "faq-02": "¿Cuándo y cómo se cobran los servicios realizados?",
+      "faq-03": "¿Cómo funciona la aplicación?",
+      "faq-04": "¿En donde funciona la aplicación?",
+      "faq-05": "¿Los servicios se ofrecen en mi casa o tengo que ir a la casa de mi tutor?",
+      "faq-06": "¿Hay una edad minima o maxima para poder trabajar con Tutor?",
+      "faq-07": "¿Qué tipo de servicios se ofrecen en Tutor?",
+      "faq-08": "¿Cuánto se gana?",
+      "faq-09": "¿Cómo me contacto con el tutor?",
+      "faq-10": "¿Por qué no puedo hacer más preguntas en el perfil de un tutor?",
+      "faq-11": "¿Por qué no veo direcciones al crear un servicio?",
+      "faq-12": "¿Por qué no veo direcciones al contratar un servicio?",
+      "faq-13": "¿Por qué no veo mi pregunta / reseña en el perfil del tutor?"
+    },
+    "answers": {
+      "faq-01": "Tutor cobra una comisión del 5%.",
+      "faq-02": "El cobro del servicio es instantaneo. Una vez que el cliente paga el servicio, el dinero se acredita en tu cuenta de Mercado Pago.",
+      "faq-03": "Tutor es una aplicación que conecta a dueños de plantas con cuidadores de plantas.",
+      "faq-04": "La aplicación funciona en la República Argentina.",
+      "faq-05": "Los servicios pueden ser ofrecidos en tu casa o en la casa del tutor (incluso online), dependiendo del servicio que elijas.",
+      "faq-06": "Para poder trabajar con Tutor, debes ser mayor de 18 años.",
+      "faq-07": "En Tutor se ofrecen servicios de cuidado de plantas, consejería y diseño. Tambien podés encontrar servicios de guardería y cuidado especial, asi como servicios personalizados.",
+      "faq-08": "El precio de los servicios es fijado por el tutor.",
+      "faq-09": "Los datos de contacto del tutor se comparten una vez que el servicio es aceptado por el mismo.",
+      "faq-10": "Para evitar spam, solo se pueden hacer preguntas una vez que la pregunta anterior fue respondida.",
+      "faq-11": "Para poder terminar de configurar un servicio en tu domicilio debes tener al menos una dirección cargada en tu cuenta. Podés cargar una dirección desde la sección de direcciones.",
+      "faq-12": "Para poder seleccionar una dirección, es necesario que tengas al menos una dirección cargada en tu cuenta. Podés cargar una dirección desde la sección de direcciones.",
+      "faq-13": "Tu pregunta / reseña puede haber sido reportada por otros usuarios. Te recordamos que no se permiten preguntas / reseñas ofensivas o que no estén relacionadas con el servicio."
+    }
   },
   "filter": {
     "price": "Precio",

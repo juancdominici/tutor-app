@@ -36,11 +36,11 @@ export const SettingsPage: React.FC = ({ ...props }) => {
             color: 'var(--primary-color)',
           }}
         >
-          {t('common.services')}
+          {t('common.settings')}
         </h1>
-        <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
+        {/* <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
           <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
-        </Button>
+        </Button> */}
       </Row>
       <DropdownCollapse bordered={false} ghost defaultActiveKey={['languagePicker', 'themePicker', 'nightMode']}>
         <DropdownCollapse.Panel header={t('header.changeLanguage')} showArrow={false} disabled key="languagePicker">
