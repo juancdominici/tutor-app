@@ -1,4 +1,4 @@
-import { DoubleLeftOutlined, FrownOutlined, MehOutlined, SearchOutlined, SmileOutlined } from '@ant-design/icons';
+import Icon from '@ant-design/icons';
 import { SERVICE_TYPE } from '@app/constants/constants';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import {
@@ -7,18 +7,11 @@ import {
   setReviewFilter,
   setServiceTypeFilter,
 } from '@app/store/slices/filtersSlice';
-import { Button, Col, Divider, InputNumber, Rate, Row, Select } from 'antd';
-import React, { useState } from 'react';
+import { Col, Divider, InputNumber, Rate, Row, Select } from 'antd';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-
-const customIcons: Record<number, React.ReactNode> = {
-  1: <FrownOutlined />,
-  2: <FrownOutlined />,
-  3: <MehOutlined />,
-  4: <SmileOutlined />,
-  5: <SmileOutlined />,
-};
+import { ReactComponent as leavesSvg } from '../../../../assets/images/leaves.svg';
 
 export const Filters = () => {
   const { t } = useTranslation();
@@ -75,7 +68,8 @@ export const Filters = () => {
       </Col>
       <Col span={18} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Rate
-          style={{ margin: '0.5em 1em 1em 1em', fontSize: '2em', lineHeight: '0' }}
+          character={<Icon component={leavesSvg} />}
+          style={{ margin: '0.5em 1em 1em 1em', fontSize: '2em', lineHeight: '0', color: 'var(--primary-color)' }}
           value={reviewFilter}
           onChange={(value) => dispatch(setReviewFilter(value))}
         />

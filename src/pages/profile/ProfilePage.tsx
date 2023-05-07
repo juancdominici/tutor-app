@@ -1,8 +1,7 @@
-import {
+import Icon, {
   ArrowLeftOutlined,
   DoubleLeftOutlined,
   DoubleRightOutlined,
-  EditOutlined,
   FormOutlined,
   InfoCircleOutlined,
   MoreOutlined,
@@ -36,6 +35,7 @@ import FormItem from 'antd/es/form/FormItem';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ReactComponent as leavesSvg } from '../../assets/images/leaves.svg';
 
 export const ProfilePage = () => {
   const { language } = useLanguage();
@@ -323,8 +323,10 @@ export const ProfilePage = () => {
                 <span>{tutorProfileData?.name}</span>
               </div>
               <Rate
+                character={<Icon component={leavesSvg} />}
                 style={{
-                  fontSize: '1.2em',
+                  color: 'var(--primary-color)',
+                  fontSize: '1.5em',
                   display: 'flex',
                   margin: '0 0.5em 0 0',
                 }}
@@ -482,8 +484,10 @@ export const ProfilePage = () => {
                         </Col>
                         <Col span={24}>
                           <Rate
+                            character={<Icon component={leavesSvg} />}
                             style={{
-                              fontSize: '1.2em',
+                              color: 'var(--primary-color)',
+                              fontSize: '1.5em',
                               display: 'flex',
                               margin: '0 0.5em 0 0',
                             }}
@@ -547,13 +551,16 @@ export const ProfilePage = () => {
                   </FormItem>
                   <FormItem name="score" required rules={[{ required: true, message: t('common.requiredField') }]}>
                     <Rate
+                      character={<Icon component={leavesSvg} />}
                       style={{
+                        color: 'var(--primary-color)',
                         display: 'flex',
                         width: '100%',
                         justifyContent: 'center',
                         alignItems: 'center',
                         fontSize: '2em',
                       }}
+                      defaultValue={5}
                       allowHalf
                     />
                   </FormItem>
@@ -772,8 +779,10 @@ export const ProfilePage = () => {
                     </Col>
                     <Col span={12}>
                       <Rate
+                        character={<Icon component={leavesSvg} />}
                         style={{
-                          fontSize: '1.2em',
+                          color: 'var(--primary-color)',
+                          fontSize: '1.5em',
                           display: 'flex',
                           margin: '0 0.5em 0.5em 0',
                         }}

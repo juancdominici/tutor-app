@@ -11,6 +11,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DashboardPage } from './DashboardPage';
+import { ReactComponent as leavesSvg } from '../assets/images/leaves.svg';
+import Icon from '@ant-design/icons';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -254,7 +256,9 @@ export const HomePage = () => {
                               </span>
                             </div>
                             <Rate
+                              character={<Icon component={leavesSvg} />}
                               style={{
+                                color: 'var(--primary-color)',
                                 fontSize: '1.2em',
                                 display: 'flex',
                                 margin: '0 0.5em 0 0',
