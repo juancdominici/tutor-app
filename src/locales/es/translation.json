@@ -1,5 +1,7 @@
 {
   "common": {
+    "nothingHere": "Nada por aquí",
+    "priceBy": "Por un monto de {{price}}",
     "beTutor": "¡Quiero ser tutor!",
     "needTutor": "¡Necesito un tutor!",
     "termsAndConditionsPt1": "Al registrarte, aceptas los ",

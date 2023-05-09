@@ -1,14 +1,12 @@
 import React from 'react';
 import Overlay from '../../../common/Overlay';
-import { Button, Card, Col, Drawer, Row, Spin } from 'antd';
+import { Card, Col, Drawer, Empty, Row, Spin } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { getTutorNotifications, getUserNotifications } from '@app/api/dashboard.api';
 import { checkUserExistance } from '@app/api/auth.api';
-import { Notification } from '@app/components/common/Notification/Notification';
-import { Panel } from '@app/components/common/Collapse/Collapse';
-import moment from 'moment';
+
 import { useTranslation } from 'react-i18next';
-import { APPOINTMENT_STATUS, LOCATION_TYPE } from '@app/constants/constants';
+import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import { useLanguage } from '@app/hooks/useLanguage';
 
 const NotificationDrawer = ({ isOpen, setOpen }: any) => {
@@ -37,12 +35,6 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
       refetchOnWindowFocus: false,
     },
   );
-
-  const computedAddress = (address: any) => {
-    if (address === null) return t(`constants.location.${LOCATION_TYPE[2]}`);
-
-    return `${address.street}, ${address.number} - ${address.province}, ${address.country}`;
-  };
 
   const computedStatus = (appointment: any) => {
     switch (appointment.status) {
@@ -152,64 +144,50 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
               </Card>
             ))}
             {tutorNotifications?.map((appointment: any) => (
-              <Panel
-                style={{
-                  border: 'none',
-                }}
-                header={
-                  <p style={{ fontSize: '0.8em', margin: 5 }}>
-                    <strong>{t('common.name')}: </strong>
-                    {appointment.tutor_services.name}
-                  </p>
-                }
+              <Card
                 key={appointment.id}
-                extra={
-                  <p
-                    style={{
-                      marginLeft: '26px',
-                      fontSize: '0.8em',
-                      borderRadius: '50px',
-                      width: 'fit-content',
-                      whiteSpace: 'nowrap',
-                      padding: '0.2em 1em',
-                    }}
-                  >
-                    {t(
-                      `constants.appointment_status.${Object.values(APPOINTMENT_STATUS).find(
-                        (status) => status === appointment.status,
-                      )}`,
-                    )}
-                  </p>
-                }
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  margin: '1em 0',
+                  ...computedNotificationColor(appointment),
+                }}
               >
-                <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                  <strong>{t('common.creationDate')}: </strong>
-                  {moment(appointment.created).format('DD/MM/YYYY HH:mm')}hs
-                </p>
-                <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                  <strong>{t('common.datetime')}: </strong>
-                  {moment(`${appointment.date} ${appointment.time}`).format('DD/MM/YYYY HH:mm')}hs
-                </p>
-                <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                  <strong>{t('common.location')}: </strong>
-                  {computedAddress(appointment.addresses)}
-                </p>
-
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: '100%',
-                  }}
-                >
-                  <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                    <strong>{t('common.totalPrice')}: </strong>${calcAppointmentPrice(appointment)}
-                  </p>
-                </div>
-              </Panel>
+                <Row justify="space-between">
+                  <Col>
+                    <small style={{ fontSize: '0.7em', color: 'var(--secondary-color)', padding: '0.5em' }}>
+                      {t('common.service')}: {appointment.tutor_services.name}
+                    </small>
+                  </Col>
+                  <Col>
+                    <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
+                      {formatter.format(
+                        Math.round((new Date(appointment?.last_modified).getTime() - Date.now()) / (1000 * 3600 * 24)),
+                        'days',
+                      )}
+                    </small>
+                  </Col>
+                  <Col span={24}>
+                    <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
+                      {t('common.priceBy', { price: `${calcAppointmentPrice(appointment)}$` })}
+                    </small>
+                  </Col>
+                  <Col span={24}>
+                    <p style={{ fontSize: '0.8em', margin: 5, whiteSpace: 'pre-line' }}>
+                      {computedStatus(appointment)}
+                    </p>
+                  </Col>
+                </Row>
+              </Card>
             ))}
-            {userNotifications?.length === 0 && tutorNotifications?.length === 0 && <div>No notifications</div>}
+            {!userNotifications?.length && !tutorNotifications?.length && (
+              <Empty
+                description={t('common.nothingHere')}
+                style={{
+                  marginTop: '2em',
+                }}
+              />
+            )}
           </div>
         )}
       </Drawer>

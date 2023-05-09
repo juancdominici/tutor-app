@@ -10,6 +10,8 @@ import FilterSider from '../filterSider/FilterSider';
 import { Button } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import NotificationDrawer from '../notificationDrawer/NotificationDrawer';
+import { useQuery } from '@tanstack/react-query';
+import { checkUserExistance } from '@app/api/auth.api';
 
 const MainMapLayout: React.FC = () => {
   const [isTwoColumnsLayout, setIsTwoColumnsLayout] = useState(true);
@@ -22,6 +24,12 @@ const MainMapLayout: React.FC = () => {
 
   const toggleSider = () => setSiderCollapsed(!siderCollapsed);
   const toggleNotificationDrawer = () => setNotificationDrawerOpen(!notificationDrawerOpen);
+  const routeIsHome = () => location.pathname === '/home';
+
+  const { data: userType } = useQuery(['userType'], () => checkUserExistance(), {
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
   useEffect(() => {
     setIsTwoColumnsLayout(isDesktop);
@@ -48,7 +56,12 @@ const MainMapLayout: React.FC = () => {
         </MainMapContent>
         <Button
           className="filter-icon"
-          style={{ display: showFilterButton && !notificationDrawerOpen && siderCollapsed ? 'block' : 'none' }}
+          style={{
+            display:
+              showFilterButton && !notificationDrawerOpen && siderCollapsed && routeIsHome() && userType !== 'tutor'
+                ? 'block'
+                : 'none',
+          }}
           onClick={() => setFilterSiderCollapsed(!filterSiderCollapsed)}
           icon={filterSiderCollapsed ? <SearchOutlined /> : <CloseOutlined />}
         />
