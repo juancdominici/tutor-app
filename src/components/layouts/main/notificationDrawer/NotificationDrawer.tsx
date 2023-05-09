@@ -13,7 +13,7 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
   const toggleSider = () => setOpen(!isOpen);
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const formatter = new Intl.RelativeTimeFormat(language);
+  const formatter = new Intl.RelativeTimeFormat(language, { numeric: 'auto' });
 
   const { data: userType, isFetching } = useQuery(['userType'], () => checkUserExistance(), {
     refetchOnWindowFocus: false,
@@ -85,6 +85,30 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
     return total_price;
   };
 
+  const computedDate = (date: any) => {
+    const diff = Math.round((new Date().getTime() - Date.now()) / 1000);
+
+    const hour = 60 * 60;
+    const day = hour * 24;
+    const week = day * 7;
+    const month = day * 30;
+    const year = month * 12;
+
+    let unitType: any;
+
+    if (diff < week) {
+      unitType = 'day';
+    } else if (diff < month) {
+      unitType = 'week';
+    } else if (diff < year) {
+      unitType = 'month';
+    } else {
+      unitType = 'year';
+    }
+
+    return formatter.format(Math.round(diff), unitType);
+  };
+
   return (
     <>
       <Drawer
@@ -93,6 +117,10 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
         onClose={() => setOpen(false)}
         getContainer={false}
         closable={false}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+        }}
         bodyStyle={{
           padding: '1em',
         }}
@@ -124,10 +152,7 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
                   </Col>
                   <Col>
                     <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
-                      {formatter.format(
-                        Math.round((new Date(appointment?.last_modified).getTime() - Date.now()) / (1000 * 3600 * 24)),
-                        'days',
-                      )}
+                      {computedDate(appointment?.last_modified)}
                     </small>
                   </Col>
                   <Col span={24}>
@@ -161,10 +186,7 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
                   </Col>
                   <Col>
                     <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
-                      {formatter.format(
-                        Math.round((new Date(appointment?.last_modified).getTime() - Date.now()) / (1000 * 3600 * 24)),
-                        'days',
-                      )}
+                      {computedDate(appointment?.last_modified)}
                     </small>
                   </Col>
                   <Col span={24}>

@@ -429,7 +429,7 @@ export const AppointmentList: React.FC = () => {
       >
         {filteredAppointments()?.map((appointment: any) => {
           return (
-            <>
+            <React.Fragment key={appointment.id}>
               {userType === 'tutor' ? (
                 <Panel
                   style={{
@@ -736,7 +736,7 @@ export const AppointmentList: React.FC = () => {
                   </div>
                 </Panel>
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </Collapse>
