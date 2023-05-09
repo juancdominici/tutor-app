@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-import { ThemePicker } from '@app/components/header/components/settingsDropdown/settingsOverlay/ThemePicker/ThemePicker';
-import logo from 'assets/logo.png';
-import logoDark from 'assets/logo-dark.png';
-import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useTranslation } from 'react-i18next';
 import { Button, Checkbox, DatePicker, Input, Row } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,16 +10,14 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { Dates } from '@app/constants/Dates';
 import { mergeBy } from '@app/utils/utils';
+import tutorImage from '../../assets/images/tutorImage.png';
+import userImage from '../../assets/images/userImage.png';
 
 interface FieldData {
   name: string | number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any;
 }
-
-const Step1 = () => {
-  return <></>;
-};
 
 export const UserConfig = () => {
   const [current, setCurrent] = useState(0);
@@ -34,7 +28,6 @@ export const UserConfig = () => {
     { name: 'birthday', value: Dates.getDate(1576789200000) },
   ]);
 
-  const theme = useAppSelector((state: any) => state.theme.theme);
   const { TextArea } = Input;
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -152,11 +145,13 @@ export const UserConfig = () => {
           justifyContent: 'start',
           alignItems: 'center',
           fontWeight: 'normal',
-          backgroundImage: '',
+          background: `url(${tutorImage}) no-repeat center center`,
+          backgroundSize: '250px',
+          backgroundPosition: '300% 250%',
         }}
         onClick={() => handleNewTutor()}
       >
-        Quiero ser Tutor
+        {t('common.beTutor')}
       </Button>
       <Button
         disabled={!termsAndConditions}
@@ -168,11 +163,13 @@ export const UserConfig = () => {
           justifyContent: 'end',
           alignItems: 'center',
           fontWeight: 'normal',
-          backgroundImage: '',
+          background: `url(${userImage}) no-repeat center center`,
+          backgroundSize: '250px',
+          backgroundPosition: '-200% 250%',
         }}
         onClick={() => handleNewUser()}
       >
-        Necesito un Tutor
+        {t('common.needTutor')}
       </Button>
       <Row wrap={false} style={{ marginTop: '1em' }}>
         <Checkbox
@@ -181,9 +178,9 @@ export const UserConfig = () => {
           onChange={(e) => setTermsAndConditions(e?.target?.checked)}
         />
         <span>
-          Acepto los{' '}
+          {t('common.termsAndConditionsPt1')}{' '}
           <Link to="/i/eula" target="_blank">
-            terminos y condiciones
+            {t('common.termsAndConditionsPt2')}
           </Link>
         </span>
       </Row>

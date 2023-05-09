@@ -1,5 +1,9 @@
 {
   "common": {
+    "beTutor": "¡Quiero ser tutor!",
+    "needTutor": "¡Necesito un tutor!",
+    "termsAndConditionsPt1": "Al registrarte, aceptas los ",
+    "termsAndConditionsPt2": "términos y condiciones",
     "auto": "Automático",
     "readMore": "Leer más",
     "perUnit": "c/u",
