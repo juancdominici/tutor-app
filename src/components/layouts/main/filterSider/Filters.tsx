@@ -25,22 +25,18 @@ export const Filters = () => {
           {t('filter.price')}
         </p>
       </Col>
-      <Col span={18} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Col span={24} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <InputNumber
           type="number"
           style={{ margin: '1em' }}
-          addonAfter="$"
           addonBefore={t('common.min')}
           controls
           value={priceFilter[0]}
           onChange={(value) => dispatch(setPriceFilterMin(value))}
         />
-      </Col>
-      <Col span={18} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <InputNumber
           type="number"
           style={{ margin: '1em' }}
-          addonAfter="$"
           addonBefore={t('common.max')}
           controls
           value={priceFilter[1]}
@@ -51,9 +47,10 @@ export const Filters = () => {
       <Col span={18} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Select
           style={{ width: '60vw' }}
-          labelInValue={true}
           value={serviceTypeFilter}
-          onChange={(value) => dispatch(setServiceTypeFilter(value))}
+          onSelect={(value: string) => dispatch(setServiceTypeFilter(value))}
+          allowClear
+          onClear={() => dispatch(setServiceTypeFilter(''))}
           options={[
             { value: '', label: t('common.serviceType'), disabled: true },
             ...SERVICE_TYPE.map((type) => ({ value: type, label: t(`constants.service_types.${type}`) })),

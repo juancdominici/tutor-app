@@ -4,8 +4,8 @@ const initialState = {
   priceFilter: [0, 0],
   serviceTypeFilter: '',
   reviewFilter: 0,
-  minCoords: {},
-  maxCoords: {},
+  minCoords: null,
+  maxCoords: null,
 };
 
 export const filtersSlice = createSlice({

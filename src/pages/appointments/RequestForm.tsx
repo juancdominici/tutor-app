@@ -301,7 +301,13 @@ export const RequestForm = () => {
               <Collapse
                 defaultActiveKey={['1']}
                 expandIconPosition="start"
-                style={{ margin: '0.5em', border: 'none', boxShadow: '0px 10px 10px 0px #00000022', width: '90%' }}
+                style={{
+                  margin: '0.5em',
+                  border: 'none',
+                  boxShadow: '0px 10px 10px 0px #00000022',
+                  width: '90%',
+                  backgroundColor: 'var(--sider-background-color)',
+                }}
               >
                 {requestDetails?.map((detail: any, i: any) => (
                   <Panel

@@ -37,6 +37,7 @@ export const ContactPage = () => {
       <Collapse
         style={{
           fontSize: '0.8em',
+          backgroundColor: 'var(--sider-background-color)',
         }}
         bordered={false}
         ghost

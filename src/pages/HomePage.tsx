@@ -5,8 +5,8 @@ import { useAppSelector } from '@app/hooks/reduxHooks';
 import { setMinCoords, setMaxCoords } from '@app/store/slices/filtersSlice';
 import { GoogleMap, OverlayView } from '@react-google-maps/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Col, Popover, Rate, Row } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import { Button, Col, Popover, Rate, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -18,11 +18,12 @@ export const HomePage = () => {
   const { t } = useTranslation();
   const [currentPosition, setCurrentPosition] = useState<any>(null);
   const [addressList, setAddressList] = useState<any>([]);
+  const [isOffcenter, setIsOffcenter] = useState(false);
+  const [mapData, setMapData] = useState<any>(null);
   const { priceFilter, serviceTypeFilter, reviewFilter, minCoords, maxCoords } = useAppSelector(
     (state) => state.filters,
   );
   const theme = useAppSelector((state) => state.theme.theme);
-  const mapRef = useRef<any>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const setOptions = () => {
@@ -120,6 +121,7 @@ export const HomePage = () => {
             ],
     };
   };
+
   const savePosition = (position: any) => {
     const { latitude, longitude } = position.coords;
     setCurrentPosition({ lat: latitude, lng: longitude });
@@ -140,12 +142,11 @@ export const HomePage = () => {
   const { mutate: getAddressList } = useMutation(getTutorAddressesFilteredAction, {
     onSuccess: (data) => {
       setAddressList(data);
+      setIsOffcenter(false);
     },
   });
 
-  const handleMapBoundsChanged = async () => {
-    if (!mapRef.current) return;
-    const bounds = mapRef.current.getBounds();
+  const resetBounds = async (bounds: any) => {
     if (bounds) {
       const northEast = await bounds?.getNorthEast();
       const southWest = await bounds?.getSouthWest();
@@ -153,18 +154,46 @@ export const HomePage = () => {
       dispatch(setMinCoords({ lat: southWest.lat(), lng: southWest.lng() }));
     }
   };
+
+  const handleMapBoundsChanged = async () => {
+    if (!mapData) return;
+    const bounds = mapData.getBounds();
+    await resetBounds(bounds);
+  };
   const handleCenterChanged = () => {
-    if (!mapRef.current) return;
+    if (!mapData) return;
+    const center = mapData.getCenter();
+    if (center !== currentPosition) {
+      setIsOffcenter(true);
+    }
   };
 
   const handleMapLoad = async (map: any) => {
-    mapRef.current = map;
+    setMapData(map);
   };
 
-  const handleMapIdle = () => {
+  const minCoordsForCurrentPosition = () => {
+    if (!currentPosition) return;
+    const minLat = currentPosition.lat - 0.01;
+    const minLng = currentPosition.lng - 0.01;
+    return { lat: minLat, lng: minLng };
+  };
+
+  const maxCoordsForCurrentPosition = () => {
+    if (!currentPosition) return;
+    const maxLat = currentPosition.lat + 0.01;
+    const maxLng = currentPosition.lng + 0.01;
+    return { lat: maxLat, lng: maxLng };
+  };
+
+  const getMapData = async () => {
+    if (!mapData) return;
+
+    const bounds = mapData.getBounds();
+    await resetBounds(bounds);
     getAddressList({
-      minCoords,
-      maxCoords,
+      minCoords: minCoords || minCoordsForCurrentPosition(),
+      maxCoords: maxCoords || maxCoordsForCurrentPosition(),
       priceFilter,
       serviceTypeFilter,
       reviewFilter,
@@ -172,16 +201,23 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-    if (currentPosition) {
+    if (currentPosition && mapData) {
+      getMapData();
+    }
+  }, [currentPosition, mapData]);
+
+  useEffect(() => {
+    // Check for changes in filters
+    if (minCoords && maxCoords && mapData) {
       getAddressList({
-        minCoords,
-        maxCoords,
+        minCoords: minCoords || minCoordsForCurrentPosition(),
+        maxCoords: maxCoords || maxCoordsForCurrentPosition(),
         priceFilter,
         serviceTypeFilter,
         reviewFilter,
       });
     }
-  }, [currentPosition, priceFilter, serviceTypeFilter, reviewFilter]);
+  }, [priceFilter, serviceTypeFilter, reviewFilter]);
 
   const openUserProfile = (address: any) => {
     navigate(`/profile/${address.tutor_id}`, {
@@ -208,7 +244,6 @@ export const HomePage = () => {
               options={setOptions()}
               mapContainerStyle={{ width: '100%', height: '100%' }}
               onLoad={handleMapLoad}
-              onIdle={handleMapIdle}
               onBoundsChanged={handleMapBoundsChanged}
               onCenterChanged={handleCenterChanged}
             >
@@ -324,6 +359,23 @@ export const HomePage = () => {
               ))}
             </GoogleMap>
           )}
+          <Button
+            type="primary"
+            style={{
+              position: 'absolute',
+              bottom: '1em',
+              right: '50%',
+              transform: 'translateX(50%)',
+              zIndex: 1000,
+              borderRadius: '50px',
+              height: '3em',
+              display: isOffcenter ? 'block' : 'none',
+            }}
+            onClick={() => getMapData()}
+          >
+            {t('common.searchInThisArea')}
+          </Button>
+
           {checkUserExistance === 'tutor' && <DashboardPage />}
         </Col>
       </Row>

@@ -95,8 +95,8 @@
     "dashboard": "Dashboard",
     "editingAddress": "Editando dirección",
     "list": "Listado",
-    "min": "Min",
-    "max": "Máx",
+    "min": "Desde",
+    "max": "Hasta",
     "price": "Precio",
     "requests": "Solicitudes",
     "review": "{{count}} reseña",
@@ -184,7 +184,7 @@
     }
   },
   "filter": {
-    "price": "Precio",
+    "price": "Promedio de precios",
     "reviewsBiggerThan": "Reseñas mayores a",
     "search": "Buscar"
   },

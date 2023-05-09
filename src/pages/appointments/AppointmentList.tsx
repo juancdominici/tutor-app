@@ -420,7 +420,12 @@ export const AppointmentList: React.FC = () => {
       <Collapse
         defaultActiveKey={['1']}
         expandIconPosition="start"
-        style={{ margin: '0.5em', border: 'none', boxShadow: '0px 10px 10px 0px #00000022' }}
+        style={{
+          margin: '0.5em',
+          border: 'none',
+          boxShadow: '0px 10px 10px 0px #00000022',
+          backgroundColor: 'var(--sider-background-color)',
+        }}
       >
         {filteredAppointments()?.map((appointment: any) => {
           return (
@@ -499,6 +504,7 @@ export const AppointmentList: React.FC = () => {
                             style={{
                               border: 'none',
                               width: '100%',
+                              backgroundColor: 'var(--sider-background-color)',
                             }}
                             collapsible={appointment.appointment_details?.additional_details ? 'header' : 'disabled'}
                           >
@@ -657,6 +663,7 @@ export const AppointmentList: React.FC = () => {
                             style={{
                               border: 'none',
                               width: '100%',
+                              backgroundColor: 'var(--sider-background-color)',
                             }}
                             collapsible={appointment.appointment_details?.additional_details ? 'header' : 'disabled'}
                           >
