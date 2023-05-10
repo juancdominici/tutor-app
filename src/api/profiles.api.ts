@@ -7,7 +7,8 @@ export const getTutorReviews = async (tutorId: any) => {
     .select(`*, tutor_services!inner( *, tutors( id ) ), user_profiles( name )`)
     .eq('tutor_services.tutor_id', tutorId)
     .eq('status', true)
-    .lt('report_count', 5);
+    .lt('report_count', 5)
+    .order('date', { ascending: false });
 
   if (error) {
     throw new Error(error.message);

@@ -67,13 +67,59 @@ export const AppointmentList: React.FC = () => {
     return appointments;
   };
 
-  // TODO: review appointment
   const handleReview = (appointment: any) => {
     navigate(`/profile/${appointment.tutor_services.tutors.id}/`);
   };
-  // TODO: cancel with fee */
+
   const handleCancelWithFee = (appointment: any) => {
-    changeAppointmentStatus({ id: appointment.id, status: APPOINTMENT_STATUS.REJECTED });
+    const { price, is_unit_price } = appointment.tutor_services;
+    const total = calcAppointmentPrice(appointment);
+    const successUuid = uuidv4();
+    localStorage.setItem('successUuid', successUuid);
+
+    const preference = {
+      items: is_unit_price
+        ? appointment.appointment_details.map((detail: any) => {
+            return {
+              title: detail.detail,
+              quantity: detail.quantity,
+              currency_id: 'ARS',
+              unit_price: appointment.tutor_services.price * 1.25,
+              description: detail.additional_details,
+            };
+          })
+        : [
+            {
+              title: appointment.tutor_services.name,
+              quantity: 1,
+              currency_id: 'ARS',
+              unit_price: price * 1.25,
+            },
+          ],
+      marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      back_urls: {
+        success: `https://tutor-app-ps.netlify.app/appointments/${appointment.id}/cancel-successful/${successUuid}`,
+        failure: `https://tutor-app-ps.netlify.app/appointments`,
+      },
+      auto_return: 'approved',
+      payment_methods: {
+        excluded_payment_methods: [
+          {
+            id: 'amex',
+          },
+        ],
+        excluded_payment_types: [
+          {
+            id: 'atm',
+          },
+        ],
+      },
+      payer: {
+        name: appointment.user_profiles.name,
+      },
+    };
+
+    createPreference({ tutor_id: appointment.tutor_services.tutors.id, preference });
   };
 
   const handlePayment = (appointment: any) => {

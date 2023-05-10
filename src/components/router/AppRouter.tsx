@@ -26,6 +26,7 @@ import { AppointmentPaymentSuccess } from '@app/pages/appointments/AppointmentPa
 import { AboutUsPage } from '@app/pages/AboutUsPage';
 import { ContactPage } from '@app/pages/ContactPage';
 import { SettingsPage } from '@app/pages/SettingsPage';
+import { AppointmentCancelSuccess } from '@app/pages/appointments/AppointmentCancelSuccess';
 
 const RequireAuthPage = React.lazy(() => import('@app/components/router/RequireAuth'));
 const RequireAuth = withLoading(RequireAuthPage);
@@ -85,6 +86,7 @@ export const AppRouter: React.FC = () => {
           <Route path="/request/success" element={<RequestSuccess />} />
           <Route path="/appointments" element={<AppointmentList />} />
           <Route path="/appointments/:id/success/:successUuid" element={<AppointmentPaymentSuccess />} />
+          <Route path="/appointments/:id/cancel-successful/:successUuid" element={<AppointmentCancelSuccess />} />
         </Route>
         {/* Region: tutor */}
         {/* REQUIRES ROLE AUTHENTICATION */}

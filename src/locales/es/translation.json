@@ -246,7 +246,11 @@
     "payedAppointment": "¡Pagaste {{ service }} con éxito!",
     "payedAppointmentCaption": "¡Esperamos que tu mundo se haya vuelto un poco más verde!",
     "payedAppointmentSubCaption": "Si no fue así",
-    "payedAppointmentRedirect": "contactanos"
+    "payedAppointmentRedirect": "contactanos",
+    "cancelledAppointmentEmpty": "¡Cancelaste el turno!",
+    "cancelledAppointmentCaption": "¡Lamentamos mucho que no hayas podido concretar tu turno!",
+    "cancelledAppointmentSubCaption": "Si tuviste algún problema, no dudes en",
+    "cancelledAppointmentRedirect": "contactarnos"
   },
   "prompts": {
     "review": "¿Qué te pareció el servicio?",

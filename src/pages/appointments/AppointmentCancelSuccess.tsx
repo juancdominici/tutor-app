@@ -8,7 +8,7 @@ import { changeAppointmentStatus as changeAppointmentStatusAction } from '../../
 import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import { Loading } from '@app/components/common/Loading';
 
-export const AppointmentPaymentSuccess = () => {
+export const AppointmentCancelSuccess = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { id, successUuid } = useParams();
@@ -34,7 +34,7 @@ export const AppointmentPaymentSuccess = () => {
   useEffect(() => {
     if (successUuid && id) {
       if (localStorage.getItem('successUuid') === successUuid) {
-        changeAppointmentStatus({ id, status: APPOINTMENT_STATUS.COMPLETE });
+        changeAppointmentStatus({ id, status: APPOINTMENT_STATUS.REJECTED });
       } else {
         navigate('/appointments');
       }
@@ -45,7 +45,7 @@ export const AppointmentPaymentSuccess = () => {
 
   return (
     <Row align="middle" justify="center">
-      <PageTitle>{t('notifications.payedAppointmentEmpty')}</PageTitle>
+      <PageTitle>{t('notifications.cancelledAppointmentEmpty')}</PageTitle>
       <Col span={24}>
         <div
           style={{
@@ -68,7 +68,7 @@ export const AppointmentPaymentSuccess = () => {
               textAlign: 'center',
             }}
           >
-            {t('notifications.payedAppointmentEmpty')}
+            {t('notifications.cancelledAppointmentEmpty')}
           </p>
           <p
             style={{
@@ -76,7 +76,7 @@ export const AppointmentPaymentSuccess = () => {
               textAlign: 'center',
             }}
           >
-            {t('notifications.payedAppointmentCaption')}
+            {t('notifications.cancelledAppointmentCaption')}
           </p>
           <p
             style={{
@@ -84,8 +84,8 @@ export const AppointmentPaymentSuccess = () => {
               textAlign: 'center',
             }}
           >
-            {t('notifications.payedAppointmentSubCaption')},{' '}
-            <Link to="/appointments">{t('notifications.payedAppointmentRedirect')}</Link>
+            {t('notifications.cancelledAppointmentSubCaption')},{' '}
+            <Link to="/appointments">{t('notifications.cancelledAppointmentRedirect')}</Link>
           </p>
         </div>
       </Col>

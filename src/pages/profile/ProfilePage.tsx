@@ -572,7 +572,7 @@ export const ProfilePage = () => {
                   </FormItem>
                 </BaseForm>
               </Modal>
-              {unreviewedServices && (
+              {unreviewedServices?.length && (
                 <Button
                   type="primary"
                   shape="circle"
