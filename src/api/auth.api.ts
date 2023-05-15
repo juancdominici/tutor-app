@@ -102,9 +102,11 @@ export const checkUserExistance = async () => {
   try {
     const { data } = await supabase.auth.getSession();
     if (!data.session) return 'none';
+    const adminResult = await supabase.from('administrators').select('*').eq('id', data.session?.user?.id).limit(1);
     const userResult = await supabase.from('user_profiles').select('*').eq('id', data.session?.user?.id).limit(1);
     const tutorResult = await supabase.from('tutors').select('*').eq('id', data.session?.user?.id).limit(1);
 
+    if (adminResult.data && adminResult.data[0]) return 'admin';
     if (userResult.data && userResult.data[0]) return 'user';
     if (tutorResult.data && tutorResult.data[0]) return 'tutor';
 

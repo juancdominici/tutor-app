@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const RequireTutorRole: React.FC<WithChildrenProps> = ({ children }) => {
   const [childrenToRender, setChildrenToRender] = useState(<></>);
   const { t } = useTranslation();
-  const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
+  const { data: userType } = useQuery(['userType'], checkUserExistanceAction, {
     onSuccess: (data: any) => {
       if (data === 'tutor') {
         setChildrenToRender(<>{children}</>);
@@ -26,7 +26,7 @@ const RequireTutorRole: React.FC<WithChildrenProps> = ({ children }) => {
     refetchOnWindowFocus: false,
   });
 
-  if (!checkUserExistance) {
+  if (!userType) {
     return (
       <>
         <Loading />

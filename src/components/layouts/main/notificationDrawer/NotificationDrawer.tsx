@@ -7,13 +7,11 @@ import { checkUserExistance } from '@app/api/auth.api';
 
 import { useTranslation } from 'react-i18next';
 import { APPOINTMENT_STATUS } from '@app/constants/constants';
-import { useLanguage } from '@app/hooks/useLanguage';
+import moment from 'moment';
 
 const NotificationDrawer = ({ isOpen, setOpen }: any) => {
   const toggleSider = () => setOpen(!isOpen);
   const { t } = useTranslation();
-  const { language } = useLanguage();
-  const formatter = new Intl.RelativeTimeFormat(language, { numeric: 'auto' });
 
   const { data: userType, isFetching } = useQuery(['userType'], () => checkUserExistance(), {
     refetchOnWindowFocus: false,
@@ -86,27 +84,8 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
   };
 
   const computedDate = (date: any) => {
-    const diff = Math.round((new Date().getTime() - Date.now()) / 1000);
-
-    const hour = 60 * 60;
-    const day = hour * 24;
-    const week = day * 7;
-    const month = day * 30;
-    const year = month * 12;
-
-    let unitType: any;
-
-    if (diff < week) {
-      unitType = 'day';
-    } else if (diff < month) {
-      unitType = 'week';
-    } else if (diff < year) {
-      unitType = 'month';
-    } else {
-      unitType = 'year';
-    }
-
-    return formatter.format(Math.round(diff), unitType);
+    const dateObj = new Date(date);
+    return moment(dateObj).format('DD/MM/YYYY - HH:mm') + 'hs';
   };
 
   return (

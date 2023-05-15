@@ -80,7 +80,7 @@ export const ProfilePage = () => {
     useQueries({
       queries: [
         {
-          queryKey: ['checkUserExistance'],
+          queryKey: ['userType'],
           queryFn: checkUserExistanceAction,
           refetchOnWindowFocus: false,
         },
@@ -572,7 +572,7 @@ export const ProfilePage = () => {
                   </FormItem>
                 </BaseForm>
               </Modal>
-              {unreviewedServices?.length && (
+              {!!unreviewedServices?.length && (
                 <Button
                   type="primary"
                   shape="circle"

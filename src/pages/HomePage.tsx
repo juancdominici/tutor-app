@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { DashboardPage } from './DashboardPage';
 import { ReactComponent as leavesSvg } from '../assets/images/leaves.svg';
 import Icon from '@ant-design/icons';
+import { AdminDashboardPage } from './AdminDashboardPage';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -227,7 +228,7 @@ export const HomePage = () => {
     });
   };
 
-  const { data: checkUserExistance } = useQuery(['checkUserExistance'], checkUserExistanceAction, {
+  const { data: userType } = useQuery(['userType'], checkUserExistanceAction, {
     refetchOnWindowFocus: false,
   });
 
@@ -237,88 +238,89 @@ export const HomePage = () => {
 
       <Row style={{ height: '88vh', width: '100%' }}>
         <Col style={{ height: '100%', width: '100%' }}>
-          {currentPosition && checkUserExistance === 'user' && (
-            <GoogleMap
-              center={currentPosition}
-              zoom={15}
-              options={setOptions()}
-              mapContainerStyle={{ width: '100%', height: '100%' }}
-              onLoad={handleMapLoad}
-              onBoundsChanged={handleMapBoundsChanged}
-              onCenterChanged={handleCenterChanged}
-            >
-              <OverlayView
-                position={{ lat: currentPosition.lat, lng: currentPosition.lng }}
-                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          {currentPosition && userType === 'user' && (
+            <>
+              <GoogleMap
+                center={currentPosition}
+                zoom={15}
+                options={setOptions()}
+                mapContainerStyle={{ width: '100%', height: '100%' }}
+                onLoad={handleMapLoad}
+                onBoundsChanged={handleMapBoundsChanged}
+                onCenterChanged={handleCenterChanged}
               >
-                <div className="blob green"></div>
-              </OverlayView>
-              {addressList?.map((address: any) => (
                 <OverlayView
-                  key={address.address_id}
-                  position={{ lat: address.latitude, lng: address.longitude }}
+                  position={{ lat: currentPosition.lat, lng: currentPosition.lng }}
                   mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                 >
-                  <Popover
-                    content={
-                      <div onClick={() => openUserProfile(address)}>
-                        <Row align="middle" justify="space-around">
-                          <Col span={8}>
-                            <img
-                              src={`https://source.boringavatars.com/beam/120/${address.tutor_name?.split(' ')[0]}%20${
-                                address.tutor_name?.split(' ')[1]
-                              }?colors=3ECF8E,1A1E22,008640,F8FBFF`}
-                              alt="user-avatar"
-                              referrerPolicy="no-referrer"
-                              style={{
-                                borderRadius: '50%',
-                                padding: '2px',
-                                boxShadow: '0 0 0 1px #f3f3f333',
-                                pointerEvents: 'none',
-                                width: '3em',
-                                height: '3em',
-                              }}
-                            />
-                          </Col>
-                          <Col span={16}>
-                            <div>
-                              <span
+                  <div className="blob green"></div>
+                </OverlayView>
+                {addressList?.map((address: any) => (
+                  <OverlayView
+                    key={address.address_id}
+                    position={{ lat: address.latitude, lng: address.longitude }}
+                    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                  >
+                    <Popover
+                      content={
+                        <div onClick={() => openUserProfile(address)}>
+                          <Row align="middle" justify="space-around">
+                            <Col span={8}>
+                              <img
+                                src={`https://source.boringavatars.com/beam/120/${
+                                  address.tutor_name?.split(' ')[0]
+                                }%20${address.tutor_name?.split(' ')[1]}?colors=3ECF8E,1A1E22,008640,F8FBFF`}
+                                alt="user-avatar"
+                                referrerPolicy="no-referrer"
                                 style={{
-                                  fontSize: '0.7em',
+                                  borderRadius: '50%',
+                                  padding: '2px',
+                                  boxShadow: '0 0 0 1px #f3f3f333',
+                                  pointerEvents: 'none',
+                                  width: '3em',
+                                  height: '3em',
                                 }}
-                              >
-                                {address.tutor_name}
-                              </span>
-                            </div>
-                            <Rate
-                              character={<Icon component={leavesSvg} />}
-                              style={{
-                                color: 'var(--primary-color)',
-                                fontSize: '1.2em',
-                                display: 'flex',
-                                margin: '0 0.5em 0 0',
-                              }}
-                              value={address.avg_score}
-                              disabled
-                            />
-                            <div>
-                              <span
+                              />
+                            </Col>
+                            <Col span={16}>
+                              <div>
+                                <span
+                                  style={{
+                                    fontSize: '0.7em',
+                                  }}
+                                >
+                                  {address.tutor_name}
+                                </span>
+                              </div>
+                              <Rate
+                                character={<Icon component={leavesSvg} />}
                                 style={{
-                                  fontSize: '0.7em',
+                                  color: 'var(--primary-color)',
+                                  fontSize: '1.2em',
+                                  display: 'flex',
+                                  margin: '0 0.5em 0 0',
                                 }}
-                              >
-                                {address.review_count === 1
-                                  ? t('common.review', {
-                                      count: address.review_count,
-                                    })
-                                  : t('common.reviews', {
-                                      count: address.review_count,
-                                    })}
-                              </span>
-                            </div>
-                          </Col>
-                        </Row>
-                        {/* <Row align="middle" justify="space-around">
+                                value={address.avg_score}
+                                disabled
+                              />
+                              <div>
+                                <span
+                                  style={{
+                                    fontSize: '0.7em',
+                                  }}
+                                >
+                                  {address.review_count === 1
+                                    ? t('common.review', {
+                                        count: address.review_count,
+                                      })
+                                    : t('common.reviews', {
+                                        count: address.review_count,
+                                      })}
+                                </span>
+                              </div>
+                            </Col>
+                          </Row>
+                          {/* <Row align="middle" justify="space-around">
                           <img
                             src={require('../assets/images/marker.png').default}
                             alt="map-marker"
@@ -337,46 +339,48 @@ export const HomePage = () => {
                             {address.street} {address.number} - {address.province}
                           </span>
                         </Row> */}
-                      </div>
-                    }
-                    trigger="click"
-                  >
-                    <img
-                      src={require('../assets/images/marker.png').default}
-                      alt="map-marker"
-                      style={{
-                        width: '30px',
-                        height: '30px',
-                        cursor: 'pointer',
-                        position: 'absolute',
-                        bottom: '0',
-                        left: '0',
-                        transform: 'translateX(-50%)',
-                      }}
-                    />
-                  </Popover>
-                </OverlayView>
-              ))}
-            </GoogleMap>
+                        </div>
+                      }
+                      trigger="click"
+                    >
+                      <img
+                        src={require('../assets/images/marker.png').default}
+                        alt="map-marker"
+                        style={{
+                          width: '30px',
+                          height: '30px',
+                          cursor: 'pointer',
+                          position: 'absolute',
+                          bottom: '0',
+                          left: '0',
+                          transform: 'translateX(-50%)',
+                        }}
+                      />
+                    </Popover>
+                  </OverlayView>
+                ))}
+              </GoogleMap>
+              <Button
+                type="primary"
+                style={{
+                  position: 'absolute',
+                  bottom: '1em',
+                  right: '50%',
+                  transform: 'translateX(50%)',
+                  zIndex: 1000,
+                  borderRadius: '50px',
+                  height: '3em',
+                  display: isOffcenter ? 'block' : 'none',
+                }}
+                onClick={() => getMapData()}
+              >
+                {t('common.searchInThisArea')}
+              </Button>
+            </>
           )}
-          <Button
-            type="primary"
-            style={{
-              position: 'absolute',
-              bottom: '1em',
-              right: '50%',
-              transform: 'translateX(50%)',
-              zIndex: 1000,
-              borderRadius: '50px',
-              height: '3em',
-              display: isOffcenter ? 'block' : 'none',
-            }}
-            onClick={() => getMapData()}
-          >
-            {t('common.searchInThisArea')}
-          </Button>
 
-          {checkUserExistance === 'tutor' && <DashboardPage />}
+          {userType === 'tutor' && <DashboardPage />}
+          {userType === 'admin' && <AdminDashboardPage />}
         </Col>
       </Row>
     </>

@@ -58,7 +58,7 @@ const MainMapLayout: React.FC = () => {
           className="filter-icon"
           style={{
             display:
-              showFilterButton && !notificationDrawerOpen && siderCollapsed && routeIsHome() && userType !== 'tutor'
+              showFilterButton && !notificationDrawerOpen && siderCollapsed && routeIsHome() && userType === 'user'
                 ? 'block'
                 : 'none',
           }}

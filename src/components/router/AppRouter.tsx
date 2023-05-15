@@ -27,6 +27,9 @@ import { AboutUsPage } from '@app/pages/AboutUsPage';
 import { ContactPage } from '@app/pages/ContactPage';
 import { SettingsPage } from '@app/pages/SettingsPage';
 import { AppointmentCancelSuccess } from '@app/pages/appointments/AppointmentCancelSuccess';
+import { UserForm } from '@app/pages/users/UserForm';
+import { UserList } from '@app/pages/users/UserList';
+import RequireAdminRole from './RequireAdminRole';
 
 const RequireAuthPage = React.lazy(() => import('@app/components/router/RequireAuth'));
 const RequireAuth = withLoading(RequireAuthPage);
@@ -50,6 +53,11 @@ export const AppRouter: React.FC = () => {
     <RequireTutorRole>
       <MainMapLayout />
     </RequireTutorRole>
+  );
+  const protectedAdminAuth = (
+    <RequireAdminRole>
+      <MainMapLayout />
+    </RequireAdminRole>
   );
 
   return (
@@ -95,6 +103,13 @@ export const AppRouter: React.FC = () => {
           <Route path="services/edit/:id" element={<ServiceForm />} />
           <Route path="services" element={<ServiceList />} />
           <Route path="requests" element={<RequestList />} />
+        </Route>
+        {/* Region: admin */}
+        {/* REQUIRES ROLE AUTHENTICATION */}
+        <Route path="/admin" element={protectedAdminAuth}>
+          <Route path="users/new" element={<UserForm />} />
+          <Route path="users/edit/:id" element={<UserForm />} />
+          <Route path="users" element={<UserList />} />
         </Route>
         {/* Region: etc */}
         <Route path="/i" element={<AuthLayoutFallback />}>

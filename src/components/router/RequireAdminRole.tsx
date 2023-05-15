@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { WithChildrenProps } from '@app/types/generalTypes';
 import { checkUserExistance as checkUserExistanceAction } from '@app/api/auth.api';
 import { useQuery } from '@tanstack/react-query';
@@ -7,17 +7,12 @@ import { notificationController } from '@app/controllers/notificationController'
 import { Loading } from '../common/Loading';
 import { useTranslation } from 'react-i18next';
 
-const RequireFreshAccount: React.FC<WithChildrenProps> = ({ children }) => {
+const RequireAdminRole: React.FC<WithChildrenProps> = ({ children }) => {
   const [childrenToRender, setChildrenToRender] = useState(<></>);
-  const location = useLocation();
   const { t } = useTranslation();
   const { data: userType } = useQuery(['userType'], checkUserExistanceAction, {
     onSuccess: (data: any) => {
-      if (
-        data === 'fresh' ||
-        location.pathname === '/welcome/tutor-config' ||
-        location.pathname === '/welcome/mp-success'
-      ) {
+      if (data === 'admin') {
         setChildrenToRender(<>{children}</>);
         return;
       }
@@ -41,4 +36,4 @@ const RequireFreshAccount: React.FC<WithChildrenProps> = ({ children }) => {
   return childrenToRender;
 };
 
-export default RequireFreshAccount;
+export default RequireAdminRole;

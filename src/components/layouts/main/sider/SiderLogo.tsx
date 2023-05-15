@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import * as S from './MainSider/MainSider.styles';
-import logo from 'assets/logo.png';
-import logoDark from 'assets/logo-dark.png';
-import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useQuery } from '@tanstack/react-query';
 import { checkUserExistance, getUserData } from '@app/api/auth.api';
 import { Loading } from '@app/components/common/Loading';

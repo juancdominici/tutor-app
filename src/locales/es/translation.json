@@ -1,5 +1,15 @@
 {
   "common": {
+    "userAdded": "¡Usuario agregado con éxito!",
+    "userUpdated": "¡Usuario actualizado con éxito!",
+    "editingUser": "Editando usuario",
+    "addingUser": "Cargando nuevo usuario",
+    "emailConfirm": "Confirmar email",
+    "userDeleted": "¡Usuario eliminado con éxito!",
+    "searchUser": "Buscar usuario",
+    "last_sign_in_at": "Último inicio de sesión",
+    "provider": "Proveedor",
+    "never": "Nunca",
     "nothingHere": "Nada por aquí",
     "priceBy": "Por un monto de {{price}}",
     "beTutor": "¡Quiero ser tutor!",

@@ -31,7 +31,7 @@ export const adminSidebarNavigation: SidebarNavigationItem[] = [
       {
         title: 'common.list',
         key: 'users',
-        url: '/users',
+        url: '/admin/users',
       },
     ],
   },
