@@ -34,6 +34,8 @@ export const getChartColors = (theme: ITheme): string[] => [
   theme.chartColor3,
   theme.chartColor4,
   theme.chartColor5,
+  theme.chartColor6,
+  theme.chartColor7,
 ];
 
 export const getDefaultTooltipStyles = (theme: ITheme): DefaultTooltipStyles => ({
@@ -69,7 +71,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({ option, width, height, onE
     <ReactECharts
       {...props}
       option={{ ...defaultOption, ...option }}
-      style={{ ...style, height: chartHeight, minHeight: height === '100%' ? 400 : 'unset', width, zIndex: 0 }}
+      style={{ ...style, height: chartHeight, minHeight: 'unset', width, zIndex: 0 }}
       onEvents={onEvents}
     />
   );

@@ -11,6 +11,8 @@ export const LegendWrapper = styled.div<LegendWrapperProps>`
   padding: 0.5rem;
   background: ${(props) => (props.isSelected ? 'var(--secondary-background-selected-color)' : 'transparent')};
   border-radius: ${BORDER_RADIUS};
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const LegendInfo = styled.div`
@@ -23,7 +25,7 @@ export const LegendInfo = styled.div`
 export const LegendDescription = styled.div`
   display: flex;
   margin-left: 1.25rem;
-  width: 100%;
+  width: 30%;
 `;
 
 export const LegendColor = styled.span`

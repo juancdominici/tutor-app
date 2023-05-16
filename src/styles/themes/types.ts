@@ -52,6 +52,10 @@ export interface ITheme {
   chartColor4Tint: string;
   chartColor5: string;
   chartColor5Tint: string;
+  chartColor6: string;
+  chartColor6Tint: string;
+  chartColor7: string;
+  chartColor7Tint: string;
   chartPrimaryGradient: LinearGradientObject;
   chartSecondaryGradient: LinearGradientObject;
   additionalBackground: string;

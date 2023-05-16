@@ -75,6 +75,12 @@ const getThemeVariables = (theme: ThemeType) => css`
   --chart-color5: ${themeObject[theme].chartColor5};
   --chart-rgb-color5: ${hexToRGB(themeObject[theme].chartColor5)};
   --chart-color5-tint: ${themeObject[theme].chartColor5Tint};
+  --chart-color6: ${themeObject[theme].chartColor6};
+  --chart-rgb-color6: ${hexToRGB(themeObject[theme].chartColor6)};
+  --chart-color6-tint: ${themeObject[theme].chartColor6Tint};
+  --chart-color7: ${themeObject[theme].chartColor7};
+  --chart-rgb-color7: ${hexToRGB(themeObject[theme].chartColor7)};
+  --chart-color7-tint: ${themeObject[theme].chartColor7Tint};
 
   --notification-success-color: ${themeObject[theme].notificationSuccess};
   --notification-primary-color: ${themeObject[theme].notificationPrimary};

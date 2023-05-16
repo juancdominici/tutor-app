@@ -33,7 +33,7 @@ export const PieChart: React.FC<PieChartProps> = ({ option, data, name, showLege
         name,
         type: 'pie',
         center: ['50%', '50%'],
-        radius: '55%',
+        radius: '50%',
         label: {
           color: 'var(--text-main-color)',
         },
@@ -43,7 +43,6 @@ export const PieChart: React.FC<PieChartProps> = ({ option, data, name, showLege
           },
           smooth: 0.2,
           length: 10,
-          length2: 20,
         },
         data,
         itemStyle: {
@@ -51,7 +50,7 @@ export const PieChart: React.FC<PieChartProps> = ({ option, data, name, showLege
           borderColor: theme === 'dark' ? BASE_COLORS.black : BASE_COLORS.white,
           borderWidth: 1,
           shadowBlur: 1000,
-          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          shadowColor: 'rgba(0, 0, 0, 0.1)',
         },
         animationType: 'scale',
         animationEasing: 'elasticOut',
@@ -61,5 +60,5 @@ export const PieChart: React.FC<PieChartProps> = ({ option, data, name, showLege
       },
     ],
   };
-  return <BaseChart {...props} option={{ ...defaultPieOption, ...option }} />;
+  return <BaseChart {...props} option={{ ...defaultPieOption, ...option }} height={'250px'} />;
 };

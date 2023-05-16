@@ -35,8 +35,6 @@ const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
     refetchOnWindowFocus: false,
     enabled: userType === 'tutor',
     onSuccess: (data) => {
-      console.log(data);
-
       if (!data) {
         navigate('/welcome/tutor-config', { replace: true });
       }

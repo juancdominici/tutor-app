@@ -15,6 +15,10 @@ const chartColors = {
   chartColor4Tint: '#89DCA0',
   chartColor5: '#FF5252',
   chartColor5Tint: '#FFC1C1',
+  chartColor6: '#ff7188',
+  chartColor6Tint: '#ff7188', // update
+  chartColor7: '#aaccff',
+  chartColor7Tint: '#aaccff', // update
   chartPrimaryGradient: new graphic.LinearGradient(0, 0, 0, 1, [
     {
       offset: 0,

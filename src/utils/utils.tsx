@@ -1,5 +1,6 @@
 import { NotificationType } from '@app/components/common/Notification/Notification';
 import { Priority } from '@app//constants/enums/priorities';
+import moment from 'moment';
 
 export const camelize = (string: string): string => {
   return string
