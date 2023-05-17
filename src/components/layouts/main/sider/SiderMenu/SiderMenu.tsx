@@ -92,20 +92,20 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
           </Menu.Item>
         ),
       )}
+      <Divider />
       {userType !== 'admin' && (
         <>
-          <Divider />
           <Menu.Item key={'aboutUs'} title="" icon={<TagsOutlined />}>
             <Link to="/aboutUs">{t('common.aboutUs')}</Link>
           </Menu.Item>
           <Menu.Item key={'contact'} title="" icon={<MessageOutlined />}>
             <Link to="/contact">{t('common.contact')}</Link>
           </Menu.Item>
-          <Menu.Item key={'settings'} title="" icon={<SettingOutlined />}>
-            <Link to={'/settings'}>{t('common.settings')}</Link>
-          </Menu.Item>
         </>
       )}
+      <Menu.Item key={'settings'} title="" icon={<SettingOutlined />}>
+        <Link to={'/settings'}>{t('common.settings')}</Link>
+      </Menu.Item>
       <Divider />
       <Menu.Item key={'logout'} title="" icon={<RollbackOutlined />}>
         <Link to="/auth/logout">{t('login.logout')}</Link>

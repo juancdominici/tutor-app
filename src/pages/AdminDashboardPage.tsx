@@ -167,7 +167,7 @@ export const AdminDashboardPage = () => {
         style={{
           position: 'sticky',
           bottom: 30,
-          zIndex: 100,
+          zIndex: 1,
         }}
       >
         <Col

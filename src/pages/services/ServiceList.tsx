@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ArrowLeftOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  SettingOutlined,
-  ShareAltOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Collapse, Dropdown, Input, Menu, Row, Select, Typography } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getUserServices as getUserServicesAction, deleteService as deleteServiceAction } from '../../api/services.api';
@@ -16,6 +9,7 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useNavigate } from 'react-router-dom';
 import { notificationController } from '@app/controllers/notificationController';
 import { LOCATION_TYPE, SERVICE_TYPE } from '@app/constants/constants';
+import { ShareButton } from '@app/components/common/ShareButton';
 const { Panel } = Collapse;
 const { Paragraph } = Typography;
 export const ServiceList: React.FC = () => {
@@ -74,6 +68,16 @@ export const ServiceList: React.FC = () => {
     navigate('/home');
   };
 
+  const filterExport = (list: any) => {
+    return list?.map((service: any) => ({
+      title: service.name,
+      description: service.description,
+      service_type: t(`constants.service_types.${service.type}`),
+      location: t(`constants.location.${service.location}`),
+      price: service.price + (service.is_unit_price ? t('common.perUnit') : ''),
+    }));
+  };
+
   if (isLoadingServices) {
     return <Loading />;
   }
@@ -95,9 +99,7 @@ export const ServiceList: React.FC = () => {
         >
           {t('common.services')}
         </h1>
-        <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
-          <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
-        </Button>
+        <ShareButton list={filterExport(filteredServices())} fileName="services" />
       </Row>
       <Row>
         <Input

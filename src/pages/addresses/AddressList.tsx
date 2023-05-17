@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ArrowLeftOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  SettingOutlined,
-  ShareAltOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Collapse, Dropdown, Input, Menu, Row } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -18,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useNavigate } from 'react-router-dom';
 import { notificationController } from '@app/controllers/notificationController';
+import { ShareButton } from '@app/components/common/ShareButton';
 const { Panel } = Collapse;
 
 export const AddressList: React.FC = () => {
@@ -79,6 +73,16 @@ export const AddressList: React.FC = () => {
     navigate('/home');
   };
 
+  const filterExport = (addresses: any) => {
+    return addresses?.map((address: any) => {
+      return {
+        name: address.name,
+        phone: address.phone,
+        address: `${address?.street} ${address?.number} - ${address?.province}, ${address?.country} - CP${address?.postcode}`,
+      };
+    });
+  };
+
   if (isLoadingAddresses) {
     return <Loading />;
   }
@@ -100,9 +104,7 @@ export const AddressList: React.FC = () => {
         >
           {t('common.addresses')}
         </h1>
-        <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
-          <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
-        </Button>
+        <ShareButton list={filterExport(filteredAddresses())} fileName="addresses" />
       </Row>
       <Row>
         <Input

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeftOutlined, CheckOutlined, CloseOutlined, ShareAltOutlined } from '@ant-design/icons';
-import { Button, Collapse, Input, Modal, Row, Space, Spin, Tooltip, Typography } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Collapse, Input, Modal, Row, Space, Spin, Typography } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getTutorRequests as getTutorRequestsAction,
@@ -12,6 +12,7 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useNavigate } from 'react-router-dom';
 import { LOCATION_TYPE, APPOINTMENT_STATUS } from '@app/constants/constants';
 import moment from 'moment';
+import { ShareButton } from '@app/components/common/ShareButton';
 const { Panel } = Collapse;
 const { Paragraph } = Typography;
 
@@ -69,6 +70,21 @@ export const RequestList: React.FC = () => {
     return `${address.street}, ${address.number} - ${address.province}, ${address.country}`;
   };
 
+  const filterExport = (appointments: any) => {
+    return appointments.map((appointment: any) => {
+      return {
+        name: appointment.tutor_services.name,
+        creationDate: moment(appointment.created).format('DD/MM/YYYY HH:mm'),
+        date: moment(`${appointment.date} ${appointment.time}`).format('DD/MM/YYYY HH:mm'),
+        offeredBy: appointment.tutor_services.tutors.name,
+        receivedBy: appointment.user_profiles.name,
+        location: computedAddress(appointment.addresses),
+        status: t(`constants.appointment_status.${appointment.status}`),
+        price: calcAppointmentPrice(appointment),
+      };
+    });
+  };
+
   if (isLoadingTutorRequests) {
     return <Loading />;
   }
@@ -90,9 +106,7 @@ export const RequestList: React.FC = () => {
         >
           {t('common.requests')}
         </h1>
-        <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
-          <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
-        </Button>
+        <ShareButton list={filterExport(filteredAppointments())} fileName="requests" />
       </Row>
       <Row>
         <Input

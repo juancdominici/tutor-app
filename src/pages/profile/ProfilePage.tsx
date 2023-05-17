@@ -1,5 +1,6 @@
 import Icon, {
   ArrowLeftOutlined,
+  DeleteOutlined,
   DoubleLeftOutlined,
   DoubleRightOutlined,
   FormOutlined,
@@ -76,40 +77,33 @@ export const ProfilePage = () => {
     refetchOnWindowFocus: false,
   });
 
-  const [userExistanceQuery, tutorAddressesQuery, tutorReviewsQuery, tutorQuestionsQuery, tutorServicesQuery] =
-    useQueries({
-      queries: [
-        {
-          queryKey: ['userType'],
-          queryFn: checkUserExistanceAction,
-          refetchOnWindowFocus: false,
-        },
-        {
-          queryKey: ['tutorAddresses', id],
-          queryFn: () => getTutorAddresses(id),
-          enabled: !!id,
-          refetchOnWindowFocus: false,
-        },
-        {
-          queryKey: ['tutorReviews', id],
-          queryFn: () => getTutorReviews(id),
-          enabled: !!id,
-          refetchOnWindowFocus: false,
-        },
-        {
-          queryKey: ['tutorQuestions', id],
-          queryFn: () => getTutorQuestions(id),
-          enabled: !!id,
-          refetchOnWindowFocus: false,
-        },
-        {
-          queryKey: ['tutorServices', id],
-          queryFn: () => getTutorServices(id),
-          enabled: !!id,
-          refetchOnWindowFocus: false,
-        },
-      ],
-    });
+  const [userExistanceQuery, tutorReviewsQuery, tutorQuestionsQuery, tutorServicesQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ['userType'],
+        queryFn: checkUserExistanceAction,
+        refetchOnWindowFocus: false,
+      },
+      {
+        queryKey: ['tutorReviews', id],
+        queryFn: () => getTutorReviews(id),
+        enabled: !!id,
+        refetchOnWindowFocus: false,
+      },
+      {
+        queryKey: ['tutorQuestions', id],
+        queryFn: () => getTutorQuestions(id),
+        enabled: !!id,
+        refetchOnWindowFocus: false,
+      },
+      {
+        queryKey: ['tutorServices', id],
+        queryFn: () => getTutorServices(id),
+        enabled: !!id,
+        refetchOnWindowFocus: false,
+      },
+    ],
+  });
 
   const { mutate: addTutorQuestion, isLoading: isAddingTutorQuestion } = useMutation(addTutorQuestionAction, {
     onSuccess: () => {
@@ -191,10 +185,24 @@ export const ProfilePage = () => {
     });
   };
 
+  const handleAdminReportQuestion = (question: any) => {
+    reportQuestion({
+      id: question.id,
+      report_count: question.report_count + 99,
+    });
+  };
+
   const handleReportReview = (review: any) => {
     reportReview({
       id: review.id,
       report_count: review.report_count + 1,
+    });
+  };
+
+  const handleAdminReportReview = (review: any) => {
+    reportReview({
+      id: review.id,
+      report_count: review.report_count + 99,
     });
   };
 
@@ -232,22 +240,16 @@ export const ProfilePage = () => {
 
   const reviewMenu = (review: any) => (
     <Menu>
-      {/* {userExistanceQuery?.data === 'user' && review.user_profile_id === sessionData?.session?.user.id && (
+      {userExistanceQuery?.data === 'admin' && (
         <Menu.Item
-          icon={<EditOutlined />}
+          danger
+          icon={<DeleteOutlined />}
           style={{ fontSize: '0.8em' }}
-          onClick={() => {
-            addReviewForm.setFieldsValue({
-              service_id: review.tutor_service_id,
-              score: review.score,
-              review: review.text,
-            });
-            toggleAddReviewModal(true);
-          }}
+          onClick={() => handleAdminReportReview(review)}
         >
-          {t('common.edit')}
+          {t('common.reportAsAdmin')}
         </Menu.Item>
-      )} */}
+      )}
       <Menu.Item
         danger
         icon={<InfoCircleOutlined />}
@@ -271,6 +273,16 @@ export const ProfilePage = () => {
           }}
         >
           {t('common.answer')}
+        </Menu.Item>
+      )}
+      {userExistanceQuery?.data === 'admin' && (
+        <Menu.Item
+          danger
+          icon={<DeleteOutlined />}
+          style={{ fontSize: '0.8em' }}
+          onClick={() => handleAdminReportQuestion(question)}
+        >
+          {t('common.reportAsAdmin')}
         </Menu.Item>
       )}
 
@@ -356,30 +368,6 @@ export const ProfilePage = () => {
               >
                 <DoubleRightOutlined />
               </Button>
-            </Col>
-            <Col span={24} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              {/* {state?.address && (
-                <Row align="middle" justify="space-around" style={{ margin: '1em 0' }}>
-                  <img
-                    src={require('../../assets/images/marker.png').default}
-                    alt="map-marker"
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      marginRight: '10px',
-                      cursor: 'pointer',
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontSize: '0.8em',
-                      textAlign: 'center',
-                    }}
-                  >
-                    {state.address.street} {state.address.number} {t('common.aproxDistance')} - {state.address.province}
-                  </span>
-                </Row>
-              )} */}
             </Col>
           </>
         ) : (

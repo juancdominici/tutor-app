@@ -1,5 +1,12 @@
 {
   "common": {
+    "exportCSV": "Exportar .csv",
+    "documentFor": "Documento para",
+    "unitPrice": "Precio por unidad",
+    "printFooter": "Impreso desde Tutor",
+    "page": "Página",
+    "print": "Imprimir en PDF",
+    "reportAsAdmin": "Reportar como administrador",
     "userCount": "Conteo de usuarios",
     "activeUserCount": "Usuarios activos",
     "newUsersCount": "Nuevos usuarios",

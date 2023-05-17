@@ -30,9 +30,6 @@ export const ContactPage = () => {
         >
           {t('common.faq')}
         </h1>
-        {/* <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
-          <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
-        </Button> */}
       </Row>
       <Collapse
         style={{

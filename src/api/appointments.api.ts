@@ -127,7 +127,8 @@ export const getTutorAppointments = async () => {
             country,
             postcode
         ),
-        appointment_details ( * )
+        appointment_details ( * ),
+        user_profiles ( * )
         `,
     )
     .neq('status', APPOINTMENT_STATUS.PENDING_APPROVAL)

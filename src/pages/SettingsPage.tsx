@@ -8,7 +8,7 @@ import { Button } from '@app/components/common/buttons/Button/Button';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import * as S from '@app/components/header/components/settingsDropdown/settingsOverlay/SettingsOverlay/SettingsOverlay.styles';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
-import { ArrowLeftOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,9 +38,6 @@ export const SettingsPage: React.FC = ({ ...props }) => {
         >
           {t('common.settings')}
         </h1>
-        {/* <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
-          <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
-        </Button> */}
       </Row>
       <DropdownCollapse bordered={false} ghost defaultActiveKey={['languagePicker', 'themePicker', 'nightMode']}>
         <DropdownCollapse.Panel header={t('header.changeLanguage')} showArrow={false} disabled key="languagePicker">

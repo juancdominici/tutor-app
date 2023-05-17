@@ -248,6 +248,10 @@ export default createGlobalStyle`
     font-size: ${FONT_SIZE.xxs};
   }
 
+  .ant-statistic-title {
+    color: var(--text-light-color);
+    }
+
   @keyframes pulse-green {
     0% {
       transform: scale(0.95);
