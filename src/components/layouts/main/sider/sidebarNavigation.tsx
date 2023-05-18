@@ -4,6 +4,7 @@ import {
   DashboardOutlined,
   EnvironmentOutlined,
   FieldTimeOutlined,
+  LineChartOutlined,
   ScheduleOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -82,7 +83,18 @@ export const tutorSidebarNavigation: SidebarNavigationItem[] = [
     title: 'common.appointments',
     key: 'appointments',
     icon: <FieldTimeOutlined />,
-    url: '/appointments',
+    children: [
+      {
+        title: 'common.list',
+        key: 'appointments',
+        url: '/appointments',
+      },
+      {
+        title: 'common.appointmentDashboard',
+        key: 'appointments/dashboard',
+        url: '/appointments/dashboard',
+      },
+    ],
   },
 ];
 
@@ -108,6 +120,17 @@ export const clientSidebarNavigation: SidebarNavigationItem[] = [
     title: 'common.appointments',
     key: 'appointments',
     icon: <FieldTimeOutlined />,
-    url: '/appointments',
+    children: [
+      {
+        title: 'common.list',
+        key: 'appointments',
+        url: '/appointments',
+      },
+      {
+        title: 'common.appointmentDashboard',
+        key: 'appointments/dashboard',
+        url: '/appointments/dashboard',
+      },
+    ],
   },
 ];

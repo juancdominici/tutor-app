@@ -13,6 +13,8 @@ const arrayDays = (dateDiff: DateDiff) => {
   const arr: any = [];
 
   // return last "DateDiff" days in array
+
+  // return last "DateDiff" days in array
   switch (dateDiff) {
     case 'week':
       for (let i = 0; i < 7; i++) {
@@ -25,8 +27,8 @@ const arrayDays = (dateDiff: DateDiff) => {
       }
       break;
     case 'year':
-      for (let i = 0; i < 365; i++) {
-        arr.push(moment().subtract(i, 'days').format('DD/MM/YYYY'));
+      for (let i = 0; i < 12; i++) {
+        arr.push(moment().subtract(i, 'months').format('MM/YYYY'));
       }
       break;
     default:
@@ -84,9 +86,9 @@ const newUsersArrayByDate = (users: any, dateDiff: DateDiff) => {
       }
       break;
     case 'year':
-      for (let i = 0; i < 365; i++) {
+      for (let i = 0; i < 12; i++) {
         arr.push(
-          users.filter((user: any) => moment(user.created_at).isSame(moment().subtract(i, 'days'), 'day')).length,
+          users.filter((user: any) => moment(user.created_at).isSame(moment().subtract(i, 'months'), 'month')).length,
         );
       }
       break;

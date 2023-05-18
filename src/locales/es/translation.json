@@ -7,6 +7,13 @@
     "page": "Página",
     "print": "Imprimir en PDF",
     "reportAsAdmin": "Reportar como administrador",
+    "appointmentCount": "Conteo de turnos",
+    "appointmentDashboard": "Historico de turnos",
+    "search": "Buscar",
+    "from": "Desde",
+    "to": "Hasta",
+    "tutorAppointmentsDashboard": "Importes por {{ period }}",
+    "userAppointmentsDashboard": "Importes por {{ period }}",
     "userCount": "Conteo de usuarios",
     "activeUserCount": "Usuarios activos",
     "newUsersCount": "Nuevos usuarios",
@@ -175,6 +182,14 @@
       "pending_payment": "Pendiente de pago",
       "complete": "Completado",
       "reported": "Reportado"
+    },
+    "periods": {
+      "pending_approval": "turnos pendientes",
+      "rejected": "turnos rechazados",
+      "in_progress": "turnos en progreso",
+      "pending_payment": "turnos pendientes de pago",
+      "complete": "turnos completados",
+      "reported": "turnos reportados"
     }
   },
   "error": {

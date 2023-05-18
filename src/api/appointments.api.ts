@@ -1,5 +1,108 @@
 import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import supabase from './supabase';
+import moment from 'moment';
+import { checkUserExistance } from './auth.api';
+
+type DateDiff = 'week' | 'month' | 'year';
+
+const arrayDays = (dateDiff: DateDiff) => {
+  const arr: any = [];
+
+  // return last "DateDiff" days in array
+  switch (dateDiff) {
+    case 'week':
+      for (let i = 0; i < 7; i++) {
+        arr.push(moment().subtract(i, 'days').format('DD/MM/YYYY'));
+      }
+      break;
+    case 'month':
+      for (let i = 0; i < 30; i++) {
+        arr.push(moment().subtract(i, 'days').format('DD/MM/YYYY'));
+      }
+      break;
+    case 'year':
+      for (let i = 0; i < 12; i++) {
+        arr.push(moment().subtract(i, 'months').format('MM/YYYY'));
+      }
+      break;
+    default:
+      break;
+  }
+
+  return arr.reverse();
+};
+
+const appointmentsArrayByDate = (appointments: any, dateDiff: DateDiff) => {
+  const arr = [];
+  switch (dateDiff) {
+    case 'week':
+      for (let i = 0; i < 7; i++) {
+        arr.push(
+          appointments
+            .filter((appointment: any) => moment(appointment.last_modified).isSame(moment().subtract(i, 'days'), 'day'))
+            .map((appointment: any) => {
+              const { price, is_unit_price } = appointment.tutor_services;
+              let total_price = 0;
+              if (is_unit_price) {
+                appointment.appointment_details.forEach((detail: any) => {
+                  total_price += detail.quantity * price;
+                });
+              } else {
+                total_price = price;
+              }
+              return total_price;
+            })
+            .reduce((a: any, b: any) => a + b, 0),
+        );
+      }
+      break;
+    case 'month':
+      for (let i = 0; i < 30; i++) {
+        arr.push(
+          appointments
+            .filter((appointment: any) => moment(appointment.last_modified).isSame(moment().subtract(i, 'days'), 'day'))
+            .map((appointment: any) => {
+              const { price, is_unit_price } = appointment.tutor_services;
+              let total_price = 0;
+              if (is_unit_price) {
+                appointment.appointment_details.forEach((detail: any) => {
+                  total_price += detail.quantity * price;
+                });
+              } else {
+                total_price = price;
+              }
+              return total_price;
+            })
+            .reduce((a: any, b: any) => a + b, 0),
+        );
+      }
+      break;
+    case 'year':
+      for (let i = 0; i < 12; i++) {
+        arr.push(
+          appointments
+            .filter((appointment: any) =>
+              moment(appointment.last_modified).isSame(moment().subtract(i, 'months'), 'month'),
+            )
+            .map((appointment: any) => {
+              const { price, is_unit_price } = appointment.tutor_services;
+              let total_price = 0;
+              if (is_unit_price) {
+                appointment.appointment_details.forEach((detail: any) => {
+                  total_price += detail.quantity * price;
+                });
+              } else {
+                total_price = price;
+              }
+              return total_price;
+            })
+            .reduce((a: any, b: any) => a + b, 0),
+        );
+      }
+      break;
+  }
+  return arr.reverse();
+};
 
 export const postRequest = async (payload: any) => {
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -197,6 +300,60 @@ export const changeAppointmentStatus = async (payload: any) => {
   }
 
   return data;
+};
+
+export const getAppointmentStatistics = async (dateDiff: any, appointmentType: any) => {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    throw new Error(sessionError.message);
+  }
+
+  const userType = await checkUserExistance();
+
+  const query = supabase
+    .from('appointments')
+    .select(
+      `
+        *,
+        tutor_services!inner (
+            *,
+            tutors ( 
+                id, 
+                name, 
+                bio, 
+                description, 
+                joindate, 
+                notifications, 
+                status
+            )
+        ),
+        addresses (
+            street,
+            number,
+            province,
+            country,
+            postcode
+        ),
+        appointment_details ( * ),
+        user_profiles ( * )
+        `,
+    )
+    .eq('status', appointmentType || APPOINTMENT_STATUS.COMPLETE);
+
+  if (userType === 'user') query.eq('user_profile_id', sessionData?.session?.user?.id);
+  if (userType === 'tutor') query.eq('tutor_services.tutor_id', sessionData?.session?.user?.id);
+
+  const { data, error } = await query;
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return {
+    userCountArr: appointmentsArrayByDate(data, dateDiff),
+    days: arrayDays(dateDiff),
+    userType,
+  } as any;
 };
 
 export const getAppointmentById = async (id: any) => {

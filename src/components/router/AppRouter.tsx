@@ -30,6 +30,7 @@ import { AppointmentCancelSuccess } from '@app/pages/appointments/AppointmentCan
 import { UserForm } from '@app/pages/users/UserForm';
 import { UserList } from '@app/pages/users/UserList';
 import RequireAdminRole from './RequireAdminRole';
+import { AppointmentDashboard } from '@app/pages/appointments/AppointmentDashboard';
 
 const RequireAuthPage = React.lazy(() => import('@app/components/router/RequireAuth'));
 const RequireAuth = withLoading(RequireAuthPage);
@@ -93,6 +94,7 @@ export const AppRouter: React.FC = () => {
           <Route path="/request/:serviceId" element={<RequestForm />} />
           <Route path="/request/success" element={<RequestSuccess />} />
           <Route path="/appointments" element={<AppointmentList />} />
+          <Route path="/appointments/dashboard" element={<AppointmentDashboard />} />
           <Route path="/appointments/:id/success/:successUuid" element={<AppointmentPaymentSuccess />} />
           <Route path="/appointments/:id/cancel-successful/:successUuid" element={<AppointmentCancelSuccess />} />
         </Route>
