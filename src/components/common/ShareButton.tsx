@@ -39,14 +39,14 @@ export const ShareButton = ({ list, fileName }: any) => {
 
   const menu = () => (
     <Menu>
-      <Menu.Item onClick={() => exportCSV()} danger icon={<FileExcelOutlined />}>
+      <Menu.Item onClick={() => exportCSV()} icon={<FileExcelOutlined />}>
         {t('common.exportCSV')}
       </Menu.Item>
     </Menu>
   );
 
   return (
-    <Dropdown overlay={menu()} placement="bottomRight">
+    <Dropdown overlay={menu()} placement="bottomRight" trigger={['click']}>
       <Button type="text" shape="circle" size="large" style={{ alignItems: 'end' }}>
         <ShareAltOutlined style={{ transform: 'scale(1.2)' }} />
       </Button>

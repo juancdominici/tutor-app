@@ -1,52 +1,61 @@
-import { PieChart } from './PieChart';
-import { Legend, LegendItem } from './Legend/Legend';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { EChartsOption } from 'echarts-for-react';
+import { BaseChart, BaseChartProps } from '@app/components/common/charts/BaseChart';
+import { useAppSelector } from '@app/hooks/reduxHooks';
+import { themeObject } from '@app/styles/themes/themeVariables';
+import { BASE_COLORS } from '@app/styles/themes/constants';
 
-interface PieChartCustomLegend {
-  name: string;
-  // eslint-disable-next-line
-  chartData: any[];
-  // eslint-disable-next-line
-  legendData: LegendItem[];
-  height?: string;
-  width?: string;
+interface PieChartProps extends BaseChartProps {
   option?: EChartsOption;
+  // eslint-disable-next-line
+  data?: any;
+  name?: string;
 }
 
-export const PieChartCustomLegend: React.FC<PieChartCustomLegend> = ({
-  chartData,
-  name,
-  legendData,
-  height,
-  width,
-  ...rest
-}) => {
-  const [activeItemIndex, setActiveItemIndex] = useState<number | null>(null);
+export const PieChartRightLegend: React.FC<PieChartProps> = ({ option, data, name, ...props }) => {
+  const theme = useAppSelector((state) => state.theme.theme);
 
-  const onMouseOver = useCallback(
-    ({ dataIndex }: { dataIndex: number | null }) => setActiveItemIndex(dataIndex),
-    [setActiveItemIndex],
-  );
-  const onMouseOut = useCallback(() => setActiveItemIndex(null), [setActiveItemIndex]);
-
-  const onEvents = {
-    mouseover: onMouseOver,
-    mouseout: onMouseOut,
+  const defaultPieOption = {
+    tooltip: {
+      trigger: 'item',
+      position: ['15%', '80%'],
+    },
+    legend: {
+      orient: 'vertical',
+      right: 'right',
+      top: 'middle',
+      textStyle: {
+        color: themeObject[theme].textMain,
+      },
+    },
+    itemStyle: {
+      label: {
+        show: false,
+      },
+      labelLine: {
+        show: false,
+      },
+    },
+    series: [
+      {
+        name,
+        type: 'pie',
+        center: ['25%', '50%'],
+        radius: '50%',
+        label: {
+          show: false,
+        },
+        labelLine: {
+          show: false,
+        },
+        data,
+        animationType: 'scale',
+        animationEasing: 'elasticOut',
+        animationDelay: (idx: any) => {
+          return Math.random() * 200;
+        },
+      },
+    ],
   };
-
-  return (
-    <>
-      <PieChart
-        data={chartData}
-        name={name}
-        showLegend={false}
-        height={height}
-        width={width}
-        onEvents={onEvents}
-        {...rest}
-      />
-      <Legend legendItems={legendData} activeItemIndex={activeItemIndex} />
-    </>
-  );
+  return <BaseChart {...props} option={{ ...defaultPieOption, ...option }} height={'200px'} />;
 };

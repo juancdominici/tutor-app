@@ -67,7 +67,7 @@ export const AppointmentList: React.FC = () => {
   });
 
   const filteredAppointments = () => {
-    return appointments;
+    return appointments?.filter((appointment: any) => appointment.status === statusFilter || !statusFilter) || [];
   };
 
   const handleReview = (appointment: any) => {
@@ -87,7 +87,7 @@ export const AppointmentList: React.FC = () => {
               title: detail.detail,
               quantity: detail.quantity,
               currency_id: 'ARS',
-              unit_price: appointment.tutor_services.price * 1.25,
+              unit_price: appointment.tutor_services.price * appointment.tutor_services.cancelation_fee,
               description: detail.additional_details,
             };
           })
@@ -96,10 +96,11 @@ export const AppointmentList: React.FC = () => {
               title: appointment.tutor_services.name,
               quantity: 1,
               currency_id: 'ARS',
-              unit_price: price * 1.25,
+              unit_price: price * appointment.tutor_services.cancelation_fee,
             },
           ],
-      marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      // marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      application_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
       back_urls: {
         success: `https://tutor-app-ps.netlify.app/appointments/${appointment.id}/cancel-successful/${successUuid}`,
         failure: `https://tutor-app-ps.netlify.app/appointments`,
@@ -150,7 +151,8 @@ export const AppointmentList: React.FC = () => {
               unit_price: price,
             },
           ],
-      marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      // marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      application_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
       back_urls: {
         success: `https://tutor-app-ps.netlify.app/appointments/${appointment.id}/success/${successUuid}`,
         failure: `https://tutor-app-ps.netlify.app/appointments`,
@@ -603,7 +605,7 @@ export const AppointmentList: React.FC = () => {
         receivedBy: appointment.user_profiles.name,
         location: computedAddress(appointment.addresses),
         status: t(`constants.appointment_status.${appointment.status}`),
-        price: calcAppointmentPrice(appointment),
+        price: calcAppointmentPrice(appointment) + calcServiceChargePrice(appointment),
       };
     });
   };
@@ -957,7 +959,8 @@ export const AppointmentList: React.FC = () => {
                     }}
                   >
                     <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                      <strong>{t('common.totalPrice')}: </strong>${calcAppointmentPrice(appointment)}
+                      <strong>{t('common.totalPrice')}: </strong>$
+                      {calcAppointmentPrice(appointment) + calcServiceChargePrice(appointment)}
                     </p>
                   </div>
                   <div

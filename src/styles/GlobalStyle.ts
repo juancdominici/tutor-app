@@ -252,6 +252,23 @@ export default createGlobalStyle`
     color: var(--text-light-color);
     }
 
+    .ant-carousel .slick-prev,
+    .ant-carousel .slick-next,
+    .ant-carousel .slick-prev:hover,
+    .ant-carousel .slick-next:hover {
+      font-size: inherit;
+      color: currentColor;
+    }      
+
+    .ant-carousel .slick-prev {
+        margin-left: .5rem;
+    }
+
+    .ant-carousel .slick-next {
+        margin-right: .5rem;
+    }
+
+
   @keyframes pulse-green {
     0% {
       transform: scale(0.95);

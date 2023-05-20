@@ -41,6 +41,7 @@ export const ServiceForm = () => {
         location: serviceData[0]?.location,
         type: serviceData[0]?.type,
         is_unit_price: serviceData[0]?.is_unit_price,
+        cancelation_fee: serviceData[0]?.cancelation_fee * 100,
       });
     }
   }, [serviceData, serviceLoading]);
@@ -84,6 +85,7 @@ export const ServiceForm = () => {
         location: values.location,
         type: values.type,
         is_unit_price: values.is_unit_price,
+        cancelation_fee: values.cancelation_fee / 100,
         status: true,
       };
 
@@ -156,6 +158,14 @@ export const ServiceForm = () => {
               type="number"
               addonAfter="$"
               controls
+            />
+          </FormItem>
+          <FormItem style={{ margin: '0.5em 1em', width: '100%' }} name="cancelation_fee">
+            <InputNumber
+              placeholder={t('common.cancelation_fee')}
+              style={{ width: '100%' }}
+              type="number"
+              addonAfter="%"
             />
           </FormItem>
           <Col span={20}>

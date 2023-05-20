@@ -104,6 +104,158 @@ const appointmentsArrayByDate = (appointments: any, dateDiff: DateDiff) => {
   return arr.reverse();
 };
 
+const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
+  // count active appointments by from last "DateDiff" days
+  switch (dateDiff) {
+    case 'week':
+      return appointments
+        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'week'), moment()))
+        .reduce((acc: any, appointment: any) => {
+          const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
+
+          if (index === -1) {
+            acc.push({
+              name: appointment.tutor_services.name,
+              description: appointment.tutor_services.name,
+              value: 1,
+            });
+          } else {
+            acc[index].value += 1;
+          }
+
+          return acc;
+        }, []);
+
+    case 'month':
+      return appointments
+        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'month'), moment()))
+        .reduce((acc: any, appointment: any) => {
+          const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
+
+          if (index === -1) {
+            acc.push({
+              name: appointment.tutor_services.name,
+              description: appointment.tutor_services.name,
+              value: 1,
+            });
+          } else {
+            acc[index].value += 1;
+          }
+
+          return acc;
+        }, []);
+    case 'year':
+      return appointments
+        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'year'), moment()))
+        .reduce((acc: any, appointment: any) => {
+          const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
+
+          if (index === -1) {
+            acc.push({
+              name: appointment.tutor_services.name,
+              description: appointment.tutor_services.name,
+              value: 1,
+            });
+          } else {
+            acc[index].value += 1;
+          }
+
+          return acc;
+        }, []);
+  }
+};
+const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
+  switch (dateDiff) {
+    case 'week':
+      return appointments
+        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'week'), moment()))
+        .reduce((acc: any, appointment: any) => {
+          const { price, is_unit_price } = appointment.tutor_services;
+          let total_price = 0;
+
+          if (is_unit_price) {
+            appointment.appointment_details.forEach((detail: any) => {
+              total_price += detail.quantity * price;
+            });
+          } else {
+            total_price = price;
+          }
+
+          const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
+
+          if (index === -1) {
+            acc.push({
+              name: appointment.tutor_services.name,
+              description: appointment.tutor_services.name,
+              value: total_price,
+            });
+          } else {
+            acc[index].value += total_price;
+          }
+
+          return acc;
+        }, []);
+    case 'month':
+      return appointments
+        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'month'), moment()))
+        .reduce((acc: any, appointment: any) => {
+          const { price, is_unit_price } = appointment.tutor_services;
+          let total_price = 0;
+
+          if (is_unit_price) {
+            appointment.appointment_details.forEach((detail: any) => {
+              total_price += detail.quantity * price;
+            });
+          } else {
+            total_price = price;
+          }
+
+          const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
+
+          if (index === -1) {
+            acc.push({
+              name: appointment.tutor_services.name,
+              description: appointment.tutor_services.name,
+              value: total_price,
+            });
+          } else {
+            acc[index].value += total_price;
+          }
+
+          return acc;
+        }, []);
+    case 'year':
+      return appointments
+        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'year'), moment()))
+        .reduce((acc: any, appointment: any) => {
+          const { price, is_unit_price } = appointment.tutor_services;
+          let total_price = 0;
+
+          if (is_unit_price) {
+            appointment.appointment_details.forEach((detail: any) => {
+              total_price += detail.quantity * price;
+            });
+          } else {
+            total_price = price;
+          }
+
+          const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
+
+          if (index === -1) {
+            acc.push({
+              name: appointment.tutor_services.name,
+              description: appointment.tutor_services.name,
+              value: total_price,
+            });
+          } else {
+            acc[index].value += total_price;
+          }
+
+          return acc;
+        }, []);
+  }
+};
+
 export const postRequest = async (payload: any) => {
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
 
@@ -356,6 +508,121 @@ export const getAppointmentStatistics = async (dateDiff: any, appointmentType: a
   } as any;
 };
 
+export const getTutorAppointmentsStatistics = async (dateDiff: any) => {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    throw new Error(sessionError.message);
+  }
+
+  const { data: pendingRequests, error: pendingRequestsError } = await supabase
+    .from('appointments')
+    .select(
+      `
+        *,
+        tutor_services!inner (
+            *,
+            tutors ( 
+                id, 
+                name, 
+                bio, 
+                description, 
+                joindate, 
+                notifications, 
+                status
+            )
+        ),
+        addresses (
+            street,
+            number,
+            province,
+            country,
+            postcode
+        ),
+        appointment_details ( * ),
+        user_profiles ( * )
+        `,
+    )
+    .eq('status', APPOINTMENT_STATUS.PENDING_APPROVAL);
+  if (pendingRequestsError) {
+    throw new Error(pendingRequestsError.message);
+  }
+
+  const { data: closeAppointments, error: closeAppointmentsError } = await supabase
+    .from('appointments')
+    .select(
+      `
+        *,
+        tutor_services!inner (
+            *,
+            tutors ( 
+                id, 
+                name, 
+                bio, 
+                description, 
+                joindate, 
+                notifications, 
+                status
+            )
+        ),
+        addresses (
+            street,
+            number,
+            province,
+            country,
+            postcode
+        ),
+        appointment_details ( * ),
+        user_profiles ( * )
+        `,
+    )
+    .eq('status', APPOINTMENT_STATUS.IN_PROGRESS);
+
+  if (closeAppointmentsError) {
+    throw new Error(closeAppointmentsError.message);
+  }
+
+  const { data: appointmentsPerService, error: appointmentsPerServiceError } = await supabase
+    .from('appointments')
+    .select(
+      `
+        *,
+        tutor_services!inner (
+            *,
+            tutors ( 
+                id, 
+                name, 
+                bio, 
+                description, 
+                joindate, 
+                notifications, 
+                status
+            )
+        ),
+        addresses (
+            street,
+            number,
+            province,
+            country,
+            postcode
+        ),
+        appointment_details ( * ),
+        user_profiles ( * )
+        `,
+    )
+    .eq('status', APPOINTMENT_STATUS.COMPLETE);
+
+  if (appointmentsPerServiceError) {
+    throw new Error(appointmentsPerServiceError.message);
+  }
+
+  return {
+    pendingRequests,
+    closeAppointments,
+    appointmentsPerServiceWithPrice: countServiceAmountByDate(appointmentsPerService, dateDiff),
+    appointmentsPerService: countServiceByDate(appointmentsPerService, dateDiff),
+  };
+};
 export const getAppointmentById = async (id: any) => {
   const { data, error } = await supabase
     .from('appointments')

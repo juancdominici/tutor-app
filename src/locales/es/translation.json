@@ -1,5 +1,10 @@
 {
   "common": {
+    "pendingRequests": "Solicitudes pendientes",
+    "closeAppointments": "Turnos cercanos",
+    "appointmentsPerService": "Turnos por servicio",
+    "appointmentsPerServiceWithPrice": "Montos cobrados por servicio",
+    "cancelation_fee": "Tarifa de cancelación",
     "exportCSV": "Exportar .csv",
     "documentFor": "Documento para",
     "unitPrice": "Precio por unidad",
