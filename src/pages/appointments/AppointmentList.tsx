@@ -82,15 +82,23 @@ export const AppointmentList: React.FC = () => {
 
     const preference = {
       items: is_unit_price
-        ? appointment.appointment_details.map((detail: any) => {
-            return {
-              title: detail.detail,
-              quantity: detail.quantity,
+        ? [
+            ...appointment.appointment_details.map((detail: any) => {
+              return {
+                title: detail.detail,
+                quantity: detail.quantity,
+                currency_id: 'ARS',
+                unit_price: appointment.tutor_services.price * appointment.tutor_services.cancelation_fee,
+                description: detail.additional_details,
+              };
+            }),
+            {
+              title: t('common.serviceChargePrice'),
+              quantity: 1,
               currency_id: 'ARS',
-              unit_price: appointment.tutor_services.price * appointment.tutor_services.cancelation_fee,
-              description: detail.additional_details,
-            };
-          })
+              unit_price: calcServiceChargePrice(appointment),
+            },
+          ]
         : [
             {
               title: appointment.tutor_services.name,
@@ -98,9 +106,14 @@ export const AppointmentList: React.FC = () => {
               currency_id: 'ARS',
               unit_price: price * appointment.tutor_services.cancelation_fee,
             },
+            {
+              title: t('common.serviceChargePrice'),
+              quantity: 1,
+              currency_id: 'ARS',
+              unit_price: calcServiceChargePrice(appointment),
+            },
           ],
-      // marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
-      application_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      marketplace_fee: calcServiceChargePrice(appointment),
       back_urls: {
         success: `https://tutor-app-ps.netlify.app/appointments/${appointment.id}/cancel-successful/${successUuid}`,
         failure: `https://tutor-app-ps.netlify.app/appointments`,
@@ -134,15 +147,23 @@ export const AppointmentList: React.FC = () => {
 
     const preference = {
       items: is_unit_price
-        ? appointment.appointment_details.map((detail: any) => {
-            return {
-              title: detail.detail,
-              quantity: detail.quantity,
+        ? [
+            ...appointment.appointment_details.map((detail: any) => {
+              return {
+                title: detail.detail,
+                quantity: detail.quantity,
+                currency_id: 'ARS',
+                unit_price: appointment.tutor_services.price,
+                description: detail.additional_details,
+              };
+            }),
+            {
+              title: t('common.serviceChargePrice'),
+              quantity: 1,
               currency_id: 'ARS',
-              unit_price: appointment.tutor_services.price,
-              description: detail.additional_details,
-            };
-          })
+              unit_price: calcServiceChargePrice(appointment),
+            },
+          ]
         : [
             {
               title: appointment.tutor_services.name,
@@ -150,9 +171,14 @@ export const AppointmentList: React.FC = () => {
               currency_id: 'ARS',
               unit_price: price,
             },
+            {
+              title: t('common.serviceChargePrice'),
+              quantity: 1,
+              currency_id: 'ARS',
+              unit_price: calcServiceChargePrice(appointment),
+            },
           ],
-      // marketplace_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
-      application_fee: parseFloat(process.env.REACT_APP_MP_SERVICE_CHARGE || '0') * total,
+      marketplace_fee: calcServiceChargePrice(appointment),
       back_urls: {
         success: `https://tutor-app-ps.netlify.app/appointments/${appointment.id}/success/${successUuid}`,
         failure: `https://tutor-app-ps.netlify.app/appointments`,
