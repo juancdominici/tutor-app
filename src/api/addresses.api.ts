@@ -9,7 +9,7 @@ export const getTutorAddressesFiltered = async (payload: any) => {
     max_long: payload.maxCoords.lng,
     price_filter_min: payload.priceFilter[0] || null,
     price_filter_max: payload.priceFilter[1] || null,
-    service_type: payload.serviceTypeFilter?.value || null,
+    service_type: payload.serviceTypeFilter || null,
     review_filter: payload.reviewFilter || null,
   });
 

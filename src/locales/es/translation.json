@@ -280,7 +280,7 @@
   "notifications": {
     "appointments": {
       "pending_approval": "¡Tenés un nuevo turno pendiente de aprobación!",
-      "rejected": "Rechazaron tu turno, podés solicitar otro turno buscando un nuevo tutor.",
+      "rejected": "Se suspendió tu turno, podés solicitar otro turno buscando un nuevo tutor.",
       "pending_payment": "¡Tenés un nuevo turno pendiente de pago!\nPodés pagarlo desde la sección de turnos.",
       "complete": "¡Completaste un turno!\nPronto podrás verlo reflejado en tu cuenta de Mercado Pago.",
       "reported": "Reportaron tu turno, nos pondremos en contacto con vos."

@@ -164,6 +164,7 @@ const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
         }, []);
   }
 };
+
 const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
   switch (dateDiff) {
     case 'week':
@@ -342,7 +343,8 @@ export const getUserAppointments = async () => {
         user_profiles ( * )
         `,
     )
-    .eq('user_profile_id', sessionData?.session?.user?.id);
+    .eq('user_profile_id', sessionData?.session?.user?.id)
+    .order('last_modified', { ascending: false });
 
   if (error) {
     throw new Error(error.message);
@@ -387,7 +389,8 @@ export const getTutorAppointments = async () => {
         `,
     )
     .neq('status', APPOINTMENT_STATUS.PENDING_APPROVAL)
-    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id);
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id)
+    .order('last_modified', { ascending: false });
 
   if (error) {
     throw new Error(error.message);
@@ -432,7 +435,8 @@ export const getTutorRequests = async () => {
         `,
     )
     .eq('status', APPOINTMENT_STATUS.PENDING_APPROVAL)
-    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id);
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id)
+    .order('last_modified', { ascending: false });
 
   if (error) {
     throw new Error(error.message);
@@ -624,6 +628,7 @@ export const getTutorAppointmentsStatistics = async (dateDiff: any) => {
     appointmentsPerService: countServiceByDate(appointmentsPerService, dateDiff),
   };
 };
+
 export const getAppointmentById = async (id: any) => {
   const { data, error } = await supabase
     .from('appointments')

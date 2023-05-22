@@ -39,7 +39,8 @@ export const getUserNotifications = async () => {
     .or(
       `status.eq.${APPOINTMENT_STATUS.REJECTED},status.eq.${APPOINTMENT_STATUS.REPORTED},status.eq.${APPOINTMENT_STATUS.PENDING_PAYMENT}`,
     )
-    .eq('user_profile_id', sessionData?.session?.user?.id);
+    .eq('user_profile_id', sessionData?.session?.user?.id)
+    .order('last_modified', { ascending: false });
 
   if (error) {
     throw new Error(error.message);
@@ -83,7 +84,8 @@ export const getTutorNotifications = async () => {
           `,
     )
     .or(`status.eq.${APPOINTMENT_STATUS.COMPLETE},status.eq.${APPOINTMENT_STATUS.PENDING_APPROVAL}`)
-    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id);
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id)
+    .order('last_modified', { ascending: false });
 
   if (error) {
     throw new Error(error.message);
