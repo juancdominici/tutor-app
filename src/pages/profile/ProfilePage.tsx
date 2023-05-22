@@ -133,6 +133,7 @@ export const ProfilePage = () => {
       });
       queryClient.invalidateQueries(['userData', id]);
       queryClient.invalidateQueries(['tutorReviews', id]);
+      queryClient.invalidateQueries(['tutorServices', id]);
     },
   });
 
@@ -549,7 +550,6 @@ export const ProfilePage = () => {
                         fontSize: '2em',
                       }}
                       defaultValue={5}
-                      allowHalf
                     />
                   </FormItem>
                   <FormItem name="review" required rules={[{ required: true, message: t('common.requiredField') }]}>

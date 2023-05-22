@@ -5,7 +5,7 @@ export const getServiceUseStatus = async (service: any) => {
   const { data, error } = await supabase
     .from('tutor_services')
     .select('*, appointments!inner(*)')
-    .eq('service_id', service.id)
+    .eq('id', service.id)
     .neq('appointments.status', APPOINTMENT_STATUS.PENDING_APPROVAL)
     .neq('appointments.status', APPOINTMENT_STATUS.COMPLETE)
     .neq('appointments.status', APPOINTMENT_STATUS.REJECTED)
