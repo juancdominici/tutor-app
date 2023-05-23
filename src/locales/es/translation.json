@@ -88,6 +88,8 @@
     "newUsersCount": "Nuevos usuarios",
     "next": "Siguiente",
     "noAnswerYet": "Sin respuesta aún.",
+    "noElementsOnList": "No hay elementos para mostrar.",
+    "noElementsOnListDashboard": "No hay datos para mostrar para el periodo seleccionado.",
     "nothingHere": "Nada por aquí",
     "notifications": "Notificaciones",
     "notValidEmail": "El email no es válido.",

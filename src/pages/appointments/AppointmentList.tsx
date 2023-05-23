@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeftOutlined, CommentOutlined, FilePdfOutlined } from '@ant-design/icons';
-import { Button, Collapse, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
+import { Button, Collapse, Empty, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getUserAppointments as getUserAppointmentsAction,
@@ -1005,6 +1005,23 @@ export const AppointmentList: React.FC = () => {
           );
         })}
       </Collapse>
+      {filteredAppointments()?.length === 0 && (
+        <Empty
+          description={
+            <span
+              style={{
+                fontSize: '0.8em',
+                color: 'var(--secondary-color)',
+              }}
+            >
+              {t('common.noElementsOnList')}
+            </span>
+          }
+          style={{
+            marginTop: '2em',
+          }}
+        />
+      )}
     </>
   );
 };

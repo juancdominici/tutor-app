@@ -1,6 +1,6 @@
 import { BaseChart } from '@app/components/common/charts/BaseChart';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Button, Card, Col, DatePicker, Form, Radio, Row, Select } from 'antd';
+import { Button, Card, Col, DatePicker, Empty, Form, Radio, Row, Select } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loading } from '@app/components/common/Loading';
@@ -117,12 +117,30 @@ export const AppointmentDashboard = () => {
           >
             <Row>
               <Col span={24}>
-                <BaseChart
-                  option={option}
-                  style={{
-                    maxHeight: '50vh',
-                  }}
-                />
+                {data?.data?.some((e) => !!e) ? (
+                  <BaseChart
+                    option={option}
+                    style={{
+                      maxHeight: '50vh',
+                    }}
+                  />
+                ) : (
+                  <Empty
+                    description={
+                      <span
+                        style={{
+                          fontSize: '0.8em',
+                          color: 'var(--secondary-color)',
+                        }}
+                      >
+                        {t('common.noElementsOnListDashboard')}
+                      </span>
+                    }
+                    style={{
+                      margin: '2em 0',
+                    }}
+                  />
+                )}
               </Col>
             </Row>
           </Card>

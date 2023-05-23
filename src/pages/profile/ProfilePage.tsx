@@ -31,7 +31,22 @@ import { LOCATION_TYPE } from '@app/constants/constants';
 import { notificationController } from '@app/controllers/notificationController';
 import { useLanguage } from '@app/hooks/useLanguage';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button, Card, Col, Dropdown, Input, Menu, Modal, Rate, Row, Select, Spin, Tabs, Typography } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Dropdown,
+  Empty,
+  Input,
+  Menu,
+  Modal,
+  Rate,
+  Row,
+  Select,
+  Spin,
+  Tabs,
+  Typography,
+} from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -505,7 +520,23 @@ export const ProfilePage = () => {
                   </Row>
                 </Card>
               ))}
-
+              {tutorReviewsQuery?.data?.length === 0 && (
+                <Empty
+                  description={
+                    <span
+                      style={{
+                        fontSize: '0.8em',
+                        color: 'var(--secondary-color)',
+                      }}
+                    >
+                      {t('common.noElementsOnList')}
+                    </span>
+                  }
+                  style={{
+                    marginTop: '2em',
+                  }}
+                />
+              )}
               <Modal
                 title={t('common.addReview')}
                 visible={addReviewModal}
@@ -693,6 +724,23 @@ export const ProfilePage = () => {
                   </Row>
                 </Card>
               ))}
+              {tutorQuestionsQuery?.data?.length === 0 && (
+                <Empty
+                  description={
+                    <span
+                      style={{
+                        fontSize: '0.8em',
+                        color: 'var(--secondary-color)',
+                      }}
+                    >
+                      {t('common.noElementsOnList')}
+                    </span>
+                  }
+                  style={{
+                    marginTop: '2em',
+                  }}
+                />
+              )}
               {userExistanceQuery?.data === 'user' && (
                 <Input.Group
                   compact
@@ -837,6 +885,23 @@ export const ProfilePage = () => {
                   </Row>
                 </Card>
               ))}
+              {tutorServicesQuery?.data?.length === 0 && (
+                <Empty
+                  description={
+                    <span
+                      style={{
+                        fontSize: '0.8em',
+                        color: 'var(--secondary-color)',
+                      }}
+                    >
+                      {t('common.noElementsOnList')}
+                    </span>
+                  }
+                  style={{
+                    marginTop: '2em',
+                  }}
+                />
+              )}
             </Tabs.TabPane>
           </Tabs>
         </Col>

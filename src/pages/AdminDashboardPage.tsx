@@ -5,7 +5,7 @@ import { PieChart } from '@app/components/common/charts/PieChart';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { themeObject } from '@app/styles/themes/themeVariables';
 import { useQuery } from '@tanstack/react-query';
-import { Card, Col, Divider, Radio, Row, Statistic } from 'antd';
+import { Card, Col, Divider, Empty, Radio, Row, Statistic } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -36,6 +36,9 @@ export const AdminDashboardPage = () => {
     {
       refetchOnWindowFocus: false,
       keepPreviousData: false,
+      onSuccess: (data) => {
+        console.log(data);
+      },
     },
   );
 
@@ -138,8 +141,25 @@ export const AdminDashboardPage = () => {
               />
             </Col>
           </Row>
-
-          <BaseChart option={option} />
+          {data?.data?.some((e) => !!e) ? (
+            <BaseChart option={option} />
+          ) : (
+            <Empty
+              description={
+                <span
+                  style={{
+                    fontSize: '0.8em',
+                    color: 'var(--secondary-color)',
+                  }}
+                >
+                  {t('common.noElementsOnListDashboard')}
+                </span>
+              }
+              style={{
+                margin: '2em 0',
+              }}
+            />
+          )}
         </Card>
       </Col>
 
@@ -159,8 +179,31 @@ export const AdminDashboardPage = () => {
           }}
           title={t('common.appointmentsByServiceType')}
         >
-          <PieChart data={serviceStatistics?.appointmentsByServiceType} />
-          <Legend legendItems={serviceStatistics?.appointmentsByServiceType || []} activeItemIndex={activeItemIndex} />
+          {serviceStatistics?.appointmentsByServiceType?.some((e: any) => !!e.value) ? (
+            <>
+              <PieChart data={serviceStatistics?.appointmentsByServiceType} />
+              <Legend
+                legendItems={serviceStatistics?.appointmentsByServiceType || []}
+                activeItemIndex={activeItemIndex}
+              />
+            </>
+          ) : (
+            <Empty
+              description={
+                <span
+                  style={{
+                    fontSize: '0.8em',
+                    color: 'var(--secondary-color)',
+                  }}
+                >
+                  {t('common.noElementsOnListDashboard')}
+                </span>
+              }
+              style={{
+                margin: '2em 0',
+              }}
+            />
+          )}
         </Card>
       </Col>
       <Row

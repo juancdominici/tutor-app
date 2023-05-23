@@ -99,13 +99,18 @@ export const DashboardPage = () => {
             ))}
             {tutorAppointmentsStatistics?.pendingRequests?.length === 0 && (
               <Empty
-                description={''}
+                description={
+                  <span
+                    style={{
+                      fontSize: '0.8em',
+                      color: 'var(--secondary-color)',
+                    }}
+                  >
+                    {t('common.noElementsOnList')}
+                  </span>
+                }
                 style={{
                   marginTop: '2em',
-                  fontSize: '0.8em',
-                }}
-                imageStyle={{
-                  height: 60,
                 }}
               />
             )}
@@ -178,13 +183,18 @@ export const DashboardPage = () => {
             ))}
             {tutorAppointmentsStatistics?.closeAppointments?.length === 0 && (
               <Empty
-                description={''}
+                description={
+                  <span
+                    style={{
+                      fontSize: '0.8em',
+                      color: 'var(--secondary-color)',
+                    }}
+                  >
+                    {t('common.noElementsOnList')}
+                  </span>
+                }
                 style={{
                   marginTop: '2em',
-                  fontSize: '0.8em',
-                }}
-                imageStyle={{
-                  height: 60,
                 }}
               />
             )}
@@ -233,14 +243,50 @@ export const DashboardPage = () => {
               <Typography style={{ textAlign: 'center', fontSize: '0.9em', margin: '1em' }}>
                 {t('common.appointmentsPerService')}
               </Typography>
-              <PieChartRightLegend data={tutorAppointmentsStatistics?.appointmentsPerService} />
+              {tutorAppointmentsStatistics?.appointmentsPerService?.some((e: any) => !!e.value) ? (
+                <PieChartRightLegend data={tutorAppointmentsStatistics?.appointmentsPerService} />
+              ) : (
+                <Empty
+                  description={
+                    <span
+                      style={{
+                        fontSize: '0.8em',
+                        color: 'var(--secondary-color)',
+                      }}
+                    >
+                      {t('common.noElementsOnListDashboard')}
+                    </span>
+                  }
+                  style={{
+                    margin: '2em 0',
+                  }}
+                />
+              )}
             </Col>
 
             <Col span={24}>
               <Typography style={{ textAlign: 'center', fontSize: '0.9em', margin: '1em' }}>
                 {t('common.appointmentsPerServiceWithPrice')}
               </Typography>
-              <PieChartRightLegend data={tutorAppointmentsStatistics?.appointmentsPerServiceWithPrice} />
+              {tutorAppointmentsStatistics?.appointmentsPerServiceWithPrice?.some((e: any) => !!e.value) ? (
+                <PieChartRightLegend data={tutorAppointmentsStatistics?.appointmentsPerServiceWithPrice} />
+              ) : (
+                <Empty
+                  description={
+                    <span
+                      style={{
+                        fontSize: '0.8em',
+                        color: 'var(--secondary-color)',
+                      }}
+                    >
+                      {t('common.noElementsOnListDashboard')}
+                    </span>
+                  }
+                  style={{
+                    margin: '2em 0',
+                  }}
+                />
+              )}
             </Col>
           </Row>
         </Card>

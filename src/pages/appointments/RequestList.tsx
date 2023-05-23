@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button, Collapse, Input, Modal, Row, Space, Spin, Typography } from 'antd';
+import { Button, Collapse, Empty, Input, Modal, Row, Space, Spin, Typography } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getTutorRequests as getTutorRequestsAction,
@@ -283,6 +283,23 @@ export const RequestList: React.FC = () => {
           </Panel>
         ))}
       </Collapse>
+      {filteredAppointments()?.length === 0 && (
+        <Empty
+          description={
+            <span
+              style={{
+                fontSize: '0.8em',
+                color: 'var(--secondary-color)',
+              }}
+            >
+              {t('common.noElementsOnList')}
+            </span>
+          }
+          style={{
+            marginTop: '2em',
+          }}
+        />
+      )}
     </>
   );
 };

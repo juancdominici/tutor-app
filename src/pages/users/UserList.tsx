@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Collapse, Dropdown, Input, Menu, Row } from 'antd';
+import { Button, Collapse, Dropdown, Empty, Input, Menu, Row } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getUsers as getUsersAction, deleteUser as deleteUserAction } from '../../api/users.api';
 import { Loading } from '@app/components/common/Loading';
@@ -150,7 +150,23 @@ export const UserList: React.FC = () => {
           </Panel>
         ))}
       </Collapse>
-
+      {filteredUsers()?.length === 0 && (
+        <Empty
+          description={
+            <span
+              style={{
+                fontSize: '0.8em',
+                color: 'var(--secondary-color)',
+              }}
+            >
+              {t('common.noElementsOnList')}
+            </span>
+          }
+          style={{
+            marginTop: '2em',
+          }}
+        />
+      )}
       <Button
         type="primary"
         shape="circle"

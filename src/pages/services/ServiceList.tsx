@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Collapse, Dropdown, Input, Menu, Row, Select, Typography } from 'antd';
+import { Button, Collapse, Dropdown, Empty, Input, Menu, Row, Select, Typography } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getUserServices as getUserServicesAction, deleteService as deleteServiceAction } from '../../api/services.api';
 import { Loading } from '@app/components/common/Loading';
@@ -178,7 +178,23 @@ export const ServiceList: React.FC = () => {
           </Panel>
         ))}
       </Collapse>
-
+      {filteredServices()?.length === 0 && (
+        <Empty
+          description={
+            <span
+              style={{
+                fontSize: '0.8em',
+                color: 'var(--secondary-color)',
+              }}
+            >
+              {t('common.noElementsOnList')}
+            </span>
+          }
+          style={{
+            marginTop: '2em',
+          }}
+        />
+      )}
       <Button
         type="primary"
         shape="circle"

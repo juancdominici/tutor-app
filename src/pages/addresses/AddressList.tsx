@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Collapse, Dropdown, Input, Menu, Row } from 'antd';
+import { Button, Collapse, Dropdown, Empty, Input, Menu, Row, Typography } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getUserAddresses as getUserAddressesAction,
@@ -152,7 +152,23 @@ export const AddressList: React.FC = () => {
           </Panel>
         ))}
       </Collapse>
-
+      {filteredAddresses()?.length === 0 && (
+        <Empty
+          description={
+            <span
+              style={{
+                fontSize: '0.8em',
+                color: 'var(--secondary-color)',
+              }}
+            >
+              {t('common.noElementsOnList')}
+            </span>
+          }
+          style={{
+            marginTop: '2em',
+          }}
+        />
+      )}
       <Button
         type="primary"
         shape="circle"
