@@ -64,7 +64,7 @@ export const AddressList: React.FC = () => {
   );
 
   const genExtra = (address: any) => (
-    <Dropdown overlay={menu(address)} placement="bottomRight">
+    <Dropdown overlay={menu(address)} placement="bottomRight" trigger={['click']}>
       <SettingOutlined onClick={(event) => event.stopPropagation()} />
     </Dropdown>
   );

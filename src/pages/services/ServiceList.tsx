@@ -59,7 +59,7 @@ export const ServiceList: React.FC = () => {
   );
 
   const genExtra = (service: any) => (
-    <Dropdown overlay={menu(service)} placement="bottomRight">
+    <Dropdown overlay={menu(service)} placement="bottomRight" trigger={['click']}>
       <SettingOutlined onClick={(event) => event.stopPropagation()} />
     </Dropdown>
   );

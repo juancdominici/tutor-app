@@ -53,7 +53,7 @@ export const UserList: React.FC = () => {
   );
 
   const genExtra = (user: any) => (
-    <Dropdown overlay={menu(user)} placement="bottomRight">
+    <Dropdown overlay={menu(user)} placement="bottomRight" trigger={['click']}>
       <SettingOutlined onClick={(event) => event.stopPropagation()} />
     </Dropdown>
   );
