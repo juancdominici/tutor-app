@@ -36,9 +36,6 @@ export const AdminDashboardPage = () => {
     {
       refetchOnWindowFocus: false,
       keepPreviousData: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
     },
   );
 
