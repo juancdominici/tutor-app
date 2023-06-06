@@ -5,7 +5,7 @@ import { PieChart } from '@app/components/common/charts/PieChart';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { themeObject } from '@app/styles/themes/themeVariables';
 import { useQuery } from '@tanstack/react-query';
-import { Card, Col, Divider, Empty, Radio, Row, Statistic } from 'antd';
+import { Card, Col, Collapse, Divider, Empty, Radio, Row, Statistic } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -106,57 +106,68 @@ export const AdminDashboardPage = () => {
             padding: '0.5em',
           }}
         >
-          <Row>
-            <Col span={8}>
-              <Statistic
-                title={t('common.userCount')}
-                style={{
-                  textAlign: 'center',
-                }}
-                loading={isLoading || isFetching}
-                value={statistics?.userCount}
-              />
-            </Col>
-            <Col span={8}>
-              <Statistic
-                title={t('common.activeUserCount')}
-                style={{
-                  textAlign: 'center',
-                }}
-                loading={isLoading || isFetching}
-                value={statistics?.activeUserCount}
-              />
-            </Col>
-            <Col span={8}>
-              <Statistic
-                title={t('common.newUsersCount')}
-                style={{
-                  textAlign: 'center',
-                }}
-                loading={isLoading || isFetching}
-                value={statistics?.newUsersCount}
-              />
-            </Col>
-          </Row>
-          {data?.data?.some((e) => !!e) ? (
-            <BaseChart option={option} />
-          ) : (
-            <Empty
-              description={
-                <span
+          <Collapse
+            style={{
+              backgroundColor: 'var(--sider-background-color)',
+            }}
+            bordered={false}
+            ghost
+            expandIconPosition="right"
+          >
+            <Collapse.Panel header={<h5>{t('common.userData')}</h5>} key="userData">
+              <Row>
+                <Col span={8}>
+                  <Statistic
+                    title={t('common.userCount')}
+                    style={{
+                      textAlign: 'center',
+                    }}
+                    loading={isLoading || isFetching}
+                    value={statistics?.userCount}
+                  />
+                </Col>
+                <Col span={8}>
+                  <Statistic
+                    title={t('common.activeUserCount')}
+                    style={{
+                      textAlign: 'center',
+                    }}
+                    loading={isLoading || isFetching}
+                    value={statistics?.activeUserCount}
+                  />
+                </Col>
+                <Col span={8}>
+                  <Statistic
+                    title={t('common.newUsersCount')}
+                    style={{
+                      textAlign: 'center',
+                    }}
+                    loading={isLoading || isFetching}
+                    value={statistics?.newUsersCount}
+                  />
+                </Col>
+              </Row>
+              {data?.data?.some((e) => !!e) ? (
+                <BaseChart option={option} />
+              ) : (
+                <Empty
+                  description={
+                    <span
+                      style={{
+                        fontSize: '0.8em',
+                        color: 'var(--secondary-color)',
+                      }}
+                    >
+                      {t('common.noElementsOnListDashboard')}
+                    </span>
+                  }
                   style={{
-                    fontSize: '0.8em',
-                    color: 'var(--secondary-color)',
+                    margin: '2em 0',
                   }}
-                >
-                  {t('common.noElementsOnListDashboard')}
-                </span>
-              }
-              style={{
-                margin: '2em 0',
-              }}
-            />
-          )}
+                />
+              )}
+            </Collapse.Panel>
+          </Collapse>
         </Card>
       </Col>
 
@@ -174,33 +185,43 @@ export const AdminDashboardPage = () => {
           style={{
             width: '95%',
           }}
-          title={t('common.appointmentsByServiceType')}
         >
-          {serviceStatistics?.appointmentsByServiceType?.some((e: any) => !!e.value) ? (
-            <>
-              <PieChart data={serviceStatistics?.appointmentsByServiceType} />
-              <Legend
-                legendItems={serviceStatistics?.appointmentsByServiceType || []}
-                activeItemIndex={activeItemIndex}
-              />
-            </>
-          ) : (
-            <Empty
-              description={
-                <span
+          <Collapse
+            style={{
+              backgroundColor: 'var(--sider-background-color)',
+            }}
+            bordered={false}
+            ghost
+            expandIconPosition="right"
+          >
+            <Collapse.Panel header={<h5>{t('common.appointmentsByServiceType')}</h5>} key="appointmentsByServiceType">
+              {serviceStatistics?.appointmentsByServiceType?.some((e: any) => !!e.value) ? (
+                <>
+                  <PieChart data={serviceStatistics?.appointmentsByServiceType} />
+                  <Legend
+                    legendItems={serviceStatistics?.appointmentsByServiceType || []}
+                    activeItemIndex={activeItemIndex}
+                  />
+                </>
+              ) : (
+                <Empty
+                  description={
+                    <span
+                      style={{
+                        fontSize: '0.8em',
+                        color: 'var(--secondary-color)',
+                      }}
+                    >
+                      {t('common.noElementsOnListDashboard')}
+                    </span>
+                  }
                   style={{
-                    fontSize: '0.8em',
-                    color: 'var(--secondary-color)',
+                    margin: '2em 0',
                   }}
-                >
-                  {t('common.noElementsOnListDashboard')}
-                </span>
-              }
-              style={{
-                margin: '2em 0',
-              }}
-            />
-          )}
+                />
+              )}
+            </Collapse.Panel>
+          </Collapse>
         </Card>
       </Col>
       <Row
@@ -249,10 +270,20 @@ export const AdminDashboardPage = () => {
           style={{
             width: '95%',
           }}
-          title={t('common.userTypeCount')}
         >
-          <PieChart data={statistics?.userTypeCount} />
-          <Legend legendItems={statistics?.userTypeCount || []} activeItemIndex={activeItemIndex} />
+          <Collapse
+            style={{
+              backgroundColor: 'var(--sider-background-color)',
+            }}
+            bordered={false}
+            ghost
+            expandIconPosition="right"
+          >
+            <Collapse.Panel header={<h5>{t('common.userTypeCount')}</h5>} key="userTypeCount">
+              <PieChart data={statistics?.userTypeCount} />
+              <Legend legendItems={statistics?.userTypeCount || []} activeItemIndex={activeItemIndex} />
+            </Collapse.Panel>
+          </Collapse>
         </Card>
       </Col>
       <Col
@@ -268,10 +299,20 @@ export const AdminDashboardPage = () => {
           style={{
             width: '95%',
           }}
-          title={t('common.providerCount')}
         >
-          <PieChart data={statistics?.providerCount} />
-          <Legend legendItems={statistics?.providerCount || []} activeItemIndex={activeItemIndex} />
+          <Collapse
+            style={{
+              backgroundColor: 'var(--sider-background-color)',
+            }}
+            bordered={false}
+            ghost
+            expandIconPosition="right"
+          >
+            <Collapse.Panel header={<h5>{t('common.providerCount')}</h5>} key="providerCount">
+              <PieChart data={statistics?.providerCount} />
+              <Legend legendItems={statistics?.providerCount || []} activeItemIndex={activeItemIndex} />
+            </Collapse.Panel>
+          </Collapse>
         </Card>
       </Col>
       <Col
@@ -287,10 +328,20 @@ export const AdminDashboardPage = () => {
           style={{
             width: '95%',
           }}
-          title={t('common.serviceByCategoryCount')}
         >
-          <PieChart data={serviceStatistics?.serviceByCategoryCount} />
-          <Legend legendItems={serviceStatistics?.serviceByCategoryCount || []} activeItemIndex={activeItemIndex} />
+          <Collapse
+            style={{
+              backgroundColor: 'var(--sider-background-color)',
+            }}
+            bordered={false}
+            ghost
+            expandIconPosition="right"
+          >
+            <Collapse.Panel header={<h5>{t('common.serviceByCategoryCount')}</h5>} key="serviceByCategoryCount">
+              <PieChart data={serviceStatistics?.serviceByCategoryCount} />
+              <Legend legendItems={serviceStatistics?.serviceByCategoryCount || []} activeItemIndex={activeItemIndex} />
+            </Collapse.Panel>
+          </Collapse>
         </Card>
       </Col>
       <Col
@@ -307,10 +358,23 @@ export const AdminDashboardPage = () => {
           style={{
             width: '95%',
           }}
-          title={t('common.serviceByLocationTypeCount')}
         >
-          <PieChart data={serviceStatistics?.serviceByLocationTypeCount} />
-          <Legend legendItems={serviceStatistics?.serviceByLocationTypeCount || []} activeItemIndex={activeItemIndex} />
+          <Collapse
+            style={{
+              backgroundColor: 'var(--sider-background-color)',
+            }}
+            bordered={false}
+            ghost
+            expandIconPosition="right"
+          >
+            <Collapse.Panel header={<h5>{t('common.serviceByLocationTypeCount')}</h5>} key="serviceByLocationTypeCount">
+              <PieChart data={serviceStatistics?.serviceByLocationTypeCount} />
+              <Legend
+                legendItems={serviceStatistics?.serviceByLocationTypeCount || []}
+                activeItemIndex={activeItemIndex}
+              />
+            </Collapse.Panel>
+          </Collapse>
         </Card>
       </Col>
     </Row>

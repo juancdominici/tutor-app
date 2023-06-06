@@ -2,12 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getTutorAppointmentsStatistics } from '../api/appointments.api';
-import { Card, Carousel, Col, Empty, Radio, Row, Typography } from 'antd';
+import { Button, Card, Carousel, Col, Empty, Radio, Row, Typography } from 'antd';
 import moment from 'moment';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { PieChartRightLegend } from '@app/components/common/charts/PieChartCustomLegend';
+import { useNavigate } from 'react-router-dom';
 
 export const DashboardPage = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [dateDiff, setDateDiff] = useState<any>('week');
 
@@ -45,9 +47,9 @@ export const DashboardPage = () => {
           <Typography style={{ textAlign: 'center', fontSize: '0.9em', marginBottom: '1em' }}>
             {t('common.pendingRequests')}
           </Typography>
-          <Carousel arrows prevArrow={<LeftOutlined />} nextArrow={<RightOutlined />}>
+          <Carousel arrows prevArrow={<LeftOutlined />} nextArrow={<RightOutlined />} dots={false}>
             {tutorAppointmentsStatistics?.pendingRequests?.map((appointment) => (
-              <div key={appointment.id}>
+              <div key={appointment.id} className="carousel-item">
                 <Row justify="space-between">
                   <Col span={18}>
                     <p
@@ -84,7 +86,7 @@ export const DashboardPage = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24}>
+                  <Col span={12}>
                     <p
                       style={{
                         fontSize: '0.8rem',
@@ -93,6 +95,25 @@ export const DashboardPage = () => {
                     >
                       {moment(`${appointment.date} ${appointment.time}`).format('DD/MM/YYYY HH:mm')}hs
                     </p>
+                  </Col>
+                  <Col
+                    span={12}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={() => navigate(`/tutor/requests`)}
+                      style={{
+                        fontSize: '0.8rem',
+                        padding: '0em 1.5em',
+                      }}
+                    >
+                      {t('common.view')}
+                    </Button>
                   </Col>
                 </Row>
               </div>
@@ -129,9 +150,9 @@ export const DashboardPage = () => {
           <Typography style={{ textAlign: 'center', fontSize: '0.9em', marginBottom: '1em' }}>
             {t('common.closeAppointments')}
           </Typography>
-          <Carousel arrows prevArrow={<LeftOutlined />} nextArrow={<RightOutlined />}>
+          <Carousel arrows prevArrow={<LeftOutlined />} nextArrow={<RightOutlined />} dots={false}>
             {tutorAppointmentsStatistics?.closeAppointments?.map((appointment) => (
-              <div key={appointment.id}>
+              <div key={appointment.id} className="carousel-item">
                 <Row justify="space-between">
                   <Col span={18}>
                     <p
@@ -168,7 +189,7 @@ export const DashboardPage = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24}>
+                  <Col span={12}>
                     <p
                       style={{
                         fontSize: '0.8rem',
@@ -177,6 +198,25 @@ export const DashboardPage = () => {
                     >
                       {moment(`${appointment.date} ${appointment.time}`).format('DD/MM/YYYY HH:mm')}hs
                     </p>
+                  </Col>
+                  <Col
+                    span={12}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={() => navigate(`/appointments`)}
+                      style={{
+                        fontSize: '0.8rem',
+                        padding: '0em 1.5em',
+                      }}
+                    >
+                      {t('common.view')}
+                    </Button>
                   </Col>
                 </Row>
               </div>

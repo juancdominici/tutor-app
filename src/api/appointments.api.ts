@@ -548,6 +548,7 @@ export const getTutorAppointmentsStatistics = async (dateDiff: any) => {
         user_profiles ( * )
         `,
     )
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id)
     .eq('status', APPOINTMENT_STATUS.PENDING_APPROVAL);
   if (pendingRequestsError) {
     throw new Error(pendingRequestsError.message);
@@ -581,6 +582,7 @@ export const getTutorAppointmentsStatistics = async (dateDiff: any) => {
         user_profiles ( * )
         `,
     )
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id)
     .eq('status', APPOINTMENT_STATUS.IN_PROGRESS);
 
   if (closeAppointmentsError) {

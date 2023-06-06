@@ -3,6 +3,7 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { Button, Col, Collapse, Divider, Row } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export const ContactPage = () => {
@@ -199,6 +200,21 @@ export const ContactPage = () => {
           <p>
             {t('faq.contactUs')} <a href="mailto:juancdominici@gmail.com">{t('faq.here')}</a>.
           </p>
+        </Col>
+      </Row>
+      <Row align="middle" justify="center">
+        <Col
+          span={24}
+          style={{
+            textAlign: 'center',
+            fontSize: '0.8em',
+            margin: '0 1em 1em 1em',
+            padding: '0 1em',
+          }}
+        >
+          <Link to="/i/eula" target="_blank">
+            {t('common.termsAndConditionsPt2').charAt(0).toUpperCase() + t('common.termsAndConditionsPt2').slice(1)}
+          </Link>
         </Col>
       </Row>
     </>

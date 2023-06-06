@@ -268,6 +268,10 @@ export default createGlobalStyle`
         margin-right: .5rem;
     }
 
+    .carousel-item {
+        padding: 0 1rem !important;
+    }
+
 
   @keyframes pulse-green {
     0% {
