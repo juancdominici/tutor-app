@@ -100,7 +100,7 @@ export const resetCss = css`
     stroke-width: 2;
     stroke-miterlimit: 10;
     stroke: var(--primary-color);
-    fill: #fff;
+    fill: var(--layout-body-bg-color);
     animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
   }
 
