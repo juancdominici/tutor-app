@@ -15,7 +15,7 @@ import {
   register as registerAction,
   passwordRecover as passwordRecoverAction,
 } from '@app/api/auth.api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Divider } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
 import { ThemePicker } from '../header/components/settingsDropdown/settingsOverlay/ThemePicker/ThemePicker';
@@ -24,6 +24,7 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useAppSelector((state: any) => state.theme.theme);
+  const queryClient = useQueryClient();
   const img = theme === 'dark' ? logoDark : logo;
 
   useEffect(() => {
@@ -43,6 +44,9 @@ export const LoginForm = () => {
   };
 
   const { mutate: logout } = useMutation(logoutAction, {
+    onSuccess: () => {
+      queryClient.clear();
+    },
     onError: () => {
       notificationController.error({
         message: t('error.somethingHappened'),
