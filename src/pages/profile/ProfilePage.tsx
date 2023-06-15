@@ -146,6 +146,7 @@ export const ProfilePage = () => {
       notificationController.success({
         message: t('common.reviewAdded'),
       });
+      queryClient.invalidateQueries(['unreviewedServices', id]);
       queryClient.invalidateQueries(['userData', id]);
       queryClient.invalidateQueries(['tutorReviews', id]);
       queryClient.invalidateQueries(['tutorServices', id]);
