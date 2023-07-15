@@ -3,7 +3,13 @@ import { Layout } from 'antd';
 import { media } from '@app/styles/themes/constants';
 
 export const LayoutMaster = styled(Layout)`
+  width: 100vw;
   height: 100vh;
+  height: 100dvh;
+  min-height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 
 export const LayoutMain = styled(Layout)`
