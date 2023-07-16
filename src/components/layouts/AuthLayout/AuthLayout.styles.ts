@@ -23,7 +23,6 @@ export const MapWrapper = styled(Row)`
   min-height: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: hidden;
 `;
 
 export const BackgroundWrapper = styled.div`
