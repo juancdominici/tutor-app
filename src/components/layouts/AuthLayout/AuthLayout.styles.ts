@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Checkbox, Button } from 'antd';
+import { Checkbox, Button, Row } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { Input as CommonInput } from '@app/components/common/inputs/Input/Input';
@@ -14,6 +14,16 @@ export const Wrapper = styled.div`
   overflow-x: hidden;
   overflow-y: hidden;
   display: flex;
+`;
+
+export const MapWrapper = styled(Row)`
+  height: 88vh;
+  height: 88dvh;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 
 export const BackgroundWrapper = styled.div`

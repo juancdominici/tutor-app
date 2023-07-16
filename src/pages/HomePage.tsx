@@ -14,6 +14,7 @@ import { DashboardPage } from './DashboardPage';
 import { ReactComponent as leavesSvg } from '../assets/images/leaves.svg';
 import Icon from '@ant-design/icons';
 import { AdminDashboardPage } from './AdminDashboardPage';
+import { MapWrapper } from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -236,7 +237,7 @@ export const HomePage = () => {
     <>
       <PageTitle>{t('common.home')}</PageTitle>
 
-      <Row style={{ height: '88vh', width: '100%' }}>
+      <MapWrapper>
         <Col style={{ height: '100%', width: '100%' }}>
           {currentPosition && userType === 'user' && (
             <>
@@ -382,7 +383,7 @@ export const HomePage = () => {
           {userType === 'tutor' && <DashboardPage />}
           {userType === 'admin' && <AdminDashboardPage />}
         </Col>
-      </Row>
+      </MapWrapper>
     </>
   );
 };
