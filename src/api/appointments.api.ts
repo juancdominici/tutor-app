@@ -617,6 +617,7 @@ export const getTutorAppointmentsStatistics = async (dateDiff: any) => {
         user_profiles ( * )
         `,
     )
+    .eq('tutor_services.tutor_id', sessionData?.session?.user?.id)
     .eq('status', APPOINTMENT_STATUS.COMPLETE);
 
   if (appointmentsPerServiceError) {

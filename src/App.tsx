@@ -43,7 +43,7 @@ const App: React.FC = () => {
         <ConfigProvider locale={language === 'es' ? esES : ptPT}>
           <AppRouter />
         </ConfigProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </>
   );

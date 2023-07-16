@@ -8,7 +8,11 @@ import { BORDER_RADIUS, FONT_SIZE, FONT_WEIGHT, media } from '@app/styles/themes
 
 export const Wrapper = styled.div`
   height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  min-height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden;
   display: flex;
 `;
 
