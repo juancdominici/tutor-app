@@ -99,6 +99,7 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
         style={{
           position: 'absolute',
           bottom: 0,
+          zIndex: 1001,
         }}
         bodyStyle={{
           padding: '1em',

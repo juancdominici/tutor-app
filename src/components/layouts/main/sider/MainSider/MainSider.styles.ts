@@ -8,7 +8,7 @@ export const Sider = styled(Layout.Sider)`
   position: fixed;
   overflow: visible;
   right: 0;
-  z-index: 100;
+  z-index: 1001;
   min-height: 100vh;
   max-height: 100vh;
 

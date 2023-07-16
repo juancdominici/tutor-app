@@ -212,7 +212,7 @@ export default createGlobalStyle`
     background: var(--primary-color);
     font-size: 1.5rem;
     border-width: 2px;
-    z-index: 999;
+    z-index: 1002;
   }
   
 .blob {
