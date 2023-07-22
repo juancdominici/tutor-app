@@ -12,6 +12,7 @@ import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
 import { useNavigate } from 'react-router-dom';
 import { notificationController } from '@app/controllers/notificationController';
 import { ShareButton } from '@app/components/common/ShareButton';
+import { HttpError } from '@app/constants/errors';
 const { Panel } = Collapse;
 
 export const AddressList: React.FC = () => {
@@ -29,7 +30,13 @@ export const AddressList: React.FC = () => {
       queryClient.invalidateQueries(['addresses']);
       notificationController.success({ message: t('common.addressDeleted') });
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof HttpError && error.status === '409') {
+        notificationController.error({
+          message: t('error.addressInUse'),
+        });
+        return;
+      }
       notificationController.error({
         message: t('error.somethingHappened'),
       });

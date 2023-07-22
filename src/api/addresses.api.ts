@@ -1,5 +1,7 @@
+import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import { checkUserExistance } from './auth.api';
 import supabase from './supabase';
+import { HttpError } from '@app/constants/errors';
 
 export const getTutorAddressesFiltered = async (payload: any) => {
   const { data, error } = await supabase.rpc('get_filtered_tutor_addresses_in_view', {
@@ -66,6 +68,26 @@ export const getTutorAddressesWithCoordinates = async (tutorId: any) => {
   return data;
 };
 
+export const getAddressUseStatus = async (id: any) => {
+  const { data, error } = await supabase
+    .from('addresses')
+    .select('*, appointments!inner(*)')
+    .eq('id', id)
+    .neq('appointments.status', APPOINTMENT_STATUS.PENDING_APPROVAL)
+    .neq('appointments.status', APPOINTMENT_STATUS.COMPLETE)
+    .neq('appointments.status', APPOINTMENT_STATUS.REJECTED)
+    .eq('status', true);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  // If user users have appointments with this service, return true
+  if (data && data?.length > 0) {
+    throw new HttpError('La dirección ya está en uso.', '409');
+  }
+};
+
 export const postAddress = async (address: any) => {
   const userType = await checkUserExistance();
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -110,6 +132,8 @@ export const getAddress = async (id: any) => {
 };
 
 export const deleteAddress = async (id: any) => {
+  await getAddressUseStatus(id);
+
   const { data, error } = await supabase.from('addresses').update({ status: false }).eq('id', id);
 
   if (error) {

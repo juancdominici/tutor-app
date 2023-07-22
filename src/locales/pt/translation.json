@@ -204,7 +204,9 @@
     }
   },
   "error": {
-    "somethingHappened": "Algo deu errado, por favor, tente novamente."
+    "somethingHappened": "Algo deu errado, por favor, tente novamente.",
+    "addressInUse": "Este endereço está em uso.",
+    "serviceInUse": "Este serviço está em uso."
   },
   "error404": {
     "comeBack": "Voltar para o início",

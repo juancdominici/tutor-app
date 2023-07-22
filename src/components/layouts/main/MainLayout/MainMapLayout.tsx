@@ -4,7 +4,7 @@ import MainSider from '../sider/MainSider/MainSider';
 import MainMapContent from '../MainMapContent/MainMapContent';
 import { MainHeader } from '../MainHeader/MainHeader';
 import * as S from './MainLayout.styles';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useResponsive } from '@app/hooks/useResponsive';
 import FilterSider from '../filterSider/FilterSider';
 import { Button } from 'antd';

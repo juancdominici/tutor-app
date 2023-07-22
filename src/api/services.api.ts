@@ -1,5 +1,6 @@
 import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import supabase from './supabase';
+import { HttpError } from '@app/constants/errors';
 
 export const getServiceUseStatus = async (service: any) => {
   const { data, error } = await supabase
@@ -17,7 +18,7 @@ export const getServiceUseStatus = async (service: any) => {
 
   // If user users have appointments with this service, return true
   if (data && data?.length > 0) {
-    throw new Error('El servicio ya está en uso.');
+    throw new HttpError('El servicio ya está en uso.', '409');
   }
 };
 

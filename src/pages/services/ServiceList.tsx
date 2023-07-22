@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { notificationController } from '@app/controllers/notificationController';
 import { LOCATION_TYPE, SERVICE_TYPE } from '@app/constants/constants';
 import { ShareButton } from '@app/components/common/ShareButton';
+import { HttpError } from '@app/constants/errors';
 const { Panel } = Collapse;
 const { Paragraph } = Typography;
 export const ServiceList: React.FC = () => {
@@ -28,7 +29,13 @@ export const ServiceList: React.FC = () => {
       queryClient.invalidateQueries(['services']);
       notificationController.success({ message: t('common.serviceDeleted') });
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof HttpError && error.status === '409') {
+        notificationController.error({
+          message: t('error.serviceInUse'),
+        });
+        return;
+      }
       notificationController.error({
         message: t('error.somethingHappened'),
       });
