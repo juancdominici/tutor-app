@@ -33,6 +33,10 @@ export const LoginForm = () => {
     }
   }, []);
 
+  const isLogin = () => {
+    return window.location.pathname.includes('login');
+  };
+
   const isLogout = () => {
     return window.location.pathname.includes('logout');
   };
@@ -168,6 +172,8 @@ export const LoginForm = () => {
             {
               validator: (rule, value) =>
                 isPasswordRecover() ||
+                isLogin() ||
+                isLogout() ||
                 // password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,20}$/.test(value)
                   ? Promise.resolve()
