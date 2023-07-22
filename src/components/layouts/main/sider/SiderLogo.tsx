@@ -10,9 +10,12 @@ interface SiderLogoProps {
 }
 export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSider }) => {
   const [username, setUsername] = useState('Tutor');
-  const { data: userType } = useQuery(['userType'], checkUserExistance);
+  const { data: userType } = useQuery(['userType'], checkUserExistance, {
+    refetchOnWindowFocus: false,
+  });
 
   const { data: userData, isFetching } = useQuery(['user'], getUserData, {
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       if (!!data?.userMetadata?.session?.user.user_metadata.full_name) {
         setUsername(data?.userMetadata?.session?.user.user_metadata.full_name);
@@ -21,7 +24,6 @@ export const SiderLogo: React.FC<SiderLogoProps> = ({ isSiderCollapsed, toggleSi
         setUsername(data?.userData.name);
       }
     },
-    refetchOnWindowFocus: false,
   });
 
   return (

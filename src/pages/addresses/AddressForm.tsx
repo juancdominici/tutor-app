@@ -45,7 +45,9 @@ export const AddressForm = () => {
     });
   }, []);
 
-  const { data: userType } = useQuery(['userType'], checkUserExistance);
+  const { data: userType } = useQuery(['userType'], checkUserExistance, {
+    refetchOnWindowFocus: false,
+  });
 
   const { data: addressData, isFetching: addressLoading } = useQuery(
     ['address', id],

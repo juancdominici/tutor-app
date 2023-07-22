@@ -18,7 +18,7 @@ export const DashboardPage = () => {
     async () => getTutorAppointmentsStatistics(dateDiff),
     {
       refetchOnWindowFocus: false,
-      keepPreviousData: true,
+      keepPreviousData: false,
     },
   );
 
