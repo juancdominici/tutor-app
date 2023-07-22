@@ -470,8 +470,8 @@ const checkAppointmentDate = async (id: any, status: any) => {
   }
 
   // For appointments that are pending approval, check if the date is in the past
-  if (appointmentData.status === APPOINTMENT_STATUS.PENDING_APPROVAL && status === APPOINTMENT_STATUS.IN_PROGRESS) {
-    if (moment(`${appointmentData.date} ${appointmentData.time}`).isBefore(moment())) {
+  if (appointmentData?.status === APPOINTMENT_STATUS.PENDING_APPROVAL && status === APPOINTMENT_STATUS.IN_PROGRESS) {
+    if (moment(`${appointmentData?.date} ${appointmentData?.time}`).isBefore(moment())) {
       throw new HttpError('Appointment date is in the past', '409');
     }
   }
