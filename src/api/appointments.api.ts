@@ -2,6 +2,7 @@ import { APPOINTMENT_STATUS } from '@app/constants/constants';
 import supabase from './supabase';
 import moment from 'moment';
 import { checkUserExistance } from './auth.api';
+import { HttpError } from '@app/constants/errors';
 
 type DateDiff = 'week' | 'month' | 'year';
 
@@ -115,7 +116,9 @@ const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
 
           if (index === -1) {
             acc.push({
-              name: appointment.tutor_services.name,
+              name:
+                appointment.tutor_services.name.slice(0, 20) +
+                (appointment.tutor_services.name.length > 20 ? '...' : ''),
               description: appointment.tutor_services.name,
               value: 1,
             });
@@ -134,7 +137,9 @@ const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
 
           if (index === -1) {
             acc.push({
-              name: appointment.tutor_services.name,
+              name:
+                appointment.tutor_services.name.slice(0, 20) +
+                (appointment.tutor_services.name.length > 20 ? '...' : ''),
               description: appointment.tutor_services.name,
               value: 1,
             });
@@ -152,7 +157,9 @@ const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
 
           if (index === -1) {
             acc.push({
-              name: appointment.tutor_services.name,
+              name:
+                appointment.tutor_services.name.slice(0, 20) +
+                (appointment.tutor_services.name.length > 20 ? '...' : ''),
               description: appointment.tutor_services.name,
               value: 1,
             });
@@ -186,7 +193,9 @@ const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
 
           if (index === -1) {
             acc.push({
-              name: appointment.tutor_services.name,
+              name:
+                appointment.tutor_services.name.slice(0, 20) +
+                (appointment.tutor_services.name.length > 20 ? '...' : ''),
               description: appointment.tutor_services.name,
               value: total_price,
             });
@@ -215,7 +224,9 @@ const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
 
           if (index === -1) {
             acc.push({
-              name: appointment.tutor_services.name,
+              name:
+                appointment.tutor_services.name.slice(0, 20) +
+                (appointment.tutor_services.name.length > 20 ? '...' : ''),
               description: appointment.tutor_services.name,
               value: total_price,
             });
@@ -244,7 +255,9 @@ const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
 
           if (index === -1) {
             acc.push({
-              name: appointment.tutor_services.name,
+              name:
+                appointment.tutor_services.name.slice(0, 20) +
+                (appointment.tutor_services.name.length > 20 ? '...' : ''),
               description: appointment.tutor_services.name,
               value: total_price,
             });
@@ -445,7 +458,28 @@ export const getTutorRequests = async () => {
   return data;
 };
 
+const checkAppointmentDate = async (id: any, status: any) => {
+  const { data: appointmentData, error: appointmentError } = await supabase
+    .from('appointments')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (appointmentError) {
+    throw new Error(appointmentError.message);
+  }
+
+  // For appointments that are pending approval, check if the date is in the past
+  if (appointmentData.status === APPOINTMENT_STATUS.PENDING_APPROVAL && status === APPOINTMENT_STATUS.IN_PROGRESS) {
+    if (moment(`${appointmentData.date} ${appointmentData.time}`).isBefore(moment())) {
+      throw new HttpError('Appointment date is in the past', '409');
+    }
+  }
+};
+
 export const changeAppointmentStatus = async (payload: any) => {
+  await checkAppointmentDate(payload.id, payload.status);
+
   const { data, error } = await supabase
     .from('appointments')
     .update({ status: payload.status, last_modified: new Date() })

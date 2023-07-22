@@ -3,7 +3,6 @@ import { EChartsOption } from 'echarts-for-react';
 import { BaseChart, BaseChartProps } from '@app/components/common/charts/BaseChart';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { themeObject } from '@app/styles/themes/themeVariables';
-import { BASE_COLORS } from '@app/styles/themes/constants';
 
 interface PieChartProps extends BaseChartProps {
   option?: EChartsOption;
@@ -22,7 +21,7 @@ export const PieChartRightLegend: React.FC<PieChartProps> = ({ option, data, nam
     },
     legend: {
       orient: 'vertical',
-      right: 'right',
+      left: '50%',
       top: 'middle',
       textStyle: {
         color: themeObject[theme].textMain,

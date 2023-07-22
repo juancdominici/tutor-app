@@ -13,6 +13,7 @@ import { ShareButton } from '@app/components/common/ShareButton';
 import { HttpError } from '@app/constants/errors';
 const { Panel } = Collapse;
 const { Paragraph } = Typography;
+
 export const ServiceList: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();

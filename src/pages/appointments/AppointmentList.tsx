@@ -54,7 +54,7 @@ export const AppointmentList: React.FC = () => {
   const { mutate: changeAppointmentStatus, isLoading: isLoadingChangeAppointmentStatus } = useMutation(
     changeAppointmentStatusAction,
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(['user_appointments']);
         queryClient.invalidateQueries(['tutor_appointments']);
       },

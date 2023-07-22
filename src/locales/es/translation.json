@@ -206,7 +206,8 @@
   "error": {
     "somethingHappened": "Algo salió mal, por favor intentalo nuevamente.",
     "addressInUse": "La dirección está en uso.",
-    "serviceInUse": "El servicio está en uso."
+    "serviceInUse": "El servicio está en uso.",
+    "appointmentDateInPast": "La fecha del turno no puede ser en el pasado."
   },
   "error404": {
     "comeBack": "Volver al inicio",

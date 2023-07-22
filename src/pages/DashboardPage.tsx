@@ -22,6 +22,12 @@ export const DashboardPage = () => {
     },
   );
 
+  const isExpired = (date: string, time: string) => {
+    const appointmentDate = moment(`${date} ${time}`);
+    const currentDate = moment();
+    return appointmentDate.isBefore(currentDate);
+  };
+
   return (
     <Row align="middle" justify="center">
       <Col
@@ -91,6 +97,9 @@ export const DashboardPage = () => {
                       style={{
                         fontSize: '0.8rem',
                         paddingLeft: '0.5em',
+                        color: isExpired(appointment.date, appointment.time)
+                          ? 'var(--error-color)'
+                          : 'var(--text-plain-color)',
                       }}
                     >
                       {moment(`${appointment.date} ${appointment.time}`).format('DD/MM/YYYY HH:mm')}hs
@@ -194,6 +203,9 @@ export const DashboardPage = () => {
                       style={{
                         fontSize: '0.8rem',
                         paddingLeft: '0.5em',
+                        color: isExpired(appointment.date, appointment.time)
+                          ? 'var(--error-color)'
+                          : 'var(--text-plain-color)',
                       }}
                     >
                       {moment(`${appointment.date} ${appointment.time}`).format('DD/MM/YYYY HH:mm')}hs

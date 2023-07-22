@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { LOCATION_TYPE, APPOINTMENT_STATUS } from '@app/constants/constants';
 import moment from 'moment';
 import { ShareButton } from '@app/components/common/ShareButton';
+import { notificationController } from '@app/controllers/notificationController';
+import { HttpError } from '@app/constants/errors';
 const { Panel } = Collapse;
 const { Paragraph } = Typography;
 
@@ -34,8 +36,19 @@ export const RequestList: React.FC = () => {
   const { mutate: changeAppointmentStatus, isLoading: isLoadingChangeAppointmentStatus } = useMutation(
     changeAppointmentStatusAction,
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(['tutor_requests']);
+      },
+      onError: (error) => {
+        if (error instanceof HttpError && error.status === '409') {
+          notificationController.error({
+            message: t('error.appointmentDateInPast'),
+          });
+          return;
+        }
+        notificationController.error({
+          message: t('error.somethingHappened'),
+        });
       },
     },
   );

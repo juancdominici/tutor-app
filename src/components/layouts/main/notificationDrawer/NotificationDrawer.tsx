@@ -159,12 +159,24 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
                 }}
               >
                 <Row justify="space-between">
-                  <Col>
+                  <Col
+                    span={14}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
                     <small style={{ fontSize: '0.7em', color: 'var(--secondary-color)', padding: '0.5em' }}>
                       {t('common.service')}: {appointment.tutor_services.name}
                     </small>
                   </Col>
-                  <Col>
+                  <Col
+                    span={10}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
                     <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
                       {computedDate(appointment?.last_modified)}
                     </small>
