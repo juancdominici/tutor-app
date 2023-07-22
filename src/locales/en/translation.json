@@ -207,7 +207,7 @@
     "somethingHappened": "Something happened, please try again later",
     "addressInUse": "The address is in use.",
     "serviceInUse": "The service is in use.",
-    "appointmentDateInPast": "The appointment you are trying to accept cannot be in the past."
+    "appointmentDateInPast": "The appointment you are trying to accept has expired."
   },
   "error404": {
     "comeBack": "Go back to home page",

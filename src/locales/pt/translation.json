@@ -207,7 +207,7 @@
     "somethingHappened": "Algo deu errado, por favor, tente novamente.",
     "addressInUse": "Este endereço está em uso.",
     "serviceInUse": "Este serviço está em uso.",
-    "appointmentDateInPast": "A data do turno não pode ser no passado."
+    "appointmentDateInPast": "O turno que você deseja aceitar expirou."
   },
   "error404": {
     "comeBack": "Voltar para o início",
