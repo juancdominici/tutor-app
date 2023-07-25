@@ -164,6 +164,7 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
                     style={{
                       display: 'flex',
                       justifyContent: 'flex-start',
+                      alignItems: 'center',
                     }}
                   >
                     <small style={{ fontSize: '0.7em', color: 'var(--secondary-color)', padding: '0.5em' }}>
@@ -177,13 +178,20 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
                       justifyContent: 'flex-end',
                     }}
                   >
-                    <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
+                    <small
+                      style={{
+                        fontSize: '0.7em',
+                        color: 'var(--text-plain-color)',
+                        padding: '0.5em',
+                        textAlign: 'end',
+                      }}
+                    >
                       {computedDate(appointment?.last_modified)}
                     </small>
                   </Col>
                   <Col span={24}>
                     <small style={{ fontSize: '0.7em', color: 'var(--text-plain-color)', padding: '0.5em' }}>
-                      {t('common.priceBy', { price: `${calcAppointmentPrice(appointment)}$` })}
+                      {t('common.priceBy', { price: `${calcAppointmentPrice(appointment)} ARS` })}
                     </small>
                   </Col>
                   <Col span={24}>

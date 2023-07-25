@@ -868,7 +868,7 @@ export const ProfilePage = () => {
                           fontSize: '1.2em',
                         }}
                       >
-                        ${service?.price} {service.is_unit_price ? t('common.perUnit') : ''}
+                        {service?.price} ARS {service.is_unit_price ? t('common.perUnit') : ''}
                       </span>
                     </Col>
                     <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>

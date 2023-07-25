@@ -213,9 +213,9 @@ export const AppointmentList: React.FC = () => {
           i + 1,
           detail.detail || '',
           detail.additional_details || '',
-          `$ ${price.toLocaleString()}`,
+          `${price.toLocaleString()} ARS`,
           detail.quantity,
-          `$ ${(detail.quantity * price).toFixed(2).toLocaleString()}`,
+          `${(detail.quantity * price).toFixed(2).toLocaleString()} ARS`,
         ]);
       });
     } else {
@@ -223,9 +223,9 @@ export const AppointmentList: React.FC = () => {
         1,
         appointment.tutor_services.name || '',
         '',
-        `$ ${price.toLocaleString()}`,
+        `${price.toLocaleString()} ARS`,
         1,
-        `$ ${price.toLocaleString()}`,
+        `${price.toLocaleString()} ARS`,
       ]);
     }
     return tableData;
@@ -309,21 +309,21 @@ export const AppointmentList: React.FC = () => {
         additionalRows: [
           {
             col1: t('common.subtotalPrice'),
-            col2: `$ ${calcAppointmentPrice(appointment).toLocaleString()}`,
+            col2: `${calcAppointmentPrice(appointment).toLocaleString()} ARS`,
             style: {
               fontSize: 10,
             },
           },
           {
             col1: t('common.serviceChargePrice'),
-            col2: `$ ${calcServiceChargePrice(appointment).toLocaleString()}`,
+            col2: `${calcServiceChargePrice(appointment).toLocaleString()} ARS`,
             style: {
               fontSize: 10,
             },
           },
           {
             col1: t('common.totalPrice'),
-            col2: `$ ${(calcAppointmentPrice(appointment) + calcServiceChargePrice(appointment)).toLocaleString()}`,
+            col2: `${(calcAppointmentPrice(appointment) + calcServiceChargePrice(appointment)).toLocaleString()} ARS`,
             style: {
               fontSize: 10,
             },
@@ -837,7 +837,8 @@ export const AppointmentList: React.FC = () => {
                     }}
                   >
                     <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                      <strong>{t('common.totalPrice')}: </strong>${calcAppointmentPrice(appointment)}
+                      <strong>{t('common.totalPrice')}: </strong>
+                      {calcAppointmentPrice(appointment)} ARS
                     </p>
                   </div>
                   <div
@@ -995,8 +996,8 @@ export const AppointmentList: React.FC = () => {
                     }}
                   >
                     <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                      <strong>{t('common.totalPrice')}: </strong>$
-                      {calcAppointmentPrice(appointment) + calcServiceChargePrice(appointment)}
+                      <strong>{t('common.totalPrice')}: </strong>
+                      {calcAppointmentPrice(appointment) + calcServiceChargePrice(appointment)} ARS
                     </p>
                   </div>
                   <div

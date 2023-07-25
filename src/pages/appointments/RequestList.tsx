@@ -265,7 +265,7 @@ export const RequestList: React.FC = () => {
               }}
             >
               <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-                <strong>{t('common.totalPrice')}: </strong>${calcAppointmentPrice(appointment)}
+                <strong>{t('common.totalPrice')}: </strong> {calcAppointmentPrice(appointment)} ARS
               </p>
             </div>
             <Space

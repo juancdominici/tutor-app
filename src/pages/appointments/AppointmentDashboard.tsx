@@ -59,13 +59,17 @@ export const AppointmentDashboard = () => {
       },
       minInterval: 1,
       max: data.data.length > 0 ? Math.max(...data.data) + Math.round(Math.max(...data.data) / 2) : 0,
+      axisLabel: {
+        formatter: (value: any) => {
+          return value + ' ARS';
+        },
+      },
     },
     series: [
       {
         name: t('common.totalPrice'),
         type: 'bar',
         data: data.data,
-        prefix: '$',
         color: themeObject[theme].chartColor4,
         emphasis: {
           focus: 'series',

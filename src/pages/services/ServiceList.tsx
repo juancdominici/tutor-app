@@ -181,7 +181,8 @@ export const ServiceList: React.FC = () => {
               {t(`constants.location.${LOCATION_TYPE.find((location) => location === service.location)}`)}
             </p>
             <p style={{ marginLeft: '26px', fontSize: '0.8em' }}>
-              <strong>{t('common.price')}: </strong>${service?.price} {service.is_unit_price ? t('common.perUnit') : ''}
+              <strong>{t('common.price')}: </strong>
+              {service?.price} ARS {service.is_unit_price ? t('common.perUnit') : ''}
             </p>
           </Panel>
         ))}

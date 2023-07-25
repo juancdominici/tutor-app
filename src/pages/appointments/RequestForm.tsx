@@ -428,16 +428,16 @@ export const RequestForm = () => {
           }}
         >
           <Col style={{ padding: '0.5em 1em' }}>{t('common.subtotalPrice')}</Col>
-          <Col style={{ padding: '0.5em 1em' }}>{calcSubtotalPrice()} $</Col>
+          <Col style={{ padding: '0.5em 1em' }}>{calcSubtotalPrice()} ARS</Col>
           {}
           <Col style={{ padding: '0.5em 1em' }}>{t('common.serviceChargePrice')}</Col>
-          <Col style={{ padding: '0.5em 1em' }}>{calcServiceChargePrice()} $</Col>
+          <Col style={{ padding: '0.5em 1em' }}>{calcServiceChargePrice()} ARS</Col>
 
           <Col span={24} style={{ padding: '0.5em' }}>
             <hr />
           </Col>
           <Col style={{ padding: '0.5em 1em', fontWeight: 'bold' }}>{t('common.totalPrice')}</Col>
-          <Col style={{ padding: '0.5em 1em', fontWeight: 'bold' }}>{calcTotalPrice()} $</Col>
+          <Col style={{ padding: '0.5em 1em', fontWeight: 'bold' }}>{calcTotalPrice()} ARS</Col>
         </Row>
         <Row align="middle" justify="center">
           <Button

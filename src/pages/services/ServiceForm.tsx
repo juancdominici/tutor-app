@@ -156,7 +156,7 @@ export const ServiceForm = () => {
               placeholder={t('common.price')}
               style={{ width: '100%' }}
               type="number"
-              addonAfter="$"
+              addonAfter="ARS"
               controls
             />
           </FormItem>

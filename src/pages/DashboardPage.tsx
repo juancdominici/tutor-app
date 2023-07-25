@@ -74,7 +74,7 @@ export const DashboardPage = () => {
                         fontSize: '0.9rem',
                       }}
                     >
-                      ${appointment.tutor_services.price}
+                      {appointment.tutor_services.price} ARS
                     </p>
                   </Col>
                 </Row>
@@ -180,7 +180,7 @@ export const DashboardPage = () => {
                         fontSize: '0.9rem',
                       }}
                     >
-                      ${appointment.tutor_services.price}
+                      {appointment.tutor_services.price} ARS
                     </p>
                   </Col>
                 </Row>
