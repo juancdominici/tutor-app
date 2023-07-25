@@ -232,6 +232,7 @@ export const RequestForm = () => {
               style={{
                 width: '100%',
               }}
+              inputReadOnly
               disabledDate={(current) => {
                 return current && current < moment().subtract(1, 'day');
               }}
@@ -251,6 +252,7 @@ export const RequestForm = () => {
               style={{
                 width: '100%',
               }}
+              inputReadOnly
             />
           </FormItem>
         </Row>

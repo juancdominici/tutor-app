@@ -871,18 +871,20 @@ export const ProfilePage = () => {
                         {service?.price} ARS {service.is_unit_price ? t('common.perUnit') : ''}
                       </span>
                     </Col>
-                    <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
-                      <Button
-                        type="link"
-                        onClick={() => handleNewRequest(service)}
-                        style={{
-                          borderRadius: '10px',
-                          backgroundColor: 'rgba(var(--primary-rgb-color), 0.1)',
-                        }}
-                      >
-                        {t('common.book')}
-                      </Button>
-                    </Col>
+                    {userExistanceQuery?.data === 'user' && (
+                      <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
+                        <Button
+                          type="link"
+                          onClick={() => handleNewRequest(service)}
+                          style={{
+                            borderRadius: '10px',
+                            backgroundColor: 'rgba(var(--primary-rgb-color), 0.1)',
+                          }}
+                        >
+                          {t('common.book')}
+                        </Button>
+                      </Col>
+                    )}
                   </Row>
                 </Card>
               ))}
