@@ -110,7 +110,9 @@ const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
   switch (dateDiff) {
     case 'week':
       return appointments
-        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'week'), moment()))
+        .filter((appointment: any) =>
+          moment(appointment.last_modified).isBetween(moment().subtract(1, 'week'), moment()),
+        )
         .reduce((acc: any, appointment: any) => {
           const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
 
@@ -131,7 +133,9 @@ const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
 
     case 'month':
       return appointments
-        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'month'), moment()))
+        .filter((appointment: any) =>
+          moment(appointment.last_modified).isBetween(moment().subtract(1, 'month'), moment()),
+        )
         .reduce((acc: any, appointment: any) => {
           const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
 
@@ -151,7 +155,9 @@ const countServiceByDate = (appointments: any, dateDiff: DateDiff) => {
         }, []);
     case 'year':
       return appointments
-        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'year'), moment()))
+        .filter((appointment: any) =>
+          moment(appointment.last_modified).isBetween(moment().subtract(1, 'year'), moment()),
+        )
         .reduce((acc: any, appointment: any) => {
           const index = acc.findIndex((item: any) => item.name === appointment.tutor_services.name);
 
@@ -176,7 +182,9 @@ const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
   switch (dateDiff) {
     case 'week':
       return appointments
-        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'week'), moment()))
+        .filter((appointment: any) =>
+          moment(appointment.last_modified).isBetween(moment().subtract(1, 'week'), moment()),
+        )
         .reduce((acc: any, appointment: any) => {
           const { price, is_unit_price } = appointment.tutor_services;
           let total_price = 0;
@@ -207,7 +215,9 @@ const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
         }, []);
     case 'month':
       return appointments
-        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'month'), moment()))
+        .filter((appointment: any) =>
+          moment(appointment.last_modified).isBetween(moment().subtract(1, 'month'), moment()),
+        )
         .reduce((acc: any, appointment: any) => {
           const { price, is_unit_price } = appointment.tutor_services;
           let total_price = 0;
@@ -238,7 +248,9 @@ const countServiceAmountByDate = (appointments: any, dateDiff: DateDiff) => {
         }, []);
     case 'year':
       return appointments
-        .filter((appointment: any) => moment(appointment.date).isBetween(moment().subtract(1, 'year'), moment()))
+        .filter((appointment: any) =>
+          moment(appointment.last_modified).isBetween(moment().subtract(1, 'year'), moment()),
+        )
         .reduce((acc: any, appointment: any) => {
           const { price, is_unit_price } = appointment.tutor_services;
           let total_price = 0;

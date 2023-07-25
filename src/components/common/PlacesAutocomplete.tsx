@@ -23,7 +23,9 @@ export const PlacesAutocomplete = ({ setSelected, currentPosition, selected }: a
   useEffect(() => {
     if (!!selected && !!selected.details && !selected.details.address_components) {
       setValue(
-        `${selected?.details?.street}, ${selected?.details?.number}, ${selected?.details?.province}, ${selected?.details?.country}, ${selected?.details?.postcode}`,
+        `${selected?.details?.street ?? ''}, ${selected?.details?.number ?? ''}, ${
+          selected?.details?.province ?? ''
+        }, ${selected?.details?.country ?? ''}, ${selected?.details?.postcode ?? ''}`,
       );
     }
   }, [selected]);

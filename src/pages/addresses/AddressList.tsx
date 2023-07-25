@@ -85,7 +85,9 @@ export const AddressList: React.FC = () => {
       return {
         name: address.name,
         phone: address.phone,
-        address: `${address?.street} ${address?.number} - ${address?.province}, ${address?.country} - CP${address?.postcode}`,
+        address: `${address?.street ?? ''} ${address?.number ?? ''} - ${address?.province ?? ''}, ${
+          address?.country ?? ''
+        } - CP${address?.postcode ?? ''}`,
       };
     });
   };
@@ -154,7 +156,9 @@ export const AddressList: React.FC = () => {
             </p>
             <p style={{ marginLeft: '26px' }}>
               <strong>{t('common.address')}: </strong>
-              {`${address?.street} ${address?.number} - ${address?.province}, ${address?.country} - CP${address?.postcode}`}
+              {`${address?.street ?? ''} ${address?.number ?? ''} - ${address?.province ?? ''}, ${
+                address?.country ?? ''
+              } - CP${address?.postcode ?? ''}`}
             </p>
           </Panel>
         ))}
