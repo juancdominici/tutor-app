@@ -82,9 +82,6 @@ export const LoginForm = () => {
       notificationController.info({
         message: t('login.registerEmailSent'),
       });
-      setTimeout(() => {
-        navigate('/welcome/user-config');
-      }, 3000);
     },
     onError: () => {
       notificationController.error({
