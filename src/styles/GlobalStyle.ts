@@ -272,6 +272,9 @@ export default createGlobalStyle`
         padding: 0 1rem !important;
     }
 
+    .ant-rate-star-first, .ant-rate-star-second {
+        color: var(--text-light-color);
+    }
 
   @keyframes pulse-green {
     0% {
