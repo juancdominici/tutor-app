@@ -37,7 +37,7 @@ export const getUserNotifications = async () => {
           `,
     )
     .or(
-      `status.eq.${APPOINTMENT_STATUS.REJECTED},status.eq.${APPOINTMENT_STATUS.REPORTED},status.eq.${APPOINTMENT_STATUS.PENDING_PAYMENT}`,
+      `status.eq.${APPOINTMENT_STATUS.REJECTED},status.eq.${APPOINTMENT_STATUS.REPORTED},status.eq.${APPOINTMENT_STATUS.PENDING_PAYMENT},status.eq.${APPOINTMENT_STATUS.IN_PROGRESS}`,
     )
     .eq('user_profile_id', sessionData?.session?.user?.id)
     .order('last_modified', { ascending: false });

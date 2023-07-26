@@ -289,6 +289,7 @@
   },
   "notifications": {
     "appointments": {
+      "in_progress": "Eles aceitaram a sua vez!\nLembramos que o turno está sujeito à disponibilidade do tutor.",
       "pending_approval": "Você tem um novo turno com aprovação pendente!",
       "rejected": "Seu turno foi suspenso, você pode solicitar outro turno procurando um novo tutor.",
       "pending_payment": "Você tem um novo turno pendente de pagamento!\nVocê pode pagá-lo na seção de turnos.",

@@ -781,14 +781,13 @@ export const AppointmentList: React.FC = () => {
                               width: '100%',
                               backgroundColor: 'var(--sider-background-color)',
                             }}
-                            collapsible={appointment.appointment_details?.additional_details ? 'header' : 'disabled'}
                           >
                             <Panel
                               key={`${i}-panel`}
                               style={{
                                 border: 'none',
                               }}
-                              showArrow={!!appointment.appointment_details?.additional_details}
+                              showArrow={detail?.additional_details}
                               header={
                                 <div
                                   style={{
@@ -940,14 +939,13 @@ export const AppointmentList: React.FC = () => {
                               width: '100%',
                               backgroundColor: 'var(--sider-background-color)',
                             }}
-                            collapsible={appointment.appointment_details?.additional_details ? 'header' : 'disabled'}
                           >
                             <Panel
                               key={`${i}-panel`}
                               style={{
                                 border: 'none',
                               }}
-                              showArrow={!!appointment.appointment_details?.additional_details}
+                              showArrow={detail?.additional_details}
                               header={
                                 <div
                                   style={{

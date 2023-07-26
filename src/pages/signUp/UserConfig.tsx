@@ -12,6 +12,7 @@ import { Dates } from '@app/constants/Dates';
 import { mergeBy } from '@app/utils/utils';
 import tutorImage from '../../assets/images/tutorImage.png';
 import userImage from '../../assets/images/userImage.png';
+import moment from 'moment';
 
 interface FieldData {
   name: string | number;
@@ -115,7 +116,7 @@ export const UserConfig = () => {
           { required: true, message: t('common.requiredField') },
           {
             validator: (_, value) => {
-              if (value && value.isBefore(Dates.getDate(1576789200000))) {
+              if (value && value.isBefore(moment().subtract(18, 'years'))) {
                 return Promise.resolve();
               }
               return Promise.reject(new Error(t('common.birthdayError')));

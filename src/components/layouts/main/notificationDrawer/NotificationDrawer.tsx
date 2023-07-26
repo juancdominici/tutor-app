@@ -36,6 +36,8 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
 
   const computedStatus = (appointment: any) => {
     switch (appointment.status) {
+      case APPOINTMENT_STATUS.IN_PROGRESS:
+        return t(`notifications.appointments.${APPOINTMENT_STATUS.IN_PROGRESS}`);
       case APPOINTMENT_STATUS.PENDING_APPROVAL:
         return t(`notifications.appointments.${APPOINTMENT_STATUS.PENDING_APPROVAL}`);
       case APPOINTMENT_STATUS.REJECTED:
@@ -51,6 +53,10 @@ const NotificationDrawer = ({ isOpen, setOpen }: any) => {
 
   const computedNotificationColor = (appointment: any) => {
     switch (appointment.status) {
+      case APPOINTMENT_STATUS.IN_PROGRESS:
+        return {
+          borderLeft: '10px solid rgba(var(--primary-rgb-color), 0.7)',
+        };
       case APPOINTMENT_STATUS.PENDING_APPROVAL:
         return {
           borderLeft: '10px solid rgba(var(--secondary-rgb-color), 0.7)',

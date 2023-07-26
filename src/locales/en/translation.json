@@ -288,6 +288,7 @@
   },
   "notifications": {
     "appointments": {
+      "in_progress": "Your appointment is was accepted by the tutor!\nWe remind you that the appointment is subject to the availability of the tutor.",
       "pending_approval": "You have a new appointment pending approval!",
       "rejected": "Your appointment was suspended, you can request another appointment looking for a new tutor.",
       "pending_payment": "You have a new appointment pending payment!\nYou can pay for it from the appointments section.",

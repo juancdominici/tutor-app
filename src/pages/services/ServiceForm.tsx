@@ -133,7 +133,11 @@ export const ServiceForm = () => {
           </FormItem>
         </Row>
         <Row align="middle">
-          <FormItem style={{ margin: '0.5em 1em', width: '100%' }} name="location">
+          <FormItem
+            style={{ margin: '0.5em 1em', width: '100%' }}
+            name="location"
+            rules={[{ required: true, message: t('common.requiredField') }]}
+          >
             <Select
               placeholder={t('common.location')}
               options={[...LOCATION_TYPE.map((type) => ({ value: type, label: t(`constants.location.${type}`) }))]}
@@ -141,7 +145,11 @@ export const ServiceForm = () => {
           </FormItem>
         </Row>
         <Row align="middle">
-          <FormItem style={{ margin: '0.5em 1em', width: '100%' }} name="type">
+          <FormItem
+            style={{ margin: '0.5em 1em', width: '100%' }}
+            name="type"
+            rules={[{ required: true, message: t('common.requiredField') }]}
+          >
             <Select
               style={{ width: '100%' }}
               placeholder={t('common.serviceType')}
@@ -151,7 +159,11 @@ export const ServiceForm = () => {
           </FormItem>
         </Row>
         <Row align="middle">
-          <FormItem style={{ margin: '0.5em 1em', width: '100%' }} name="price">
+          <FormItem
+            style={{ margin: '0.5em 1em', width: '100%' }}
+            name="price"
+            rules={[{ required: true, message: t('common.requiredField') }]}
+          >
             <InputNumber
               placeholder={t('common.price')}
               style={{ width: '100%' }}
@@ -160,7 +172,11 @@ export const ServiceForm = () => {
               controls
             />
           </FormItem>
-          <FormItem style={{ margin: '0.5em 1em', width: '100%' }} name="cancelation_fee">
+          <FormItem
+            style={{ margin: '0.5em 1em', width: '100%' }}
+            name="cancelation_fee"
+            extra={<p style={{ color: 'var(--subtext-color)', fontSize: '0.8em', margin: '0.5em' }}>Default: 15%</p>}
+          >
             <InputNumber
               placeholder={t('common.cancelation_fee')}
               style={{ width: '100%' }}
