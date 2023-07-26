@@ -1,5 +1,4 @@
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
-import { Col, Row, Typography } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,14 +7,16 @@ export const EULA = () => {
   return (
     <div
       style={{
-        position: 'absolute',
+        position: 'relative',
         transform: 'translate(0%, 0%)',
         width: '80vw',
-        marginTop: '-20vh',
+        maxWidth: '750px',
+        height: '100dvh',
+        overflowY: 'scroll',
       }}
     >
       <PageTitle>{t('common.eula')}</PageTitle>
-      <h1>{t('common.eula')} - Tutor</h1>
+      <h1 style={{ marginTop: '5vh' }}>{t('common.eula')} - Tutor</h1>
       <h2>1.Alcance del vínculo con el usuario</h2>
       <p>
         Las presentes Condiciones de uso (“Condiciones”) regulan el uso que usted (“Usuario”) hará exclusivamente desde
