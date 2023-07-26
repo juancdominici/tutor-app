@@ -131,6 +131,7 @@ export const UserConfig = () => {
           style={{
             width: '100%',
           }}
+          inputReadOnly
         />
       </BaseForm.Item>
     </Row>,
