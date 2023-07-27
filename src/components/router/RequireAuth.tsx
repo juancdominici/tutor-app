@@ -28,7 +28,7 @@ const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
         togglePasswordRecoveryModal(true);
       }
     });
-  }, []);
+  }, [recover]);
 
   const { data: userType, isLoading } = useQuery(['userType'], checkUserExistanceAction, {
     refetchOnWindowFocus: false,
