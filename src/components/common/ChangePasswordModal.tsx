@@ -26,7 +26,9 @@ export const ChangePasswordModal = ({ passwordRecoveryModal, togglePasswordRecov
     },
   });
   const handleSubmit = (values: any) => {
-    changePassword(values.newPassword);
+    changePassword({
+      password: values.newPassword,
+    });
   };
   return (
     <Modal
