@@ -48,7 +48,7 @@ export const register = async (payload: any) => {
 
 export const passwordRecover = async (payload: any) => {
   const { data, error } = await supabase.auth.resetPasswordForEmail(payload.usuario, {
-    redirectTo: window.location.origin,
+    redirectTo: window.location.origin + '?recover=true',
   });
   if (error) {
     throw new Error(error.message);

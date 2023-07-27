@@ -13,13 +13,22 @@ import { useQuery } from '@tanstack/react-query';
 const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
   const [passwordRecoveryModal, togglePasswordRecoveryModal] = useState(false);
   const navigate = useNavigate();
+
+  // get query params from url
+  const params = new URLSearchParams(window.location.search);
+  const recover = params.get('recover');
+
   useEffect(() => {
+    if (recover) {
+      togglePasswordRecoveryModal(true);
+      return;
+    }
     supabase.auth.onAuthStateChange(async (event, session) => {
       if (event == 'PASSWORD_RECOVERY') {
         togglePasswordRecoveryModal(true);
       }
     });
-  }, []);
+  }, [recover]);
 
   const { data: userType, isLoading } = useQuery(['userType'], checkUserExistanceAction, {
     refetchOnWindowFocus: false,
