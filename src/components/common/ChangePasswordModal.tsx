@@ -35,17 +35,7 @@ export const ChangePasswordModal = ({ passwordRecoveryModal, togglePasswordRecov
       okText={t('common.submit')}
       cancelText={t('common.cancel')}
       onCancel={() => togglePasswordRecoveryModal(false)}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            form.resetFields();
-            handleSubmit(values);
-          })
-          .catch((info) => {
-            console.log('Validate Failed:', info);
-          });
-      }}
+      onOk={form.submit}
     >
       <BaseForm form={form} layout="vertical" onFinish={handleSubmit} requiredMark="optional">
         <FormItem
